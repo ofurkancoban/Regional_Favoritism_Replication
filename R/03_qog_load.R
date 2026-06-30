@@ -29,7 +29,9 @@ needed_cols <- c(
   "wbgi_gee",          # WGI Government Effectiveness Estimate; starts 1996, biennial early years
   "al_ethnic2000",     # Alesina ethnic fractionalization (QoG column name: al_ethnic2000)
   "wdi_gdpcapcon2015"  # GDP per capita PPP constant 2015 USD
-  # bl_asyt15 (Barro-Lee schooling) is NOT in QoG ts Jan26; download separately from barrolee.com
+  # bl_asyt15 (Barro-Lee schooling) is NOT in QoG ts Jan26.
+  # Use data/raw/qog/BL2013_MF1599_v2.2.csv directly (yr_sch column, 5-year intervals 1950-2010).
+  # Linear interpolation to annual and extrapolation to 2023 done in panel construction script.
 )
 
 present <- needed_cols[needed_cols %in% names(qog)]
