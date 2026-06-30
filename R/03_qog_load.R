@@ -6,30 +6,30 @@
 library(haven)
 library(data.table)
 
-qog_path <- "data/raw/qog/qog_std_ts_jan26.dta"
+qog_path <- "data/raw/qog/qog_std_ts_jan26.csv"
 
 if (!file.exists(qog_path)) {
   stop(
-    "QoG Standard Dataset not found.\n",
-    "Download from https://www.gu.se/en/quality-government/qog-data/data-downloads\n",
-    "Place the .dta file at data/raw/qog/qog_std_ts_jan26.dta"
+    "QoG Standard Dataset (time-series) not found.\n",
+    "Download from https://www.qogdata.pol.gu.se/data/qog_std_ts_jan26.csv\n",
+    "Place at data/raw/qog/qog_std_ts_jan26.csv"
   )
 }
 
-qog_raw <- haven::read_dta(qog_path)
-qog     <- data.table::as.data.table(qog_raw)
+qog <- data.table::fread(qog_path)
 
 # Columns required for this project (from DATA_SOURCES.md Section 5)
 needed_cols <- c(
-  "ccode",          # country code (COW or ISO, verify)
-  "cname",          # country name
+  "ccode",             # COW country code
+  "cname",             # country name
+  "ccodealp",          # ISO3 alpha code
   "year",
-  "p_polity2",      # Polity5 polity2 index (-10 to +10)
-  "vdem_libdem",    # V-Dem Liberal Democracy Index
-  "wbgi_gee",       # WGI Government Effectiveness Estimate
-  "bl_asyt15",      # Barro-Lee average years of schooling, 15+
-  "al_ethnic",      # Alesina ethnic fractionalization
+  "p_polity2",         # Polity5 polity2 index (-10 to +10); ends 2018
+  "vdem_libdem",       # V-Dem Liberal Democracy Index
+  "wbgi_gee",          # WGI Government Effectiveness Estimate; starts 1996, biennial early years
+  "al_ethnic2000",     # Alesina ethnic fractionalization (QoG column name: al_ethnic2000)
   "wdi_gdpcapcon2015"  # GDP per capita PPP constant 2015 USD
+  # bl_asyt15 (Barro-Lee schooling) is NOT in QoG ts Jan26; download separately from barrolee.com
 )
 
 present <- needed_cols[needed_cols %in% names(qog)]
