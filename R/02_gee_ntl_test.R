@@ -14,16 +14,40 @@ gee_hello()
 
 ee <- reticulate::import("ee")
 
-# ---- Load Turkey ADM1 ----
-tur_adm1 <- sf::st_read("data/raw/gadm_4.1/turkey/gadm41_TUR_1.shp", quiet = TRUE)
-name_col  <- names(tur_adm1)[grepl("NAME_1", names(tur_adm1))][1]
-gid_col   <- names(tur_adm1)[grepl("GID_1",  names(tur_adm1))][1]
+# ---- Load Turkey ADM1 (GADM 4.1 preferred, geoBoundaries fallback) ----
+gadm_gpkg <- "data/raw/gadm_4.1/turkey/gadm41_TUR.gpkg"
+gb_geojson <- "data/raw/gadm_4.1/turkey/geoboundaries_TUR_ADM1.geojson"
 
-# Convert to GEE FeatureCollection
+if (file.exists(gadm_gpkg)) {
+  tur_adm1 <- sf::st_read(gadm_gpkg, layer = "ADM_1", quiet = TRUE)
+} else {
+  tur_adm1 <- sf::st_read(gb_geojson, quiet = TRUE)
+  names(tur_adm1)[names(tur_adm1) == "shapeName"] <- "NAME_1"
+  names(tur_adm1)[names(tur_adm1) == "shapeISO"]  <- "GID_1"
+}
+
+name_col <- names(tur_adm1)[grepl("NAME_1", names(tur_adm1))][1]
+gid_col  <- names(tur_adm1)[grepl("GID_1",  names(tur_adm1))][1]
+message("Loaded Turkey ADM1: ", nrow(tur_adm1), " provinces")
+
+# Convert to GEE FeatureCollection via in-memory GeoJSON parsing.
+# Simplify geometry to stay under GEE's 10 MB request payload limit.
+tur_sub <- tur_adm1[, c(gid_col, name_col, "geometry")]
+tur_sub <- sf::st_simplify(tur_sub, preserveTopology = TRUE, dTolerance = 500)
+
 tmp_geojson <- tempfile(fileext = ".geojson")
-sf::st_write(tur_adm1[, c(gid_col, name_col, "geometry")],
-             tmp_geojson, driver = "GeoJSON", quiet = TRUE)
-tur_fc <- ee$FeatureCollection(tmp_geojson)
+sf::st_write(tur_sub, tmp_geojson, driver = "GeoJSON", quiet = TRUE)
+geojson_str <- paste(readLines(tmp_geojson, warn = FALSE), collapse = "")
+unlink(tmp_geojson)
+message("GeoJSON payload size: ", round(nchar(geojson_str) / 1e6, 2), " MB")
+
+reticulate::py_run_string(paste0(
+  "import json, ee\n",
+  "tur_fc = ee.FeatureCollection(json.loads('",
+  gsub("'", "\\'", geojson_str, fixed = TRUE),
+  "'))"
+))
+tur_fc <- reticulate::py$tur_fc
 
 # ---- Task 4.1: DMSP-OLS 2000 ----
 message("Querying DMSP-OLS stable_lights for year 2000...")
@@ -52,7 +76,7 @@ message("DMSP-OLS test: ", nrow(df_dmsp), " provinces. Saved to data/processed/t
 # ---- Task 4.2: VIIRS June 2020 ----
 message("Querying VIIRS avg_rad for June 2020...")
 
-viirs_jun2020 <- ee$ImageCollection("NOAA/VIIRS/DNB/MONTHLY_V1")$
+viirs_jun2020 <- ee$ImageCollection("NOAA/VIIRS/DNB/MONTHLY_V1/VCMSLCFG")$
   filterDate("2020-06-01", "2020-06-30")$
   select("avg_rad")$
   first()
@@ -76,12 +100,13 @@ message("VIIRS test: ", nrow(df_viirs), " provinces. Saved to data/processed/tur
 message("Running Rize vs Turkey-average sanity check...")
 
 # Query VIIRS for 2012 and 2020 annual composites to compare
-viirs_2012 <- ee$ImageCollection("NOAA/VIIRS/DNB/MONTHLY_V1")$
-  filterDate("2012-01-01", "2012-12-31")$
+# VCMSLCFG starts April 2014; use VCMCFG for 2012 (available from 2012-04)
+viirs_2012 <- ee$ImageCollection("NOAA/VIIRS/DNB/MONTHLY_V1/VCMCFG")$
+  filterDate("2012-04-01", "2012-12-31")$
   select("avg_rad")$
   mean()
 
-viirs_2020 <- ee$ImageCollection("NOAA/VIIRS/DNB/MONTHLY_V1")$
+viirs_2020 <- ee$ImageCollection("NOAA/VIIRS/DNB/MONTHLY_V1/VCMSLCFG")$
   filterDate("2020-01-01", "2020-12-31")$
   select("avg_rad")$
   mean()

@@ -16,16 +16,23 @@ gee_hello <- function() {
   invisible(result)
 }
 
-# Convert an sf object to a GEE FeatureCollection via GeoJSON.
+# Convert an sf object to a GEE FeatureCollection by parsing GeoJSON in Python.
 sf_to_ee_fc <- function(sf_obj) {
-  ee <- reticulate::import("ee")
-  geojson_str <- sf::st_as_text(sf::st_geometry(sf_obj))
-  # Use temporary file to pass GeoJSON without truncation
+  ee  <- reticulate::import("ee")
+  json <- reticulate::import("json")
+
   tmp <- tempfile(fileext = ".geojson")
   sf::st_write(sf_obj, tmp, driver = "GeoJSON", quiet = TRUE)
-  fc <- ee$FeatureCollection(tmp)
+  geojson_str <- paste(readLines(tmp, warn = FALSE), collapse = "")
   unlink(tmp)
-  fc
+
+  # Parse JSON in Python and build FeatureCollection
+  py_code <- sprintf(
+    "import json, ee\nfc = ee.FeatureCollection(json.loads('%s'))",
+    gsub("'", "\\\\'", geojson_str)
+  )
+  reticulate::py_run_string(py_code)
+  reticulate::py$fc
 }
 
 # Zonal mean for an ee.Image over a FeatureCollection; returns local data.frame.
