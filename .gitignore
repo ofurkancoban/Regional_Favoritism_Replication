@@ -1,0 +1,14 @@
+data/raw/
+data/processed/
+output/figures/
+output/tables/
+*.RData
+*.Rhistory
+*.tif
+*.hdf5
+*.hdf
+*.nc
+*.zip
+*.7z
+.DS_Store
+renv/library/
