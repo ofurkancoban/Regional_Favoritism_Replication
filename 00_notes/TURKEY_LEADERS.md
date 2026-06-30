@@ -88,28 +88,48 @@ For Turkey, the effective leader is:
 
 ---
 
-## 3. Coding table (draft, to be validated)
+## 3. Coding table (PLAD April 2024 validated)
 
-| Period start | Period end | Leader | Birth ADM1 | Notes |
-|--------------|-----------|--------|------------|-------|
-| 1992-01-01 | 1993-05-16 | Demirel (President) + Yilmaz/Demirel as PM | Mixed | Pre-presidency Demirel as PM until June 1991, then Yilmaz until November 1991, Demirel returns... CONFUSING TRANSITIONS |
-| 1993-05-16 | 1993-06-25 | Demirel becomes President | Isparta | Transition gap before Ciller becomes PM |
-| 1993-06-25 | 1996-03-06 | Çiller (PM) | Istanbul | |
-| 1996-03-06 | 1996-06-28 | Yılmaz (PM) | Istanbul | Brief coalition |
-| 1996-06-28 | 1997-06-30 | Erbakan (PM) | Sinop | Welfare Party |
-| 1997-06-30 | 1999-01-11 | Yılmaz (PM) | Istanbul | Third PM stint |
-| 1999-01-11 | 2002-11-18 | Ecevit (PM) | Istanbul | |
-| 2002-11-18 | 2003-03-14 | Gül (PM) | Kayseri | Caretaker for Erdogan |
-| 2003-03-14 | 2014-08-28 | Erdoğan (PM) | Istanbul or Rize | LONG TENURE, KEY VARIATION |
-| 2014-08-28 | 2016-05-24 | Davutoğlu (PM) under Erdogan presidency | Konya | But Erdogan is now President |
-| 2016-05-24 | 2018-07-09 | Yıldırım (PM) under Erdogan presidency | Erzincan | Final PM |
-| 2018-07-09 | present | Erdoğan (President) | Istanbul or Rize | Sole executive |
+| Period start | Period end | Leader | Birth ADM1 | PLAD GID_1 | Notes |
+|--------------|------------|--------|------------|------------|-------|
+| 1989-11-09 | 1991-06-24 | Akbulut (PM) | Erzincan | TUR.30_1 | Pre-sample but in PLAD |
+| 1991-06-24 | 1991-11-20 | Yilmaz (PM) | Istanbul | TUR.40_1 | First stint |
+| 1991-11-20 | 1993-05-16 | Demirel (PM) | Isparta | TUR.39_1 | PLAD codes as PM only; presidency not coded |
+| 1993-05-16 | 1993-06-25 | Erdal Inonu (acting PM) | Ankara | TUR.7_1 | Brief caretaker, Ankara birth |
+| 1993-06-25 | 1996-03-06 | Ciller (PM) | Istanbul | TUR.40_1 | |
+| 1996-03-06 | 1996-06-28 | Yilmaz (PM) | Istanbul | TUR.40_1 | Second stint |
+| 1996-06-28 | 1997-06-30 | Erbakan (PM) | Sinop | TUR.70_1 | |
+| 1997-06-30 | 1999-01-11 | Yilmaz (PM) | Istanbul | TUR.40_1 | Third stint |
+| 1999-01-11 | 2002-11-18 | Ecevit (PM) | Istanbul | TUR.40_1 | |
+| 2002-11-19 | 2003-03-14 | Abdullah Gul (PM) | Kayseri | TUR.47_1 | Caretaker |
+| 2003-03-14 | 2023-12-31 | Erdogan (PM then President) | Istanbul | TUR.40_1 | PLAD codes as single continuous tenure; Istanbul (Beyoglu, GID_2 TUR.40.13_1) |
 
-**Major coding challenges to resolve:**
-1. The 1991-1993 multiple transitions need careful PM-by-PM coding
-2. Erdoğan-Davutoğlu-Yıldırım period: who is the "effective leader" — President Erdoğan or sitting PM? PLAD will define this; we follow PLAD.
-3. Erdoğan's birth ADM1: Istanbul (de jure) or Rize (de facto family)? Robustness check both.
-4. Demirel as President 1993-2000: was he "effective" during this period? PLAD likely says yes, given he was a former PM and politically active.
+**Resolved coding decisions (from PLAD April 2024):**
+
+1. **Demirel presidency (1993-2000):** PLAD does NOT code Demirel as effective leader during
+   his presidency. His last PLAD entry ends 1993-05-16 (end of PM tenure). Presidency is not
+   in PLAD. This means Isparta gets Leader_it = 0 after 1993. This is consistent with the
+   PLAD/Archigos definition: the PM held executive power in the parliamentary system.
+
+2. **Erdogan birth province:** PLAD codes Istanbul (GID_1 = TUR.40_1), specifically Beyoglu
+   district (GID_2 = TUR.40.13_1). This matches the official birth certificate (Kasimpasa,
+   Istanbul). Primary analysis uses Istanbul. Robustness check uses Rize.
+
+3. **2014-2023 Davutoglu and Yildirim period:** PLAD does NOT include Davutoglu or Yildirim.
+   Erdogan's PLAD tenure runs 2003-03-14 to 2023-12-31 as a single continuous entry, spanning
+   both his PM and President periods. PLAD treats him as the effective leader throughout.
+   Implication: Leader_it = 1 for Istanbul for the entire 2003-2023 period, no interruption.
+
+4. **Erdal Inonu:** Not in our TURKEY_LEADERS.md draft but appears in PLAD (1993-05-16 to
+   1993-06-25, Ankara birth). 40-day caretaker period. Following Bora 2025 convention
+   (25% of period threshold), in a yearly panel this contributes 0 days to 1993 and will
+   not trigger Leader_it = 1. In a monthly panel, May 1993 may qualify. Handle in code.
+
+**Major coding challenges -- RESOLVED:**
+1. 1991-1993 transitions: now clear from PLAD, coded PM-by-PM.
+2. 2014-2018 Davutoglu/Yildirim: moot -- PLAD keeps Erdogan as effective leader throughout.
+3. Erdogan birth ADM1: Istanbul per PLAD primary; Rize as robustness.
+4. Demirel presidency: not coded as effective by PLAD.
 
 ---
 
@@ -153,11 +173,14 @@ To preview identification:
 
 ---
 
-## 6. Open questions for Week 2 validation
+## 6. Open questions -- RESOLVED after PLAD April 2024 validation
 
-- [ ] How does PLAD code Demirel during his presidency? As effective leader or not?
-- [ ] How does PLAD code Erdoğan: Istanbul or Rize?
-- [ ] How does PLAD treat the 2014-2018 period: is Erdoğan or the sitting PM the effective leader?
-- [ ] What threshold does PLAD use for partial-period tenures? (Bora uses 25% of period, DHR not specified)
-- [ ] Are there any leaders missing from this list that PLAD includes?
-- [ ] Are there any leaders in this list that PLAD excludes (e.g. because too brief)?
+- [x] Demirel presidency: PLAD does not code it as effective leader. Isparta = 0 after May 1993.
+- [x] Erdogan birth ADM1: Istanbul (TUR.40_1, Beyoglu GID_2). Rize used only in robustness.
+- [x] 2014-2018 period: PLAD codes Erdogan as effective leader throughout (single 2003-2023 entry).
+      Davutoglu and Yildirim do not appear in PLAD at all.
+- [x] PLAD extra leaders vs draft: Akbulut (1989-1991, Erzincan) and Erdal Inonu (40-day caretaker
+      1993, Ankara) are in PLAD but were not in our draft. Akbulut enters sample only if we extend
+      pre-1992. Erdal Inonu is below the 25% threshold in annual panel; handle in monthly panel.
+- [ ] PLAD sample end date: Erdogan entry ends 2023-12-31. Need to extend to 2024 manually for
+      the full 1992-2024 sample. Document in panel construction script.
