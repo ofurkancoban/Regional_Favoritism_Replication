@@ -9,7 +9,7 @@ library(data.table)
 source("R/utils/gee_helpers.R")
 
 # ---- Initialize GEE ----
-gee_initialize("ee-turkey-research")
+gee_initialize()
 gee_hello()
 
 ee <- reticulate::import("ee")
