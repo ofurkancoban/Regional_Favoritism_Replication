@@ -1,0 +1,859 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <title>Download</title>
+    <link media="all" href="/wro/legacy-application.css" type="text/css" rel="stylesheet" />
+    <link media="all" href="style.css" type="text/css" rel="stylesheet" />
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
+  </head>
+  <body>
+    
+      
+            <form id="data-selection" method='get'>
+        <input type='hidden' name='file' value='gpwv3' />
+        <input type='hidden' name='level' value='continent' />
+        
+          <input type='hidden' name='code' value='AF' />
+        
+  
+        <fieldset id='select-geo' class='color-bg-white'>
+          <legend>Geography:</legend>
+          <label for='level-scope' class='visuallyhidden'>Level</label>
+          <select name='level-scope' id='level-scope'>
+            <option value='continent' selected='selected'>Region</option>
+            <option value='country'>Country</option>
+          </select> &raquo;
+    
+          
+            <label for='region' class='visuallyhidden'>Region</label>
+            <select name='region' id='region'>
+              <option value='Global'>Global</option>
+              <option value='Africa' selected='selected'>Africa</option>
+              <option value='Asia'>Asia</option>
+              <option value='Europe'>Europe</option>
+              <option value='NorthAmerica'>North America</option>
+              <option value='Oceania'>Oceania</option>
+              <option value='SouthAmerica'>South America</option>
+            </select>
+          
+    
+          
+        </fieldset>
+
+        <fieldset id='select-data' class='color-bg-white'>
+          <legend>Data Set:</legend>
+          <label for='data' class='visuallyhidden'>Data Set:</label>
+          <select name='data'>
+            
+              <option value='disabled'>[Select data]</option>
+            
+              <option value='pcount' selected='selected'>Population Count Grid</option>
+            
+              <option value='pdens'>Population Density Grid</option>
+            
+              <option value='area'>Land / Geographic Unit Area Grids</option>
+            
+              <option value='centroids'>Centroids</option>
+            
+              <option value='adbnd'>Sub-national Administrative Boundaries</option>
+            
+              <option value='pcount_future'>Population Count Grid Future</option>
+            
+              <option value='pdens_future'>Population Density Grid Future</option>
+            
+          </select>
+        </fieldset>
+
+        <fieldset id='select-attributes' class='color-bg-white'>
+          <legend>Data Attributes:</legend>
+          
+          <span>
+            <label for='type' class="visuallyhidden">Format</label>
+            <select name='type' id='type'>
+            
+              <option value='disabled'>[Select format]</option>
+            
+              <option value='bil'>.bil</option>
+            
+              <option value='ascii' selected='selected'>.ascii</option>
+            
+              <option value='wrk'>grid</option>
+            
+            </select>
+          </span>
+          
+  
+          
+          <span>
+            <label for='resolut' class="visuallyhidden">Resolution:</label>
+            <select name='resolut' id='resolut'>
+            
+              <option value='disabled'>[Select resolution]</option>
+            
+              <option value='25' selected='selected'>2.5'</option>
+            
+            </select>
+          </span>
+          
+  
+          
+          <span>
+            <label for='year' class="visuallyhidden">Year:</label>
+            <select name="year" id='year'>
+            
+              <option value='disabled'>[Select year]</option>
+            
+              <option value='90'>1990</option>
+            
+              <option value='95' selected='selected'>1995</option>
+            
+              <option value='00'>2000</option>
+            
+            </select>
+          </span>
+          
+        </fieldset>
+        <span id="select-download">
+          <button id='download-data' type='submit'>Download</button>
+          <div id="msg-required" class='warn'><em>all fields required</em></div>
+        </span>
+      </form>
+
+      
+
+      <h3 id='summary-header'>Africa Summary</h3>
+<table>
+  <tbody id='summary-scope'>
+    <tr>
+      <th data-desc='Population totals for the year 2000 based on the National Statistical Office (NSO) data.'>
+        Population 2000 (NSO-Based Estimate '000)
+      </th>
+      <td class='value'>787,733</td>
+      <td class='gutter'>&nbsp;</td>
+      <th data-desc='Population totals for the year 2000 from the United Nations World Population Prospects 2000 Revision.'>
+        Population 2000 (UN '000)
+      </th>
+      <td class='value'>793,528</td>
+    </tr>
+    <tr>
+      <th data-desc='The total land area in square kilometers for each country based on the 2.5 arc-minute grids and the average land area per administrative unit based on the national area total.'>
+        Area (km<sup>2</sup>)
+      </th>
+      <td class='value'>29,611,975</td>
+      <td class='gutter'>&nbsp;</td>
+      <th data-desc='Mean measure of the effective resolution of administrative units in kilometers; calculated as the square root of the land area divided by the number of administrative units.'>
+        Avg. Input Resolution (km)
+      </th>
+      <td class='value'>16</td>
+    </tr>
+    <tr>
+      <th data-desc='Total number of administrative units at the level used: sum of the unique administrative units (not unique polygons, units may be split across polygons) at the level used for gridding GPW v3.'>
+        Number of Administrative Units
+      </th>
+      <td class='value'>109,172</td>
+      <td class='gutter'>&nbsp;</td>
+      <th data-desc='Average population per administrative unit; 2000 population estimate divided by the number of units.'>
+        Population Per Administrative Unit ('000)
+      </th>
+      <td class='value'>7</td>
+    </tr>
+    <tr>
+      <th data-desc='The number of defined spatial areas categorized as urban (i.e. population of 5000 persons or larger). Urban extents can encompass multiple, adjacent settlement points if within a 3 kilometer buffer of the urban area.'>
+        Number of Urban Extents
+      </th>
+      <td class='value'>2,506</td>
+      <td class='gutter'>&nbsp;</td>
+      <th data-desc='The number of places where corresponding population and coordinate data are both available. Settlement points are the primary population inputs for the urban extents.'>
+        Number of Settlement Points
+      </th>
+      <td class='value'>3,981</td>
+    </tr>
+    
+    <tr>
+      <td colspan='8'>
+        The United Nations Environment Programme's (UNEP) Accessibility Model, a related data-product for Africa that uses GPWv3 inputs and GRUMP urban extents, along with other information, may be downloaded directly from UNEP.
+      </td>
+    </tr>
+    
+  </tbody>
+</table>
+      
+        <h3>Country Summaries</h3>
+<table id='summary-countries'>
+  <thead>
+    <tr>
+      <th><a href='#' data-sort-value='countryenglish' class='table-sort asc'>Country Name<br />(English)</a></th>
+      <th class='value wider'><a href='#' data-sort-value='p2000un' class='table-sort '>Population 2000<br />(UN '000)</a></th>
+      <th class='value'><a href='#' data-sort-value='area' class='table-sort '>Area<br />(km<sup>2</sup>)</a></th>
+      <th class='value'><a href='#' data-sort-value='resolution' class='table-sort '>Resolution<br />(km)</a></th>
+      <th class='value'><a href='#' data-sort-value='numunit' class='table-sort '>Admin<br />Units</a></th>
+      <th class='value wider'><a href='#' data-sort-value='popperunit' class='table-sort '>Population Per<br />Admin Unit ('000)</a></th>
+      <th class='value'><a href='#' data-sort-value='numextent' class='table-sort '>Urban<br />Extents</a></th>
+      <th class='value'><a href='#' data-sort-value='numsettlepoint' class='table-sort '>Settlement<br />Points</a></th>
+    </tr>
+  </thead>
+  <tbody>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=DZA">Algeria</a></td>
+      <td class='value'>30,291</td>
+      <td class='value'>2,302,498</td>
+      <td class='value'>219</td>
+      <td class='value'>48</td>
+      <td class='value'>634</td>
+      <td class='value'>329</td>
+      <td class='value'>151</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=AGO">Angola</a></td>
+      <td class='value'>13,134</td>
+      <td class='value'>1,251,924</td>
+      <td class='value'>264</td>
+      <td class='value'>18</td>
+      <td class='value'>1</td>
+      <td class='value'>30</td>
+      <td class='value'>8</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=BEN">Benin</a></td>
+      <td class='value'>6,272</td>
+      <td class='value'>115,828</td>
+      <td class='value'>39</td>
+      <td class='value'>78</td>
+      <td class='value'>80</td>
+      <td class='value'>36</td>
+      <td class='value'>38</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=BWA">Botswana</a></td>
+      <td class='value'>1,541</td>
+      <td class='value'>559,502</td>
+      <td class='value'>156</td>
+      <td class='value'>23</td>
+      <td class='value'>71</td>
+      <td class='value'>27</td>
+      <td class='value'>67</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=BFA">Burkina Faso</a></td>
+      <td class='value'>11,535</td>
+      <td class='value'>275,747</td>
+      <td class='value'>28</td>
+      <td class='value'>353</td>
+      <td class='value'>33</td>
+      <td class='value'>118</td>
+      <td class='value'>205</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=BDI">Burundi</a></td>
+      <td class='value'>6,356</td>
+      <td class='value'>25,227</td>
+      <td class='value'>15</td>
+      <td class='value'>114</td>
+      <td class='value'>58</td>
+      <td class='value'>15</td>
+      <td class='value'>15</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=CMR">Cameroon</a></td>
+      <td class='value'>14,876</td>
+      <td class='value'>465,765</td>
+      <td class='value'>97</td>
+      <td class='value'>49</td>
+      <td class='value'>255</td>
+      <td class='value'>104</td>
+      <td class='value'>166</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=CPV">Cape Verde</a></td>
+      <td class='value'>427</td>
+      <td class='value'>4,072</td>
+      <td class='value'>21</td>
+      <td class='value'>9</td>
+      <td class='value'>48</td>
+      <td class='value'>11</td>
+      <td class='value'>16</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=CAF">Central African Republic</a></td>
+      <td class='value'>3,717</td>
+      <td class='value'>622,868</td>
+      <td class='value'>111</td>
+      <td class='value'>51</td>
+      <td class='value'>69</td>
+      <td class='value'>33</td>
+      <td class='value'>37</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=TCD">Chad</a></td>
+      <td class='value'>7,885</td>
+      <td class='value'>1,243,139</td>
+      <td class='value'>298</td>
+      <td class='value'>14</td>
+      <td class='value'>527</td>
+      <td class='value'>38</td>
+      <td class='value'>51</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=COM">Comoros</a></td>
+      <td class='value'>706</td>
+      <td class='value'>2,046</td>
+      <td class='value'>23</td>
+      <td class='value'>4</td>
+      <td class='value'>140</td>
+      <td class='value'>12</td>
+      <td class='value'>93</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=COG">Congo</a></td>
+      <td class='value'>3,018</td>
+      <td class='value'>343,235</td>
+      <td class='value'>86</td>
+      <td class='value'>46</td>
+      <td class='value'>60</td>
+      <td class='value'>22</td>
+      <td class='value'>22</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=COD">Congo, Democratic Republic</a></td>
+      <td class='value'>50,948</td>
+      <td class='value'>2,313,414</td>
+      <td class='value'>124</td>
+      <td class='value'>150</td>
+      <td class='value'>347</td>
+      <td class='value'>162</td>
+      <td class='value'>182</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=DJI">Djibouti</a></td>
+      <td class='value'>632</td>
+      <td class='value'>20,903</td>
+      <td class='value'>65</td>
+      <td class='value'>5</td>
+      <td class='value'>128</td>
+      <td class='value'>6</td>
+      <td class='value'>5</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=EGY">Egypt</a></td>
+      <td class='value'>67,884</td>
+      <td class='value'>968,071</td>
+      <td class='value'>65</td>
+      <td class='value'>230</td>
+      <td class='value'>281</td>
+      <td class='value'>77</td>
+      <td class='value'>151</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=GNQ">Equatorial Guinea</a></td>
+      <td class='value'>457</td>
+      <td class='value'>27,104</td>
+      <td class='value'>62</td>
+      <td class='value'>7</td>
+      <td class='value'>127</td>
+      <td class='value'>3</td>
+      <td class='value'>15</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=ERI">Eritrea</a></td>
+      <td class='value'>3,659</td>
+      <td class='value'>121,863</td>
+      <td class='value'>57</td>
+      <td class='value'>38</td>
+      <td class='value'>94</td>
+      <td class='value'>11</td>
+      <td class='value'>9</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=ETH">Ethiopia</a></td>
+      <td class='value'>62,908</td>
+      <td class='value'>1,123,714</td>
+      <td class='value'>46</td>
+      <td class='value'>523</td>
+      <td class='value'>119</td>
+      <td class='value'>206</td>
+      <td class='value'>407</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=GAB">Gabon</a></td>
+      <td class='value'>1,230</td>
+      <td class='value'>265,146</td>
+      <td class='value'>76</td>
+      <td class='value'>46</td>
+      <td class='value'>27</td>
+      <td class='value'>20</td>
+      <td class='value'>35</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=GMB">Gambia</a></td>
+      <td class='value'>1,303</td>
+      <td class='value'>10,838</td>
+      <td class='value'>17</td>
+      <td class='value'>37</td>
+      <td class='value'>32</td>
+      <td class='value'>14</td>
+      <td class='value'>96</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=GHA">Ghana</a></td>
+      <td class='value'>19,306</td>
+      <td class='value'>231,730</td>
+      <td class='value'>46</td>
+      <td class='value'>110</td>
+      <td class='value'>172</td>
+      <td class='value'>126</td>
+      <td class='value'>175</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=GIN">Guinea</a></td>
+      <td class='value'>8,154</td>
+      <td class='value'>245,860</td>
+      <td class='value'>86</td>
+      <td class='value'>33</td>
+      <td class='value'>257</td>
+      <td class='value'>33</td>
+      <td class='value'>44</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=GNB">Guinea-Bissau</a></td>
+      <td class='value'>1,199</td>
+      <td class='value'>34,106</td>
+      <td class='value'>30</td>
+      <td class='value'>37</td>
+      <td class='value'>33</td>
+      <td class='value'>13</td>
+      <td class='value'>19</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=CIV">Ivory Coast</a></td>
+      <td class='value'>16,013</td>
+      <td class='value'>320,329</td>
+      <td class='value'>42</td>
+      <td class='value'>185</td>
+      <td class='value'>89</td>
+      <td class='value'>66</td>
+      <td class='value'>76</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=KEN">Kenya</a></td>
+      <td class='value'>30,669</td>
+      <td class='value'>579,617</td>
+      <td class='value'>9</td>
+      <td class='value'>6,624</td>
+      <td class='value'>4</td>
+      <td class='value'>72</td>
+      <td class='value'>77</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=LSO">Lesotho</a></td>
+      <td class='value'>2,035</td>
+      <td class='value'>30,582</td>
+      <td class='value'>55</td>
+      <td class='value'>10</td>
+      <td class='value'>209</td>
+      <td class='value'>10</td>
+      <td class='value'>15</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=LBR">Liberia</a></td>
+      <td class='value'>2,913</td>
+      <td class='value'>96,166</td>
+      <td class='value'>42</td>
+      <td class='value'>54</td>
+      <td class='value'>70</td>
+      <td class='value'>17</td>
+      <td class='value'>27</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=LBY">Libyan Arab Jamahiriya</a></td>
+      <td class='value'>5,290</td>
+      <td class='value'>1,611,363</td>
+      <td class='value'>254</td>
+      <td class='value'>25</td>
+      <td class='value'>223</td>
+      <td class='value'>33</td>
+      <td class='value'>39</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=MDG">Madagascar</a></td>
+      <td class='value'>15,970</td>
+      <td class='value'>592,965</td>
+      <td class='value'>22</td>
+      <td class='value'>1,242</td>
+      <td class='value'>12</td>
+      <td class='value'>74</td>
+      <td class='value'>98</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=MWI">Malawi</a></td>
+      <td class='value'>11,308</td>
+      <td class='value'>94,958</td>
+      <td class='value'>3</td>
+      <td class='value'>9,219</td>
+      <td class='value'>1</td>
+      <td class='value'>31</td>
+      <td class='value'>34</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=MLI">Mali</a></td>
+      <td class='value'>11,351</td>
+      <td class='value'>1,248,137</td>
+      <td class='value'>68</td>
+      <td class='value'>272</td>
+      <td class='value'>39</td>
+      <td class='value'>105</td>
+      <td class='value'>155</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=MRT">Mauritania</a></td>
+      <td class='value'>2,665</td>
+      <td class='value'>1,036,905</td>
+      <td class='value'>140</td>
+      <td class='value'>53</td>
+      <td class='value'>48</td>
+      <td class='value'>17</td>
+      <td class='value'>27</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=MUS">Mauritius</a></td>
+      <td class='value'>1,161</td>
+      <td class='value'>1,993</td>
+      <td class='value'>3</td>
+      <td class='value'>186</td>
+      <td class='value'>6</td>
+      <td class='value'>5</td>
+      <td class='value'>85</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=MYT">Mayotte</a></td>
+      <td class='value'>153</td>
+      <td class='value'>372</td>
+      <td class='value'>19</td>
+      <td class='value'>1</td>
+      <td class='value'>155</td>
+      <td class='value'>3</td>
+      <td class='value'>3</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=MAR">Morocco (includes Western Sahara)</a></td>
+      <td class='value'>29,878</td>
+      <td class='value'>669,159</td>
+      <td class='value'>107</td>
+      <td class='value'>58</td>
+      <td class='value'>508</td>
+      <td class='value'>85</td>
+      <td class='value'>78</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=MOZ">Mozambique</a></td>
+      <td class='value'>18,292</td>
+      <td class='value'>777,123</td>
+      <td class='value'>44</td>
+      <td class='value'>402</td>
+      <td class='value'>42</td>
+      <td class='value'>78</td>
+      <td class='value'>78</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=NAM">Namibia</a></td>
+      <td class='value'>1,757</td>
+      <td class='value'>819,964</td>
+      <td class='value'>90</td>
+      <td class='value'>102</td>
+      <td class='value'>18</td>
+      <td class='value'>24</td>
+      <td class='value'>34</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=NER">Niger</a></td>
+      <td class='value'>10,832</td>
+      <td class='value'>1,157,232</td>
+      <td class='value'>95</td>
+      <td class='value'>129</td>
+      <td class='value'>76</td>
+      <td class='value'>36</td>
+      <td class='value'>40</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=NGA">Nigeria</a></td>
+      <td class='value'>113,862</td>
+      <td class='value'>904,235</td>
+      <td class='value'>41</td>
+      <td class='value'>538</td>
+      <td class='value'>231</td>
+      <td class='value'>167</td>
+      <td class='value'>138</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=REU">Reunion</a></td>
+      <td class='value'>721</td>
+      <td class='value'>2,548</td>
+      <td class='value'>50</td>
+      <td class='value'>1</td>
+      <td class='value'>719</td>
+      <td class='value'>4</td>
+      <td class='value'>24</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=RWA">Rwanda</a></td>
+      <td class='value'>7,609</td>
+      <td class='value'>24,349</td>
+      <td class='value'>13</td>
+      <td class='value'>142</td>
+      <td class='value'>55</td>
+      <td class='value'>16</td>
+      <td class='value'>16</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=SHN">Saint Helena</a></td>
+      <td class='value'>6</td>
+      <td class='value'>127</td>
+      <td class='value'>7</td>
+      <td class='value'>3</td>
+      <td class='value'>2</td>
+      <td class='value'>0</td>
+      <td class='value'>1</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=STP">Sao Tome and Principe</a></td>
+      <td class='value'>138</td>
+      <td class='value'>1,008</td>
+      <td class='value'>22</td>
+      <td class='value'>2</td>
+      <td class='value'>72</td>
+      <td class='value'>3</td>
+      <td class='value'>11</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=SEN">Senegal</a></td>
+      <td class='value'>9,421</td>
+      <td class='value'>196,151</td>
+      <td class='value'>46</td>
+      <td class='value'>93</td>
+      <td class='value'>107</td>
+      <td class='value'>38</td>
+      <td class='value'>37</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=SYC">Seychelles</a></td>
+      <td class='value'>80</td>
+      <td class='value'>196</td>
+      <td class='value'>10</td>
+      <td class='value'>2</td>
+      <td class='value'>40</td>
+      <td class='value'>1</td>
+      <td class='value'>4</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=SLE">Sierra Leone</a></td>
+      <td class='value'>4,405</td>
+      <td class='value'>72,616</td>
+      <td class='value'>22</td>
+      <td class='value'>147</td>
+      <td class='value'>31</td>
+      <td class='value'>24</td>
+      <td class='value'>76</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=SOM">Somalia</a></td>
+      <td class='value'>8,778</td>
+      <td class='value'>634,315</td>
+      <td class='value'>93</td>
+      <td class='value'>74</td>
+      <td class='value'>110</td>
+      <td class='value'>10</td>
+      <td class='value'>8</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=ZAF">South Africa</a></td>
+      <td class='value'>43,309</td>
+      <td class='value'>1,217,645</td>
+      <td class='value'>0</td>
+      <td class='value'>83,125</td>
+      <td class='value'>1</td>
+      <td class='value'>345</td>
+      <td class='value'>310</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=SDN">Sudan</a></td>
+      <td class='value'>31,095</td>
+      <td class='value'>2,492,385</td>
+      <td class='value'>171</td>
+      <td class='value'>85</td>
+      <td class='value'>358</td>
+      <td class='value'>73</td>
+      <td class='value'>71</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=SWZ">Swaziland</a></td>
+      <td class='value'>925</td>
+      <td class='value'>17,410</td>
+      <td class='value'>66</td>
+      <td class='value'>4</td>
+      <td class='value'>247</td>
+      <td class='value'>5</td>
+      <td class='value'>15</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=TGO">Togo</a></td>
+      <td class='value'>4,527</td>
+      <td class='value'>57,277</td>
+      <td class='value'>52</td>
+      <td class='value'>21</td>
+      <td class='value'>216</td>
+      <td class='value'>34</td>
+      <td class='value'>43</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=TUN">Tunisia</a></td>
+      <td class='value'>9,459</td>
+      <td class='value'>147,882</td>
+      <td class='value'>80</td>
+      <td class='value'>23</td>
+      <td class='value'>416</td>
+      <td class='value'>64</td>
+      <td class='value'>114</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=UGA">Uganda</a></td>
+      <td class='value'>23,300</td>
+      <td class='value'>206,968</td>
+      <td class='value'>7</td>
+      <td class='value'>4,122</td>
+      <td class='value'>5</td>
+      <td class='value'>25</td>
+      <td class='value'>68</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=TZA">United Rep. of Tanzania</a></td>
+      <td class='value'>35,119</td>
+      <td class='value'>891,021</td>
+      <td class='value'>99</td>
+      <td class='value'>90</td>
+      <td class='value'>362</td>
+      <td class='value'>58</td>
+      <td class='value'>56</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=ZMB">Zambia</a></td>
+      <td class='value'>10,421</td>
+      <td class='value'>745,317</td>
+      <td class='value'>114</td>
+      <td class='value'>57</td>
+      <td class='value'>173</td>
+      <td class='value'>38</td>
+      <td class='value'>44</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=ZWE">Zimbabwe</a></td>
+      <td class='value'>12,627</td>
+      <td class='value'>389,055</td>
+      <td class='value'>82</td>
+      <td class='value'>58</td>
+      <td class='value'>196</td>
+      <td class='value'>25</td>
+      <td class='value'>27</td>
+    </tr>
+  
+  </tbody>
+</table>
+      
+    
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+    <script type="text/javascript" src="scripts.js"></script>
+    <script xmlns="" src="https://sedac.ciesin.columbia.edu/SSI/ntpagetag.js" type="text/javascript" language="JavaScript"></script>
+    <noscript><img alt="" vspace="0" hspace="0" border="0" width="1" height="1" src="https://ws1.ems.eosdis.nasa.gov/images/ntpagetag.gif?js=0" /></noscript>
+    
+  </body>
+</html>
