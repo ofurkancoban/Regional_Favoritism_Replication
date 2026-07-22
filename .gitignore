@@ -14,3 +14,11 @@ output/tables/
 .DS_Store
 renv/library/
 eogdata.mines.edu.har
+
+/.luarc.json
+
+# Scratch/log output from ad-hoc download and extraction runs
+*.log
+cookies.*
+Rplots.pdf
+_region_Africa_file_gpwv3_data_pcount_type_ascii_level-scope_continent_resolut_25_year_00
