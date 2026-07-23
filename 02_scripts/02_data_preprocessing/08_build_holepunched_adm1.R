@@ -1,0 +1,114 @@
+# ==============================================================================
+# File:          08_build_holepunched_adm1.R
+# Project:       Regional Favoritism: A Replication and Extension of
+#                Hodler & Raschky (2014)
+# Author:        Ömer Furkan Çoban
+#
+# University:    Carl von Ossietzky University of Oldenburg
+# Department:    Applied Economics and Data Science
+# Course:        Applied Econometrics Using GIS Techniques
+# Semester:      SoSe 2026
+# Lecturer:      Prof. Dr. Erkan Gören
+#
+# Category:      Data Preprocessing
+#
+# Description:   Builds the 582 hole-punched ADM1 polygons for Table IV Column (3): each leader's birth ADM2 sub-polygon geometrically removed from its parent ADM1 via st_difference, full precision.
+#
+# Inputs:        01_datasets/raw/gadm_3.6/
+# Outputs:       01_datasets/processed/gadm_holepunched_adm1.gpkg
+# ==============================================================================
+
+source(here::here("02_scripts", "02_data_preprocessing", "00_import.R"))
+source(here::here("02_scripts", "04_tools", "utils.R"))
+
+sf::sf_use_s2(FALSE)
+
+cat("=== Identify affected ADM1s and their ever-birth ADM2 children ===\n")
+plad <- data.table::fread(here::here("01_datasets/raw/plad/PLAD_April_2024.tab"), sep = "\t")
+plad <- plad[!is.na(gid_2) & gid_2 != "." & gid_0 != "."]
+# PLAD's gid_2 is native GADM 3.6, and the level1/level2 layers loaded below
+# are also GADM 3.6 -- no crosswalk needed. (Previously converted to GADM 4.1
+# here, but then matched against the GADM 3.6 level2 layer's GID_2 -- a
+# vintage mismatch that silently failed for ~98.9% of birth ADM2s, the same
+# fraction the crosswalk successfully translates, leaving most affected
+# ADM1s effectively un-hole-punched.)
+wd_supp <- data.table::fread(here::here("01_datasets/processed/wikidata_supplement_birthplaces.csv"))
+ever_birth <- unique(rbind(
+  plad[, .(gid_0, birth_gid2 = gid_2)],
+  wd_supp[grepl("^[A-Z]{3}\\.[0-9]+\\.[0-9]+_[0-9]+$", birth_gid2), .(gid_0 = iso3, birth_gid2)]
+))
+ever_birth[, gid1 := data.table::fcase(
+  grepl("^[A-Z]{3}\\.[0-9]+\\.[0-9]+_[0-9]+$", birth_gid2),
+  sub("(\\.[0-9]+)\\.[0-9]+_[0-9]+$", "\\1_1", birth_gid2),
+  default = NA_character_
+)]
+ever_birth <- ever_birth[!is.na(gid1)]
+affected_gid1 <- unique(ever_birth$gid1)
+cat(sprintf("Affected ADM1: %d | Countries: %d | Birth ADM2 to remove: %d\n",
+    length(affected_gid1), data.table::uniqueN(ever_birth$gid_0), data.table::uniqueN(ever_birth$birth_gid2)))
+
+cat("\n=== Load GADM 3.6 level1 + level2 (full precision, no simplification) ===\n")
+l1 <- sf::st_read(here::here("01_datasets/raw/gadm_3.6/gadm36_levels.gpkg"), layer = "level1", quiet = TRUE)
+sf::st_geometry(l1) <- "geometry"
+l2 <- sf::st_read(here::here("01_datasets/raw/gadm_3.6/gadm36_levels.gpkg"), layer = "level2", quiet = TRUE)
+sf::st_geometry(l2) <- "geometry"
+
+l1_affected <- l1[l1$GID_1 %in% affected_gid1, ]
+cat(sprintf("Matched %d / %d affected ADM1 polygons in GADM 3.6\n",
+    nrow(l1_affected), length(affected_gid1)))
+l2_affected <- l2[l2$GID_2 %in% ever_birth$birth_gid2, ]
+rm(l1, l2)
+
+cat("\n=== Compute hole-punched geometry per affected ADM1 (parallel, full precision) ===\n")
+n_workers <- max(1L, parallel::detectCores() - 1L)
+cat(sprintf("Using %d parallel workers\n", n_workers))
+# multicore (fork-based) avoids re-serializing sf objects into each worker,
+# which was corrupting the sf geometry-column attribute under multisession.
+future::plan(future::multicore, workers = n_workers)
+
+# No simplification anywhere in this script -- geometry stays at full GADM
+# precision. Complex/dense results (e.g. New Zealand's fjord coastline,
+# ~250K vertices, which barely shrinks under simplification at any tolerance
+# because it is a MultiPolygon of thousands of near-minimal-vertex islands)
+# are handled downstream in R/16 by splitting the polygon into its
+# constituent parts and uploading them as separate GEE chunks, then
+# recombining with a pixel-count-weighted average -- not by altering the
+# boundary itself.
+hole_punch_one <- function(i, l1_affected, l2_affected, ever_birth) {
+  gid1 <- l1_affected$GID_1[i]
+  birth_children <- ever_birth[["birth_gid2"]][ever_birth$gid1 == gid1]
+  child_polys <- l2_affected[l2_affected$GID_2 %in% birth_children, ]
+
+  geom1 <- sf::st_geometry(l1_affected[i, ])
+  holed_geom <- geom1
+  if (nrow(child_polys) > 0) {
+    child_union <- sf::st_union(sf::st_geometry(child_polys))
+    cand <- tryCatch(sf::st_difference(geom1, child_union), error = function(e) {
+      message(sprintf("[%s] st_difference FAILED: %s", gid1, conditionMessage(e)))
+      NULL
+    })
+    if (!is.null(cand) && length(cand) == 1 && !sf::st_is_empty(cand)[1]) {
+      holed_geom <- cand
+    }
+  }
+  holed_geom <- sf::st_make_valid(holed_geom)
+
+  sf::st_sf(GID_1 = gid1, GID_0 = l1_affected$GID_0[i],
+            n_removed = nrow(child_polys), geometry = holed_geom)
+}
+
+t0 <- Sys.time()
+holed_list <- future.apply::future_lapply(
+  seq_len(nrow(l1_affected)),
+  hole_punch_one,
+  l1_affected = l1_affected, l2_affected = l2_affected, ever_birth = ever_birth,
+  future.seed = TRUE
+)
+cat(sprintf("Elapsed: %.1f min\n", as.numeric(difftime(Sys.time(), t0, units = "mins"))))
+
+holed <- do.call(rbind, holed_list)
+cat(sprintf("Hole-punched ADM1 polygons: %d\n", nrow(holed)))
+
+cat("\n=== Save ===\n")
+sf::st_write(holed, here::here("01_datasets/processed/gadm_holepunched_adm1.gpkg"), quiet = TRUE, delete_dsn = TRUE)
+cat("Saved: data/processed/gadm_holepunched_adm1.gpkg\n")

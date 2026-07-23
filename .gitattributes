@@ -1,0 +1,14 @@
+01_datasets/processed/analysis_panel.csv.gz filter=lfs diff=lfs merge=lfs -text
+01_datasets/processed/ntl/harmonized_dmsp_viirs_adm2_panel.csv.gz filter=lfs diff=lfs merge=lfs -text
+01_datasets/processed/ntl/extension_table2_cols1_7_models.rds filter=lfs diff=lfs merge=lfs -text
+01_datasets/processed/population_adm2_ghspop_interpolated.csv.gz filter=lfs diff=lfs merge=lfs -text
+01_datasets/processed/population_adm2.csv.gz filter=lfs diff=lfs merge=lfs -text
+01_datasets/processed/gadm_holepunched_adm1.gpkg.gz filter=lfs diff=lfs merge=lfs -text
+01_datasets/processed/grid_cells_50km.gpkg.gz filter=lfs diff=lfs merge=lfs -text
+01_datasets/processed/grid_cells_100km.gpkg.gz filter=lfs diff=lfs merge=lfs -text
+01_datasets/processed/grid_cells_200km.gpkg.gz filter=lfs diff=lfs merge=lfs -text
+01_datasets/processed/grid_cells_400km.gpkg.gz filter=lfs diff=lfs merge=lfs -text
+01_datasets/raw/qog/qog_std_ts_jan26.csv.gz filter=lfs diff=lfs merge=lfs -text
+01_datasets/raw/wvs/WVS_Time_Series_1981-2022_csv_v5_0.csv.gz filter=lfs diff=lfs merge=lfs -text
+01_datasets/raw/wvs/ZA7503_v3-0-0.dta.gz filter=lfs diff=lfs merge=lfs -text
+01_datasets/raw/wvs/WV4_Data_csv_v20201117.csv.gz filter=lfs diff=lfs merge=lfs -text

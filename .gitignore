@@ -1,0 +1,80 @@
+# IDE and system files
+.DS_Store
+.Rhistory
+.RData
+.Ruserdata
+
+# Quarto and R build artifacts
+.quarto/
+*_cache/
+*_files/
+*.log
+*.aux
+*.out
+
+# renv specific
+# Keep the lockfile and activation scripts, but ignore the library itself
+renv/library/
+renv/python/
+renv/staging/
+!renv/activate.R
+!renv/settings.json
+
+# Third-party RAW datasets too large to redistribute (multi-GB, and
+# several sources restrict redistribution in their own terms of use --
+# GADM, EOG). These paths are local symlinks back to the main
+# repository's data/ folder for this developer's own machine -- see
+# README.md, "What's physically shipped vs. symlinked", for the
+# download link for each. A fresh clone won't have these symlinks at
+# all since they're ignored here, not committed as broken links.
+#
+# This project's OWN derived outputs of comparable size (analysis_panel.csv,
+# the harmonized panel, gadm_holepunched_adm1.gpkg, etc.) are NOT excluded
+# here -- they're tracked via Git LFS instead (see .gitattributes), since
+# redistributing this project's own computed data carries none of that
+# licensing risk, and shipping them is what lets `make analysis` run
+# end-to-end with zero downloads. See README.md, "Quickstart".
+01_datasets/raw/gadm_3.6/
+# No trailing slash on these two: they are symlinks (not real
+# directories) on this developer's machine, pointing outside the repo
+# to the main repository's own data/ folder -- a directory-only
+# gitignore pattern (trailing /) does not match a symlink, so the
+# untrailed form is needed to actually exclude them.
+01_datasets/raw/dmsp_raster_eog_manual
+01_datasets/raw/viirs_raster_eog_manual
+
+# Not present on disk when this package was built, so not sized/copied
+# above -- but 01_download_gadm.R (Stage 01) downloads this GADM 4.1
+# "all levels" archive fresh on a real run, and it is large (~1-2GB).
+# Pre-ignoring it here stops a future Stage 01 run from silently growing
+# this package past GitHub-friendly size.
+01_datasets/raw/gadm_4.1/global/gadm_410-levels.zip
+01_datasets/raw/gadm_4.1/global/gadm_410-levels/
+
+# Decompressed at runtime from the shipped .gz by ensure_decompressed()
+# (utils.R) -- not re-committed, the .gz alone is the tracked source.
+01_datasets/processed/grid_cells_50km.gpkg
+01_datasets/processed/grid_cells_100km.gpkg
+01_datasets/processed/grid_cells_200km.gpkg
+01_datasets/processed/grid_cells_400km.gpkg
+01_datasets/processed/analysis_panel.csv
+01_datasets/processed/gadm_holepunched_adm1.gpkg
+01_datasets/processed/population_adm2.csv
+01_datasets/processed/population_adm2_ghspop_interpolated.csv
+01_datasets/processed/ntl/harmonized_dmsp_viirs_adm2_panel.csv
+01_datasets/raw/qog/qog_std_ts_jan26.csv
+
+# Fitted-model .rds files from Stages 28/36-39: regenerated fresh by
+# `make core` / `make supplementary` and not committed. One of these
+# (Stage 28's grid models) is a completely dead output nothing
+# downstream ever reads; the other four ARE read directly by
+# supplementary.qmd's tables, but only when you re-render from source
+# after running the pipeline yourself -- since paper/ ships its PDF and
+# HTML already built, a normal read of the paper needs none of these.
+# All five are 75MB-3GB and were found sitting in an earlier, unrelated
+# repository's history without ever having been added to Git LFS.
+01_datasets/processed/ntl/table4_col4_7_grid_models_hrsample.rds
+01_datasets/processed/ntl/table3_dynamics_models.rds
+01_datasets/processed/ntl/table5_determinants_models.rds
+01_datasets/processed/ntl/table6_continents_models.rds
+01_datasets/processed/ntl/table7_aid_oil_models.rds
