@@ -16,21 +16,19 @@ To install all required R packages, open the repository's directory in R on your
 
 All input data are publicly available. The links in the subsequent table direct to the respective download sites. To replicate our results, download the data sets and place them the respective `data/raw` directories.
 
-<div align="center">
-
+::: {align="center"}
 | Variables | Source | Accessed | Local Directory |
-|:----------|:-------|:---------|:----------------|
-|Light |[Chen et al. (2024)](https://figshare.com/articles/dataset/A_history_reconstructed_time_series_1992-2011_of_annual_global_NPP-VIIRS-V2-like_nighttime_light_data_through_Super-resolution_U-Net_model/22262545/8) |October 21, 2025 |../data/raw/nighttime_light/chen |
-|Light |[Chiovelli et al. (2026)](https://drive.google.com/drive/folders/1cAFp_1Fn3ntwj_Ps3rRU0--srP_UWVgx) |October 21, 2025 |../data/raw/nighttime_light/chiovelli |
-|Light |[Li et al. (2020)](https://doi.org/10.6084/m9.figshare.9828827.v10) |October 07, 2025 |../data/raw/nighttime_light/li |
-|Light |[Nechaev et al. (2021)](https://eogdata.mines.edu/wwwdata/viirs_products/dvnl)|October 21, 2025 |../data/raw/nighttime_light/nechaev |
-|Light |[DMSP-OLS](https://www.ncei.noaa.gov/products/dmsp-operational-linescan-system) |December 17, 2025 |../data/raw/nighttime_light/ols |
-|Leader birth regions |[Bomprezzi et al. (2025)](https://doi.org/10.7910/DVN/YUS575) |October 07, 2025 |../data/raw/plad |
-|Ethnic fractionalization, Polity2 score, liberal democracy index, schooling, GDP per capita |[Teorell et al. (2026)](https://www.gu.se/en/quality-government/qog-data/data-downloads/standard-dataset) |February 12, 2026 |../data/raw/qog |
-|Administrative borders |[GADM 3.6](https://geodata.ucdavis.edu/gadm/gadm3.6/gadm36_levels_shp.zip) |October 07, 2025 |../data/raw/gadm36 |
-|Population |[Schiavina et al. (2023)](https://human-settlement.emergency.copernicus.eu/download.php?ds=pop) |December 12 - 16, 2025 |../data/raw/ghs |
-
-</div>
+|:----------------|:----------------|:----------------|:---------------------|
+| Light | [Chen et al. (2024)](https://figshare.com/articles/dataset/A_history_reconstructed_time_series_1992-2011_of_annual_global_NPP-VIIRS-V2-like_nighttime_light_data_through_Super-resolution_U-Net_model/22262545/8) | October 21, 2025 | ../data/raw/nighttime_light/chen |
+| Light | [Chiovelli et al. (2026)](https://drive.google.com/drive/folders/1cAFp_1Fn3ntwj_Ps3rRU0--srP_UWVgx) | October 21, 2025 | ../data/raw/nighttime_light/chiovelli |
+| Light | [Li et al. (2020)](https://doi.org/10.6084/m9.figshare.9828827.v10) | October 07, 2025 | ../data/raw/nighttime_light/li |
+| Light | [Nechaev et al. (2021)](https://eogdata.mines.edu/wwwdata/viirs_products/dvnl) | October 21, 2025 | ../data/raw/nighttime_light/nechaev |
+| Light | [DMSP-OLS](https://www.ncei.noaa.gov/products/dmsp-operational-linescan-system) | December 17, 2025 | ../data/raw/nighttime_light/ols |
+| Leader birth regions | [Bomprezzi et al. (2025)](https://doi.org/10.7910/DVN/YUS575) | October 07, 2025 | ../data/raw/plad |
+| Ethnic fractionalization, Polity2 score, liberal democracy index, schooling, GDP per capita | [Teorell et al. (2026)](https://www.gu.se/en/quality-government/qog-data/data-downloads/standard-dataset) | February 12, 2026 | ../data/raw/qog |
+| Administrative borders | [GADM 3.6](https://geodata.ucdavis.edu/gadm/gadm3.6/gadm36_levels_shp.zip) | October 07, 2025 | ../data/raw/gadm36 |
+| Population | [Schiavina et al. (2023)](https://human-settlement.emergency.copernicus.eu/download.php?ds=pop) | December 12 - 16, 2025 | ../data/raw/ghs |
+:::
 
 ## Script Execution
 
