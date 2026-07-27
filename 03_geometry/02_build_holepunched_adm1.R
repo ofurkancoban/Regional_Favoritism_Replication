@@ -36,10 +36,17 @@ sf::sf_use_s2(FALSE)
 cat("=== Identify affected ADM1s and their ever-birth ADM2 children ===\n")
 plad <- data.table::fread("data/raw/plad/PLAD_April_2024.tab", sep = "\t")
 plad <- plad[!is.na(gid_2) & gid_2 != "." & gid_0 != "."]
-cw36 <- data.table::fread("data/processed/gadm36_41_crosswalk.csv")
-plad[cw36, on = .(gid_2 = gid2_36), gid_2_41 := i.gid2_41]
-plad[, birth_gid2_final := data.table::fcase(!is.na(gid_2_41), gid_2_41, default = gid_2)]
-ever_birth <- unique(plad[, .(gid_0, birth_gid2 = birth_gid2_final)])
+# PLAD's gid_2 is native GADM 3.6, and the level1/level2 layers loaded below
+# are also GADM 3.6 -- no crosswalk needed. (Previously converted to GADM 4.1
+# here, but then matched against the GADM 3.6 level2 layer's GID_2 -- a
+# vintage mismatch that silently failed for ~98.9% of birth ADM2s, the same
+# fraction the crosswalk successfully translates, leaving most affected
+# ADM1s effectively un-hole-punched.)
+wd_supp <- data.table::fread("data/processed/wikidata_supplement_birthplaces.csv")
+ever_birth <- unique(rbind(
+  plad[, .(gid_0, birth_gid2 = gid_2)],
+  wd_supp[grepl("^[A-Z]{3}\\.[0-9]+\\.[0-9]+_[0-9]+$", birth_gid2), .(gid_0 = iso3, birth_gid2)]
+))
 ever_birth[, gid1 := data.table::fcase(
   grepl("^[A-Z]{3}\\.[0-9]+\\.[0-9]+_[0-9]+$", birth_gid2),
   sub("(\\.[0-9]+)\\.[0-9]+_[0-9]+$", "\\1_1", birth_gid2),
