@@ -1,0 +1,776 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <title>Download</title>
+    <link media="all" href="/wro/legacy-application.css" type="text/css" rel="stylesheet" />
+    <link media="all" href="style.css" type="text/css" rel="stylesheet" />
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
+  </head>
+  <body>
+    
+      
+            <form id="data-selection" method='get'>
+        <input type='hidden' name='file' value='gpwv3' />
+        <input type='hidden' name='level' value='continent' />
+        
+          <input type='hidden' name='code' value='EU' />
+        
+  
+        <fieldset id='select-geo' class='color-bg-white'>
+          <legend>Geography:</legend>
+          <label for='level-scope' class='visuallyhidden'>Level</label>
+          <select name='level-scope' id='level-scope'>
+            <option value='continent' selected='selected'>Region</option>
+            <option value='country'>Country</option>
+          </select> &raquo;
+    
+          
+            <label for='region' class='visuallyhidden'>Region</label>
+            <select name='region' id='region'>
+              <option value='Global'>Global</option>
+              <option value='Africa'>Africa</option>
+              <option value='Asia'>Asia</option>
+              <option value='Europe' selected='selected'>Europe</option>
+              <option value='NorthAmerica'>North America</option>
+              <option value='Oceania'>Oceania</option>
+              <option value='SouthAmerica'>South America</option>
+            </select>
+          
+    
+          
+        </fieldset>
+
+        <fieldset id='select-data' class='color-bg-white'>
+          <legend>Data Set:</legend>
+          <label for='data' class='visuallyhidden'>Data Set:</label>
+          <select name='data'>
+            
+              <option value='disabled'>[Select data]</option>
+            
+              <option value='pcount' selected='selected'>Population Count Grid</option>
+            
+              <option value='pdens'>Population Density Grid</option>
+            
+              <option value='area'>Land / Geographic Unit Area Grids</option>
+            
+              <option value='centroids'>Centroids</option>
+            
+              <option value='adbnd'>Sub-national Administrative Boundaries</option>
+            
+              <option value='pcount_future'>Population Count Grid Future</option>
+            
+              <option value='pdens_future'>Population Density Grid Future</option>
+            
+          </select>
+        </fieldset>
+
+        <fieldset id='select-attributes' class='color-bg-white'>
+          <legend>Data Attributes:</legend>
+          
+          <span>
+            <label for='type' class="visuallyhidden">Format</label>
+            <select name='type' id='type'>
+            
+              <option value='disabled'>[Select format]</option>
+            
+              <option value='bil'>.bil</option>
+            
+              <option value='ascii' selected='selected'>.ascii</option>
+            
+              <option value='wrk'>grid</option>
+            
+            </select>
+          </span>
+          
+  
+          
+          <span>
+            <label for='resolut' class="visuallyhidden">Resolution:</label>
+            <select name='resolut' id='resolut'>
+            
+              <option value='disabled'>[Select resolution]</option>
+            
+              <option value='25' selected='selected'>2.5'</option>
+            
+            </select>
+          </span>
+          
+  
+          
+          <span>
+            <label for='year' class="visuallyhidden">Year:</label>
+            <select name="year" id='year'>
+            
+              <option value='disabled'>[Select year]</option>
+            
+              <option value='90'>1990</option>
+            
+              <option value='95' selected='selected'>1995</option>
+            
+              <option value='00'>2000</option>
+            
+            </select>
+          </span>
+          
+        </fieldset>
+        <span id="select-download">
+          <button id='download-data' type='submit'>Download</button>
+          <div id="msg-required" class='warn'><em>all fields required</em></div>
+        </span>
+      </form>
+
+      
+
+      <h3 id='summary-header'>Europe Summary</h3>
+<table>
+  <tbody id='summary-scope'>
+    <tr>
+      <th data-desc='Population totals for the year 2000 based on the National Statistical Office (NSO) data.'>
+        Population 2000 (NSO-Based Estimate '000)
+      </th>
+      <td class='value'>715,401</td>
+      <td class='gutter'>&nbsp;</td>
+      <th data-desc='Population totals for the year 2000 from the United Nations World Population Prospects 2000 Revision.'>
+        Population 2000 (UN '000)
+      </th>
+      <td class='value'>727,159</td>
+    </tr>
+    <tr>
+      <th data-desc='The total land area in square kilometers for each country based on the 2.5 arc-minute grids and the average land area per administrative unit based on the national area total.'>
+        Area (km<sup>2</sup>)
+      </th>
+      <td class='value'>22,552,326</td>
+      <td class='gutter'>&nbsp;</td>
+      <th data-desc='Mean measure of the effective resolution of administrative units in kilometers; calculated as the square root of the land area divided by the number of administrative units.'>
+        Avg. Input Resolution (km)
+      </th>
+      <td class='value'>15</td>
+    </tr>
+    <tr>
+      <th data-desc='Total number of administrative units at the level used: sum of the unique administrative units (not unique polygons, units may be split across polygons) at the level used for gridding GPW v3.'>
+        Number of Administrative Units
+      </th>
+      <td class='value'>98,926</td>
+      <td class='gutter'>&nbsp;</td>
+      <th data-desc='Average population per administrative unit; 2000 population estimate divided by the number of units.'>
+        Population Per Administrative Unit ('000)
+      </th>
+      <td class='value'>7</td>
+    </tr>
+    <tr>
+      <th data-desc='The number of defined spatial areas categorized as urban (i.e. population of 5000 persons or larger). Urban extents can encompass multiple, adjacent settlement points if within a 3 kilometer buffer of the urban area.'>
+        Number of Urban Extents
+      </th>
+      <td class='value'>4,148</td>
+      <td class='gutter'>&nbsp;</td>
+      <th data-desc='The number of places where corresponding population and coordinate data are both available. Settlement points are the primary population inputs for the urban extents.'>
+        Number of Settlement Points
+      </th>
+      <td class='value'>13,190</td>
+    </tr>
+    
+  </tbody>
+</table>
+      
+        <h3>Country Summaries</h3>
+<table id='summary-countries'>
+  <thead>
+    <tr>
+      <th><a href='#' data-sort-value='countryenglish' class='table-sort asc'>Country Name<br />(English)</a></th>
+      <th class='value wider'><a href='#' data-sort-value='p2000un' class='table-sort '>Population 2000<br />(UN '000)</a></th>
+      <th class='value'><a href='#' data-sort-value='area' class='table-sort '>Area<br />(km<sup>2</sup>)</a></th>
+      <th class='value'><a href='#' data-sort-value='resolution' class='table-sort '>Resolution<br />(km)</a></th>
+      <th class='value'><a href='#' data-sort-value='numunit' class='table-sort '>Admin<br />Units</a></th>
+      <th class='value wider'><a href='#' data-sort-value='popperunit' class='table-sort '>Population Per<br />Admin Unit ('000)</a></th>
+      <th class='value'><a href='#' data-sort-value='numextent' class='table-sort '>Urban<br />Extents</a></th>
+      <th class='value'><a href='#' data-sort-value='numsettlepoint' class='table-sort '>Settlement<br />Points</a></th>
+    </tr>
+  </thead>
+  <tbody>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=ALB">Albania</a></td>
+      <td class='value'>3,134</td>
+      <td class='value'>28,346</td>
+      <td class='value'>33</td>
+      <td class='value'>26</td>
+      <td class='value'>119</td>
+      <td class='value'>39</td>
+      <td class='value'>47</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=AND">Andorra</a></td>
+      <td class='value'>86</td>
+      <td class='value'>464</td>
+      <td class='value'>8</td>
+      <td class='value'>7</td>
+      <td class='value'>9</td>
+      <td class='value'>1</td>
+      <td class='value'>7</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=AUT">Austria</a></td>
+      <td class='value'>8,080</td>
+      <td class='value'>83,145</td>
+      <td class='value'>29</td>
+      <td class='value'>99</td>
+      <td class='value'>81</td>
+      <td class='value'>85</td>
+      <td class='value'>289</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=BLR">Belarus</a></td>
+      <td class='value'>10,187</td>
+      <td class='value'>207,013</td>
+      <td class='value'>42</td>
+      <td class='value'>119</td>
+      <td class='value'>84</td>
+      <td class='value'>35</td>
+      <td class='value'>35</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=BEL">Belgium</a></td>
+      <td class='value'>10,249</td>
+      <td class='value'>30,553</td>
+      <td class='value'>7</td>
+      <td class='value'>589</td>
+      <td class='value'>17</td>
+      <td class='value'>46</td>
+      <td class='value'>574</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=BIH">Bosnia-Herzegovina</a></td>
+      <td class='value'>3,977</td>
+      <td class='value'>51,295</td>
+      <td class='value'>131</td>
+      <td class='value'>3</td>
+      <td class='value'>1,301</td>
+      <td class='value'>26</td>
+      <td class='value'>22</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=BGR">Bulgaria</a></td>
+      <td class='value'>7,949</td>
+      <td class='value'>111,307</td>
+      <td class='value'>21</td>
+      <td class='value'>261</td>
+      <td class='value'>30</td>
+      <td class='value'>44</td>
+      <td class='value'>41</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=HRV">Croatia</a></td>
+      <td class='value'>4,654</td>
+      <td class='value'>56,406</td>
+      <td class='value'>10</td>
+      <td class='value'>544</td>
+      <td class='value'>8</td>
+      <td class='value'>55</td>
+      <td class='value'>121</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=CZE">Czech Republic</a></td>
+      <td class='value'>10,272</td>
+      <td class='value'>78,616</td>
+      <td class='value'>4</td>
+      <td class='value'>6,258</td>
+      <td class='value'>2</td>
+      <td class='value'>118</td>
+      <td class='value'>131</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=DNK">Denmark</a></td>
+      <td class='value'>5,320</td>
+      <td class='value'>42,484</td>
+      <td class='value'>12</td>
+      <td class='value'>276</td>
+      <td class='value'>19</td>
+      <td class='value'>77</td>
+      <td class='value'>429</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=EST">Estonia</a></td>
+      <td class='value'>1,393</td>
+      <td class='value'>43,179</td>
+      <td class='value'>13</td>
+      <td class='value'>251</td>
+      <td class='value'>5</td>
+      <td class='value'>21</td>
+      <td class='value'>42</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=FRO">Faeroe Islands</a></td>
+      <td class='value'>46</td>
+      <td class='value'>1,408</td>
+      <td class='value'>10</td>
+      <td class='value'>15</td>
+      <td class='value'>3</td>
+      <td class='value'>3</td>
+      <td class='value'>11</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=FIN">Finland</a></td>
+      <td class='value'>5,172</td>
+      <td class='value'>317,001</td>
+      <td class='value'>27</td>
+      <td class='value'>448</td>
+      <td class='value'>12</td>
+      <td class='value'>54</td>
+      <td class='value'>101</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=FRA">France</a></td>
+      <td class='value'>59,238</td>
+      <td class='value'>547,120</td>
+      <td class='value'>4</td>
+      <td class='value'>36,585</td>
+      <td class='value'>2</td>
+      <td class='value'>441</td>
+      <td class='value'>348</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=DEU">Germany</a></td>
+      <td class='value'>82,017</td>
+      <td class='value'>356,027</td>
+      <td class='value'>28</td>
+      <td class='value'>446</td>
+      <td class='value'>184</td>
+      <td class='value'>607</td>
+      <td class='value'>1,132</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=GIB">Gibraltar</a></td>
+      <td class='value'>27</td>
+      <td class='value'>5</td>
+      <td class='value'>2</td>
+      <td class='value'>1</td>
+      <td class='value'>27</td>
+      <td class='value'>1</td>
+      <td class='value'>1</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=GRC">Greece</a></td>
+      <td class='value'>10,610</td>
+      <td class='value'>131,891</td>
+      <td class='value'>11</td>
+      <td class='value'>1,034</td>
+      <td class='value'>10</td>
+      <td class='value'>121</td>
+      <td class='value'>1,103</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=GGY">Guernsey</a></td>
+      <td class='value'>--</td>
+      <td class='value'>85</td>
+      <td class='value'>9</td>
+      <td class='value'>1</td>
+      <td class='value'>56</td>
+      <td class='value'>1</td>
+      <td class='value'>5</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=VAT">Holy See</a></td>
+      <td class='value'>1</td>
+      <td class='value'>1</td>
+      <td class='value'>1</td>
+      <td class='value'>1</td>
+      <td class='value'>1</td>
+      <td class='value'>0</td>
+      <td class='value'>--</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=HUN">Hungary</a></td>
+      <td class='value'>9,968</td>
+      <td class='value'>92,046</td>
+      <td class='value'>5</td>
+      <td class='value'>3,158</td>
+      <td class='value'>3</td>
+      <td class='value'>77</td>
+      <td class='value'>1,426</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=ISL">Iceland</a></td>
+      <td class='value'>279</td>
+      <td class='value'>91,116</td>
+      <td class='value'>27</td>
+      <td class='value'>123</td>
+      <td class='value'>2</td>
+      <td class='value'>5</td>
+      <td class='value'>29</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=IRL">Ireland</a></td>
+      <td class='value'>3,803</td>
+      <td class='value'>69,474</td>
+      <td class='value'>4</td>
+      <td class='value'>3,440</td>
+      <td class='value'>1</td>
+      <td class='value'>52</td>
+      <td class='value'>189</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=IMN">Isle of Man</a></td>
+      <td class='value'>75</td>
+      <td class='value'>572</td>
+      <td class='value'>5</td>
+      <td class='value'>24</td>
+      <td class='value'>3</td>
+      <td class='value'>2</td>
+      <td class='value'>8</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=ITA">Italy</a></td>
+      <td class='value'>57,530</td>
+      <td class='value'>299,287</td>
+      <td class='value'>6</td>
+      <td class='value'>8,105</td>
+      <td class='value'>7</td>
+      <td class='value'>403</td>
+      <td class='value'>1,349</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=JEY">Jersey</a></td>
+      <td class='value'>--</td>
+      <td class='value'>119</td>
+      <td class='value'>11</td>
+      <td class='value'>1</td>
+      <td class='value'>87</td>
+      <td class='value'>1</td>
+      <td class='value'>12</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=LVA">Latvia</a></td>
+      <td class='value'>2,421</td>
+      <td class='value'>64,196</td>
+      <td class='value'>10</td>
+      <td class='value'>585</td>
+      <td class='value'>4</td>
+      <td class='value'>35</td>
+      <td class='value'>76</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=LIE">Liechtenstein</a></td>
+      <td class='value'>33</td>
+      <td class='value'>160</td>
+      <td class='value'>4</td>
+      <td class='value'>11</td>
+      <td class='value'>3</td>
+      <td class='value'>1</td>
+      <td class='value'>9</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=LTU">Lithuania</a></td>
+      <td class='value'>3,696</td>
+      <td class='value'>64,995</td>
+      <td class='value'>36</td>
+      <td class='value'>51</td>
+      <td class='value'>69</td>
+      <td class='value'>46</td>
+      <td class='value'>98</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=LUX">Luxembourg</a></td>
+      <td class='value'>437</td>
+      <td class='value'>2,587</td>
+      <td class='value'>5</td>
+      <td class='value'>118</td>
+      <td class='value'>4</td>
+      <td class='value'>3</td>
+      <td class='value'>82</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=MKD">Macedonia</a></td>
+      <td class='value'>2,034</td>
+      <td class='value'>24,702</td>
+      <td class='value'>14</td>
+      <td class='value'>123</td>
+      <td class='value'>16</td>
+      <td class='value'>21</td>
+      <td class='value'>30</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=MLT">Malta</a></td>
+      <td class='value'>390</td>
+      <td class='value'>315</td>
+      <td class='value'>2</td>
+      <td class='value'>67</td>
+      <td class='value'>6</td>
+      <td class='value'>2</td>
+      <td class='value'>60</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=MCO">Monaco</a></td>
+      <td class='value'>33</td>
+      <td class='value'>10</td>
+      <td class='value'>3</td>
+      <td class='value'>1</td>
+      <td class='value'>34</td>
+      <td class='value'>2</td>
+      <td class='value'>4</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=NLD">Netherlands</a></td>
+      <td class='value'>15,864</td>
+      <td class='value'>41,364</td>
+      <td class='value'>9</td>
+      <td class='value'>469</td>
+      <td class='value'>33</td>
+      <td class='value'>87</td>
+      <td class='value'>230</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=NOR">Norway</a></td>
+      <td class='value'>4,469</td>
+      <td class='value'>318,524</td>
+      <td class='value'>27</td>
+      <td class='value'>434</td>
+      <td class='value'>10</td>
+      <td class='value'>74</td>
+      <td class='value'>305</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=POL">Poland</a></td>
+      <td class='value'>38,605</td>
+      <td class='value'>311,195</td>
+      <td class='value'>11</td>
+      <td class='value'>2,489</td>
+      <td class='value'>16</td>
+      <td class='value'>263</td>
+      <td class='value'>226</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=PRT">Portugal</a></td>
+      <td class='value'>10,016</td>
+      <td class='value'>91,421</td>
+      <td class='value'>5</td>
+      <td class='value'>4,228</td>
+      <td class='value'>2</td>
+      <td class='value'>68</td>
+      <td class='value'>460</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=MDA">Republic of Moldova</a></td>
+      <td class='value'>4,295</td>
+      <td class='value'>34,012</td>
+      <td class='value'>26</td>
+      <td class='value'>49</td>
+      <td class='value'>88</td>
+      <td class='value'>40</td>
+      <td class='value'>26</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=ROU">Romania</a></td>
+      <td class='value'>22,438</td>
+      <td class='value'>237,057</td>
+      <td class='value'>9</td>
+      <td class='value'>2,935</td>
+      <td class='value'>7</td>
+      <td class='value'>308</td>
+      <td class='value'>864</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=RUS">Russia</a></td>
+      <td class='value'>145,491</td>
+      <td class='value'>16,679,998</td>
+      <td class='value'>82</td>
+      <td class='value'>2,486</td>
+      <td class='value'>55</td>
+      <td class='value'>558</td>
+      <td class='value'>704</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=SMR">San Marino</a></td>
+      <td class='value'>27</td>
+      <td class='value'>62</td>
+      <td class='value'>8</td>
+      <td class='value'>1</td>
+      <td class='value'>26</td>
+      <td class='value'>1</td>
+      <td class='value'>4</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=SCG">Serbia and Montenegro</a></td>
+      <td class='value'>10,552</td>
+      <td class='value'>101,561</td>
+      <td class='value'>159</td>
+      <td class='value'>4</td>
+      <td class='value'>2,658</td>
+      <td class='value'>70</td>
+      <td class='value'>62</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=SVK">Slovakia</a></td>
+      <td class='value'>5,399</td>
+      <td class='value'>48,875</td>
+      <td class='value'>4</td>
+      <td class='value'>2,919</td>
+      <td class='value'>2</td>
+      <td class='value'>66</td>
+      <td class='value'>137</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=SVN">Slovenia</a></td>
+      <td class='value'>1,988</td>
+      <td class='value'>20,224</td>
+      <td class='value'>2</td>
+      <td class='value'>5,989</td>
+      <td class='value'>0</td>
+      <td class='value'>29</td>
+      <td class='value'>116</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=ESP">Spain</a></td>
+      <td class='value'>39,910</td>
+      <td class='value'>505,275</td>
+      <td class='value'>8</td>
+      <td class='value'>8,186</td>
+      <td class='value'>5</td>
+      <td class='value'>181</td>
+      <td class='value'>737</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=SJM">Svalbard</a></td>
+      <td class='value'>--</td>
+      <td class='value'>60,543</td>
+      <td class='value'>246</td>
+      <td class='value'>1</td>
+      <td class='value'>2</td>
+      <td class='value'>0</td>
+      <td class='value'>1</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=SWE">Sweden</a></td>
+      <td class='value'>8,842</td>
+      <td class='value'>431,704</td>
+      <td class='value'>39</td>
+      <td class='value'>288</td>
+      <td class='value'>31</td>
+      <td class='value'>127</td>
+      <td class='value'>558</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=CHE">Switzerland</a></td>
+      <td class='value'>7,170</td>
+      <td class='value'>38,975</td>
+      <td class='value'>4</td>
+      <td class='value'>2,912</td>
+      <td class='value'>2</td>
+      <td class='value'>62</td>
+      <td class='value'>341</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=UKR">Ukraine</a></td>
+      <td class='value'>49,568</td>
+      <td class='value'>588,417</td>
+      <td class='value'>31</td>
+      <td class='value'>622</td>
+      <td class='value'>77</td>
+      <td class='value'>147</td>
+      <td class='value'>102</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=GBR">United Kingdom</a></td>
+      <td class='value'>59,415</td>
+      <td class='value'>247,193</td>
+      <td class='value'>11</td>
+      <td class='value'>2,143</td>
+      <td class='value'>27</td>
+      <td class='value'>154</td>
+      <td class='value'>447</td>
+    </tr>
+  
+  </tbody>
+</table>
+      
+    
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+    <script type="text/javascript" src="scripts.js"></script>
+    <script xmlns="" src="https://sedac.ciesin.columbia.edu/SSI/ntpagetag.js" type="text/javascript" language="JavaScript"></script>
+    <noscript><img alt="" vspace="0" hspace="0" border="0" width="1" height="1" src="https://ws1.ems.eosdis.nasa.gov/images/ntpagetag.gif?js=0" /></noscript>
+    
+  </body>
+</html>

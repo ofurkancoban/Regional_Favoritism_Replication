@@ -1,0 +1,2801 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <title>Download</title>
+    <link media="all" href="/wro/legacy-application.css" type="text/css" rel="stylesheet" />
+    <link media="all" href="style.css" type="text/css" rel="stylesheet" />
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
+  </head>
+  <body>
+    
+      
+            <form id="data-selection" method='get'>
+        <input type='hidden' name='file' value='gpwv3' />
+        <input type='hidden' name='level' value='global' />
+        
+          <input type='hidden' name='code' value='GL' />
+        
+  
+        <fieldset id='select-geo' class='color-bg-white'>
+          <legend>Geography:</legend>
+          <label for='level-scope' class='visuallyhidden'>Level</label>
+          <select name='level-scope' id='level-scope'>
+            <option value='continent'>Region</option>
+            <option value='country'>Country</option>
+          </select> &raquo;
+    
+          
+            <label for='region' class='visuallyhidden'>Region</label>
+            <select name='region' id='region'>
+              <option value='Global' selected='selected'>Global</option>
+              <option value='Africa'>Africa</option>
+              <option value='Asia'>Asia</option>
+              <option value='Europe'>Europe</option>
+              <option value='NorthAmerica'>North America</option>
+              <option value='Oceania'>Oceania</option>
+              <option value='SouthAmerica'>South America</option>
+            </select>
+          
+    
+          
+        </fieldset>
+
+        <fieldset id='select-data' class='color-bg-white'>
+          <legend>Data Set:</legend>
+          <label for='data' class='visuallyhidden'>Data Set:</label>
+          <select name='data'>
+            
+              <option value='disabled'>[Select data]</option>
+            
+              <option value='pcount' selected='selected'>Population Count Grid</option>
+            
+              <option value='pdens'>Population Density Grid</option>
+            
+              <option value='area'>Land / Geographic Unit Area Grids</option>
+            
+              <option value='ntlbndid'>National Identifier Grid</option>
+            
+              <option value='centroids'>Centroids</option>
+            
+              <option value='c_ntlbnd'>Coastlines</option>
+            
+              <option value='ntlbnd'>National Boundaries</option>
+            
+              <option value='adbnd'>Sub-national Administrative Boundaries</option>
+            
+              <option value='pcount_future'>Population Count Grid Future</option>
+            
+              <option value='pdens_future'>Population Density Grid Future</option>
+            
+          </select>
+        </fieldset>
+
+        <fieldset id='select-attributes' class='color-bg-white'>
+          <legend>Data Attributes:</legend>
+          
+          <span>
+            <label for='type' class="visuallyhidden">Format</label>
+            <select name='type' id='type'>
+            
+              <option value='disabled'>[Select format]</option>
+            
+              <option value='bil'>.bil</option>
+            
+              <option value='ascii' selected='selected'>.ascii</option>
+            
+              <option value='wrk'>grid</option>
+            
+            </select>
+          </span>
+          
+  
+          
+          <span>
+            <label for='resolut' class="visuallyhidden">Resolution:</label>
+            <select name='resolut' id='resolut'>
+            
+              <option value='disabled'>[Select resolution]</option>
+            
+              <option value='25' selected='selected'>2.5'</option>
+            
+              <option value='quar'>1/4°</option>
+            
+              <option value='half'>1/2°</option>
+            
+              <option value='one'>1°</option>
+            
+            </select>
+          </span>
+          
+  
+          
+          <span>
+            <label for='year' class="visuallyhidden">Year:</label>
+            <select name="year" id='year'>
+            
+              <option value='disabled'>[Select year]</option>
+            
+              <option value='90'>1990</option>
+            
+              <option value='95'>1995</option>
+            
+              <option value='00' selected='selected'>2000</option>
+            
+            </select>
+          </span>
+          
+        </fieldset>
+        <span id="select-download">
+          <button id='download-data' type='submit'>Download</button>
+          <div id="msg-required" class='warn'><em>all fields required</em></div>
+        </span>
+      </form>
+
+      
+
+      <h3 id='summary-header'>Global Summary</h3>
+<table>
+  <tbody id='summary-scope'>
+    <tr>
+      <th data-desc='Population totals for the year 2000 based on the National Statistical Office (NSO) data.'>
+        Population 2000 (NSO-Based Estimate '000)
+      </th>
+      <td class='value'>5,912,829</td>
+      <td class='gutter'>&nbsp;</td>
+      <th data-desc='Population totals for the year 2000 from the United Nations World Population Prospects 2000 Revision.'>
+        Population 2000 (UN '000)
+      </th>
+      <td class='value'>6,056,471</td>
+    </tr>
+    <tr>
+      <th data-desc='The total land area in square kilometers for each country based on the 2.5 arc-minute grids and the average land area per administrative unit based on the national area total.'>
+        Area (km<sup>2</sup>)
+      </th>
+      <td class='value'>130,677,398</td>
+      <td class='gutter'>&nbsp;</td>
+      <th data-desc='Mean measure of the effective resolution of administrative units in kilometers; calculated as the square root of the land area divided by the number of administrative units.'>
+        Avg. Input Resolution (km)
+      </th>
+      <td class='value'>18</td>
+    </tr>
+    <tr>
+      <th data-desc='Total number of administrative units at the level used: sum of the unique administrative units (not unique polygons, units may be split across polygons) at the level used for gridding GPW v3.'>
+        Number of Administrative Units
+      </th>
+      <td class='value'>399,747</td>
+      <td class='gutter'>&nbsp;</td>
+      <th data-desc='Average population per administrative unit; 2000 population estimate divided by the number of units.'>
+        Population Per Administrative Unit ('000)
+      </th>
+      <td class='value'>15</td>
+    </tr>
+    <tr>
+      <th data-desc='The number of defined spatial areas categorized as urban (i.e. population of 5000 persons or larger). Urban extents can encompass multiple, adjacent settlement points if within a 3 kilometer buffer of the urban area.'>
+        Number of Urban Extents
+      </th>
+      <td class='value'>21,905</td>
+      <td class='gutter'>&nbsp;</td>
+      <th data-desc='The number of places where corresponding population and coordinate data are both available. Settlement points are the primary population inputs for the urban extents.'>
+        Number of Settlement Points
+      </th>
+      <td class='value'>55,412</td>
+    </tr>
+    
+  </tbody>
+</table>
+      
+        <h3>Country Summaries</h3>
+<table id='summary-countries'>
+  <thead>
+    <tr>
+      <th><a href='#' data-sort-value='countryenglish' class='table-sort asc'>Country Name<br />(English)</a></th>
+      <th class='value wider'><a href='#' data-sort-value='p2000un' class='table-sort '>Population 2000<br />(UN '000)</a></th>
+      <th class='value'><a href='#' data-sort-value='area' class='table-sort '>Area<br />(km<sup>2</sup>)</a></th>
+      <th class='value'><a href='#' data-sort-value='resolution' class='table-sort '>Resolution<br />(km)</a></th>
+      <th class='value'><a href='#' data-sort-value='numunit' class='table-sort '>Admin<br />Units</a></th>
+      <th class='value wider'><a href='#' data-sort-value='popperunit' class='table-sort '>Population Per<br />Admin Unit ('000)</a></th>
+      <th class='value'><a href='#' data-sort-value='numextent' class='table-sort '>Urban<br />Extents</a></th>
+      <th class='value'><a href='#' data-sort-value='numsettlepoint' class='table-sort '>Settlement<br />Points</a></th>
+    </tr>
+  </thead>
+  <tbody>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=AFG">Afghanistan</a></td>
+      <td class='value'>21,765</td>
+      <td class='value'>634,908</td>
+      <td class='value'>44</td>
+      <td class='value'>329</td>
+      <td class='value'>65</td>
+      <td class='value'>52</td>
+      <td class='value'>50</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=ALB">Albania</a></td>
+      <td class='value'>3,134</td>
+      <td class='value'>28,346</td>
+      <td class='value'>33</td>
+      <td class='value'>26</td>
+      <td class='value'>119</td>
+      <td class='value'>39</td>
+      <td class='value'>47</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=DZA">Algeria</a></td>
+      <td class='value'>30,291</td>
+      <td class='value'>2,302,498</td>
+      <td class='value'>219</td>
+      <td class='value'>48</td>
+      <td class='value'>634</td>
+      <td class='value'>329</td>
+      <td class='value'>151</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=ASM">American Samoa</a></td>
+      <td class='value'>68</td>
+      <td class='value'>198</td>
+      <td class='value'>6</td>
+      <td class='value'>5</td>
+      <td class='value'>11</td>
+      <td class='value'>1</td>
+      <td class='value'>15</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=AND">Andorra</a></td>
+      <td class='value'>86</td>
+      <td class='value'>464</td>
+      <td class='value'>8</td>
+      <td class='value'>7</td>
+      <td class='value'>9</td>
+      <td class='value'>1</td>
+      <td class='value'>7</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=AGO">Angola</a></td>
+      <td class='value'>13,134</td>
+      <td class='value'>1,251,924</td>
+      <td class='value'>264</td>
+      <td class='value'>18</td>
+      <td class='value'>1</td>
+      <td class='value'>30</td>
+      <td class='value'>8</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=AIA">Anguilla</a></td>
+      <td class='value'>11</td>
+      <td class='value'>83</td>
+      <td class='value'>9</td>
+      <td class='value'>1</td>
+      <td class='value'>11</td>
+      <td class='value'>1</td>
+      <td class='value'>3</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=ATG">Antigua and Barbuda</a></td>
+      <td class='value'>65</td>
+      <td class='value'>444</td>
+      <td class='value'>15</td>
+      <td class='value'>2</td>
+      <td class='value'>32</td>
+      <td class='value'>1</td>
+      <td class='value'>12</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=ARG">Argentina</a></td>
+      <td class='value'>37,032</td>
+      <td class='value'>2,736,391</td>
+      <td class='value'>74</td>
+      <td class='value'>499</td>
+      <td class='value'>72</td>
+      <td class='value'>419</td>
+      <td class='value'>1,091</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=ARM">Armenia</a></td>
+      <td class='value'>3,787</td>
+      <td class='value'>28,277</td>
+      <td class='value'>51</td>
+      <td class='value'>11</td>
+      <td class='value'>293</td>
+      <td class='value'>33</td>
+      <td class='value'>42</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=ABW">Aruba</a></td>
+      <td class='value'>101</td>
+      <td class='value'>189</td>
+      <td class='value'>14</td>
+      <td class='value'>1</td>
+      <td class='value'>101</td>
+      <td class='value'>1</td>
+      <td class='value'>2</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=AUS">Australia</a></td>
+      <td class='value'>19,138</td>
+      <td class='value'>7,634,648</td>
+      <td class='value'>76</td>
+      <td class='value'>1,329</td>
+      <td class='value'>14</td>
+      <td class='value'>157</td>
+      <td class='value'>224</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=AUT">Austria</a></td>
+      <td class='value'>8,080</td>
+      <td class='value'>83,145</td>
+      <td class='value'>29</td>
+      <td class='value'>99</td>
+      <td class='value'>81</td>
+      <td class='value'>85</td>
+      <td class='value'>289</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=AZE">Azerbaijan</a></td>
+      <td class='value'>8,041</td>
+      <td class='value'>85,355</td>
+      <td class='value'>34</td>
+      <td class='value'>74</td>
+      <td class='value'>108</td>
+      <td class='value'>41</td>
+      <td class='value'>29</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=BHS">Bahamas</a></td>
+      <td class='value'>304</td>
+      <td class='value'>13,162</td>
+      <td class='value'>28</td>
+      <td class='value'>17</td>
+      <td class='value'>18</td>
+      <td class='value'>4</td>
+      <td class='value'>12</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=BHR">Bahrain</a></td>
+      <td class='value'>640</td>
+      <td class='value'>623</td>
+      <td class='value'>8</td>
+      <td class='value'>11</td>
+      <td class='value'>0</td>
+      <td class='value'>3</td>
+      <td class='value'>7</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=BGD">Bangladesh</a></td>
+      <td class='value'>137,439</td>
+      <td class='value'>136,305</td>
+      <td class='value'>17</td>
+      <td class='value'>486</td>
+      <td class='value'>251</td>
+      <td class='value'>187</td>
+      <td class='value'>157</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=BRB">Barbados</a></td>
+      <td class='value'>267</td>
+      <td class='value'>441</td>
+      <td class='value'>21</td>
+      <td class='value'>1</td>
+      <td class='value'>267</td>
+      <td class='value'>1</td>
+      <td class='value'>3</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=BLR">Belarus</a></td>
+      <td class='value'>10,187</td>
+      <td class='value'>207,013</td>
+      <td class='value'>42</td>
+      <td class='value'>119</td>
+      <td class='value'>84</td>
+      <td class='value'>35</td>
+      <td class='value'>35</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=BEL">Belgium</a></td>
+      <td class='value'>10,249</td>
+      <td class='value'>30,553</td>
+      <td class='value'>7</td>
+      <td class='value'>589</td>
+      <td class='value'>17</td>
+      <td class='value'>46</td>
+      <td class='value'>574</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=BLZ">Belize</a></td>
+      <td class='value'>226</td>
+      <td class='value'>22,290</td>
+      <td class='value'>61</td>
+      <td class='value'>6</td>
+      <td class='value'>40</td>
+      <td class='value'>6</td>
+      <td class='value'>9</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=BEN">Benin</a></td>
+      <td class='value'>6,272</td>
+      <td class='value'>115,828</td>
+      <td class='value'>39</td>
+      <td class='value'>78</td>
+      <td class='value'>80</td>
+      <td class='value'>36</td>
+      <td class='value'>38</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=BMU">Bermuda</a></td>
+      <td class='value'>63</td>
+      <td class='value'>63</td>
+      <td class='value'>8</td>
+      <td class='value'>1</td>
+      <td class='value'>63</td>
+      <td class='value'>3</td>
+      <td class='value'>1</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=BTN">Bhutan</a></td>
+      <td class='value'>2,085</td>
+      <td class='value'>38,040</td>
+      <td class='value'>45</td>
+      <td class='value'>19</td>
+      <td class='value'>110</td>
+      <td class='value'>5</td>
+      <td class='value'>18</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=BOL">Bolivia</a></td>
+      <td class='value'>8,329</td>
+      <td class='value'>1,069,350</td>
+      <td class='value'>103</td>
+      <td class='value'>100</td>
+      <td class='value'>80</td>
+      <td class='value'>69</td>
+      <td class='value'>95</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=BIH">Bosnia-Herzegovina</a></td>
+      <td class='value'>3,977</td>
+      <td class='value'>51,295</td>
+      <td class='value'>131</td>
+      <td class='value'>3</td>
+      <td class='value'>1,301</td>
+      <td class='value'>26</td>
+      <td class='value'>22</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=BWA">Botswana</a></td>
+      <td class='value'>1,541</td>
+      <td class='value'>559,502</td>
+      <td class='value'>156</td>
+      <td class='value'>23</td>
+      <td class='value'>71</td>
+      <td class='value'>27</td>
+      <td class='value'>67</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=BRA">Brazil</a></td>
+      <td class='value'>170,406</td>
+      <td class='value'>8,480,395</td>
+      <td class='value'>29</td>
+      <td class='value'>9,847</td>
+      <td class='value'>17</td>
+      <td class='value'>762</td>
+      <td class='value'>4,243</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=VGB">British Virgin Islands</a></td>
+      <td class='value'>24</td>
+      <td class='value'>166</td>
+      <td class='value'>6</td>
+      <td class='value'>4</td>
+      <td class='value'>5</td>
+      <td class='value'>1</td>
+      <td class='value'>1</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=BRN">Brunei Darussalam</a></td>
+      <td class='value'>328</td>
+      <td class='value'>5,901</td>
+      <td class='value'>38</td>
+      <td class='value'>4</td>
+      <td class='value'>81</td>
+      <td class='value'>2</td>
+      <td class='value'>5</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=BGR">Bulgaria</a></td>
+      <td class='value'>7,949</td>
+      <td class='value'>111,307</td>
+      <td class='value'>21</td>
+      <td class='value'>261</td>
+      <td class='value'>30</td>
+      <td class='value'>44</td>
+      <td class='value'>41</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=BFA">Burkina Faso</a></td>
+      <td class='value'>11,535</td>
+      <td class='value'>275,747</td>
+      <td class='value'>28</td>
+      <td class='value'>353</td>
+      <td class='value'>33</td>
+      <td class='value'>118</td>
+      <td class='value'>205</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=BDI">Burundi</a></td>
+      <td class='value'>6,356</td>
+      <td class='value'>25,227</td>
+      <td class='value'>15</td>
+      <td class='value'>114</td>
+      <td class='value'>58</td>
+      <td class='value'>15</td>
+      <td class='value'>15</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=KHM">Cambodia</a></td>
+      <td class='value'>13,104</td>
+      <td class='value'>179,492</td>
+      <td class='value'>11</td>
+      <td class='value'>1,604</td>
+      <td class='value'>8</td>
+      <td class='value'>26</td>
+      <td class='value'>27</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=CMR">Cameroon</a></td>
+      <td class='value'>14,876</td>
+      <td class='value'>465,765</td>
+      <td class='value'>97</td>
+      <td class='value'>49</td>
+      <td class='value'>255</td>
+      <td class='value'>104</td>
+      <td class='value'>166</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=CAN">Canada</a></td>
+      <td class='value'>30,757</td>
+      <td class='value'>9,458,886</td>
+      <td class='value'>40</td>
+      <td class='value'>5,984</td>
+      <td class='value'>5</td>
+      <td class='value'>327</td>
+      <td class='value'>884</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=CPV">Cape Verde</a></td>
+      <td class='value'>427</td>
+      <td class='value'>4,072</td>
+      <td class='value'>21</td>
+      <td class='value'>9</td>
+      <td class='value'>48</td>
+      <td class='value'>11</td>
+      <td class='value'>16</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=CYM">Cayman Islands</a></td>
+      <td class='value'>38</td>
+      <td class='value'>279</td>
+      <td class='value'>10</td>
+      <td class='value'>3</td>
+      <td class='value'>14</td>
+      <td class='value'>1</td>
+      <td class='value'>3</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=CAF">Central African Republic</a></td>
+      <td class='value'>3,717</td>
+      <td class='value'>622,868</td>
+      <td class='value'>111</td>
+      <td class='value'>51</td>
+      <td class='value'>69</td>
+      <td class='value'>33</td>
+      <td class='value'>37</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=TCD">Chad</a></td>
+      <td class='value'>7,885</td>
+      <td class='value'>1,243,139</td>
+      <td class='value'>298</td>
+      <td class='value'>14</td>
+      <td class='value'>527</td>
+      <td class='value'>38</td>
+      <td class='value'>51</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=CHL">Chile</a></td>
+      <td class='value'>15,211</td>
+      <td class='value'>721,229</td>
+      <td class='value'>50</td>
+      <td class='value'>292</td>
+      <td class='value'>50</td>
+      <td class='value'>49</td>
+      <td class='value'>62</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=CHN">China</a></td>
+      <td class='value'>1,275,133</td>
+      <td class='value'>9,198,103</td>
+      <td class='value'>62</td>
+      <td class='value'>2,370</td>
+      <td class='value'>523</td>
+      <td class='value'>6,769</td>
+      <td class='value'>4,707</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=COL">Colombia</a></td>
+      <td class='value'>42,105</td>
+      <td class='value'>1,141,569</td>
+      <td class='value'>33</td>
+      <td class='value'>1,059</td>
+      <td class='value'>34</td>
+      <td class='value'>352</td>
+      <td class='value'>783</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=DMA">Commonwealth of Dominica</a></td>
+      <td class='value'>71</td>
+      <td class='value'>769</td>
+      <td class='value'>9</td>
+      <td class='value'>10</td>
+      <td class='value'>7</td>
+      <td class='value'>3</td>
+      <td class='value'>17</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=COM">Comoros</a></td>
+      <td class='value'>706</td>
+      <td class='value'>2,046</td>
+      <td class='value'>23</td>
+      <td class='value'>4</td>
+      <td class='value'>140</td>
+      <td class='value'>12</td>
+      <td class='value'>93</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=COG">Congo</a></td>
+      <td class='value'>3,018</td>
+      <td class='value'>343,235</td>
+      <td class='value'>86</td>
+      <td class='value'>46</td>
+      <td class='value'>60</td>
+      <td class='value'>22</td>
+      <td class='value'>22</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=COD">Congo, Democratic Republic</a></td>
+      <td class='value'>50,948</td>
+      <td class='value'>2,313,414</td>
+      <td class='value'>124</td>
+      <td class='value'>150</td>
+      <td class='value'>347</td>
+      <td class='value'>162</td>
+      <td class='value'>182</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=COK">Cook Islands</a></td>
+      <td class='value'>20</td>
+      <td class='value'>688</td>
+      <td class='value'>7</td>
+      <td class='value'>15</td>
+      <td class='value'>1</td>
+      <td class='value'>1</td>
+      <td class='value'>1</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=CRI">Costa Rica</a></td>
+      <td class='value'>4,024</td>
+      <td class='value'>51,015</td>
+      <td class='value'>25</td>
+      <td class='value'>82</td>
+      <td class='value'>46</td>
+      <td class='value'>16</td>
+      <td class='value'>32</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=HRV">Croatia</a></td>
+      <td class='value'>4,654</td>
+      <td class='value'>56,406</td>
+      <td class='value'>10</td>
+      <td class='value'>544</td>
+      <td class='value'>8</td>
+      <td class='value'>55</td>
+      <td class='value'>121</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=CUB">Cuba</a></td>
+      <td class='value'>11,199</td>
+      <td class='value'>111,199</td>
+      <td class='value'>26</td>
+      <td class='value'>169</td>
+      <td class='value'>66</td>
+      <td class='value'>109</td>
+      <td class='value'>140</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=CYP">Cyprus</a></td>
+      <td class='value'>784</td>
+      <td class='value'>9,273</td>
+      <td class='value'>5</td>
+      <td class='value'>414</td>
+      <td class='value'>2</td>
+      <td class='value'>4</td>
+      <td class='value'>73</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=CZE">Czech Republic</a></td>
+      <td class='value'>10,272</td>
+      <td class='value'>78,616</td>
+      <td class='value'>4</td>
+      <td class='value'>6,258</td>
+      <td class='value'>2</td>
+      <td class='value'>118</td>
+      <td class='value'>131</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=DNK">Denmark</a></td>
+      <td class='value'>5,320</td>
+      <td class='value'>42,484</td>
+      <td class='value'>12</td>
+      <td class='value'>276</td>
+      <td class='value'>19</td>
+      <td class='value'>77</td>
+      <td class='value'>429</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=DJI">Djibouti</a></td>
+      <td class='value'>632</td>
+      <td class='value'>20,903</td>
+      <td class='value'>65</td>
+      <td class='value'>5</td>
+      <td class='value'>128</td>
+      <td class='value'>6</td>
+      <td class='value'>5</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=DOM">Dominican Republic</a></td>
+      <td class='value'>8,373</td>
+      <td class='value'>48,092</td>
+      <td class='value'>40</td>
+      <td class='value'>30</td>
+      <td class='value'>267</td>
+      <td class='value'>31</td>
+      <td class='value'>42</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=TLS">East Timor</a></td>
+      <td class='value'>737</td>
+      <td class='value'>14,923</td>
+      <td class='value'>29</td>
+      <td class='value'>18</td>
+      <td class='value'>46</td>
+      <td class='value'>6</td>
+      <td class='value'>19</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=ECU">Ecuador</a></td>
+      <td class='value'>12,646</td>
+      <td class='value'>246,700</td>
+      <td class='value'>16</td>
+      <td class='value'>931</td>
+      <td class='value'>13</td>
+      <td class='value'>52</td>
+      <td class='value'>55</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=EGY">Egypt</a></td>
+      <td class='value'>67,884</td>
+      <td class='value'>968,071</td>
+      <td class='value'>65</td>
+      <td class='value'>230</td>
+      <td class='value'>281</td>
+      <td class='value'>77</td>
+      <td class='value'>151</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=SLV">El Salvador</a></td>
+      <td class='value'>6,278</td>
+      <td class='value'>20,279</td>
+      <td class='value'>9</td>
+      <td class='value'>263</td>
+      <td class='value'>23</td>
+      <td class='value'>23</td>
+      <td class='value'>43</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=GNQ">Equatorial Guinea</a></td>
+      <td class='value'>457</td>
+      <td class='value'>27,104</td>
+      <td class='value'>62</td>
+      <td class='value'>7</td>
+      <td class='value'>127</td>
+      <td class='value'>3</td>
+      <td class='value'>15</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=ERI">Eritrea</a></td>
+      <td class='value'>3,659</td>
+      <td class='value'>121,863</td>
+      <td class='value'>57</td>
+      <td class='value'>38</td>
+      <td class='value'>94</td>
+      <td class='value'>11</td>
+      <td class='value'>9</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=EST">Estonia</a></td>
+      <td class='value'>1,393</td>
+      <td class='value'>43,179</td>
+      <td class='value'>13</td>
+      <td class='value'>251</td>
+      <td class='value'>5</td>
+      <td class='value'>21</td>
+      <td class='value'>42</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=ETH">Ethiopia</a></td>
+      <td class='value'>62,908</td>
+      <td class='value'>1,123,714</td>
+      <td class='value'>46</td>
+      <td class='value'>523</td>
+      <td class='value'>119</td>
+      <td class='value'>206</td>
+      <td class='value'>407</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=FRO">Faeroe Islands</a></td>
+      <td class='value'>46</td>
+      <td class='value'>1,408</td>
+      <td class='value'>10</td>
+      <td class='value'>15</td>
+      <td class='value'>3</td>
+      <td class='value'>3</td>
+      <td class='value'>11</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=FLK">Falkland Islands</a></td>
+      <td class='value'>2</td>
+      <td class='value'>11,988</td>
+      <td class='value'>77</td>
+      <td class='value'>2</td>
+      <td class='value'>1</td>
+      <td class='value'>0</td>
+      <td class='value'>1</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=FSM">Federated State of Micronesia</a></td>
+      <td class='value'>123</td>
+      <td class='value'>675</td>
+      <td class='value'>13</td>
+      <td class='value'>4</td>
+      <td class='value'>27</td>
+      <td class='value'>9</td>
+      <td class='value'>17</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=FJI">Fiji</a></td>
+      <td class='value'>814</td>
+      <td class='value'>18,254</td>
+      <td class='value'>35</td>
+      <td class='value'>15</td>
+      <td class='value'>54</td>
+      <td class='value'>5</td>
+      <td class='value'>15</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=FIN">Finland</a></td>
+      <td class='value'>5,172</td>
+      <td class='value'>317,001</td>
+      <td class='value'>27</td>
+      <td class='value'>448</td>
+      <td class='value'>12</td>
+      <td class='value'>54</td>
+      <td class='value'>101</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=FRA">France</a></td>
+      <td class='value'>59,238</td>
+      <td class='value'>547,120</td>
+      <td class='value'>4</td>
+      <td class='value'>36,585</td>
+      <td class='value'>2</td>
+      <td class='value'>441</td>
+      <td class='value'>348</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=GUF">French Guiana</a></td>
+      <td class='value'>165</td>
+      <td class='value'>83,634</td>
+      <td class='value'>63</td>
+      <td class='value'>21</td>
+      <td class='value'>7</td>
+      <td class='value'>4</td>
+      <td class='value'>16</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=PYF">French Polynesia</a></td>
+      <td class='value'>233</td>
+      <td class='value'>3,745</td>
+      <td class='value'>10</td>
+      <td class='value'>39</td>
+      <td class='value'>6</td>
+      <td class='value'>4</td>
+      <td class='value'>36</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=GAB">Gabon</a></td>
+      <td class='value'>1,230</td>
+      <td class='value'>265,146</td>
+      <td class='value'>76</td>
+      <td class='value'>46</td>
+      <td class='value'>27</td>
+      <td class='value'>20</td>
+      <td class='value'>35</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=GMB">Gambia</a></td>
+      <td class='value'>1,303</td>
+      <td class='value'>10,838</td>
+      <td class='value'>17</td>
+      <td class='value'>37</td>
+      <td class='value'>32</td>
+      <td class='value'>14</td>
+      <td class='value'>96</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=GEO">Georgia</a></td>
+      <td class='value'>5,262</td>
+      <td class='value'>69,236</td>
+      <td class='value'>29</td>
+      <td class='value'>80</td>
+      <td class='value'>59</td>
+      <td class='value'>50</td>
+      <td class='value'>61</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=DEU">Germany</a></td>
+      <td class='value'>82,017</td>
+      <td class='value'>356,027</td>
+      <td class='value'>28</td>
+      <td class='value'>446</td>
+      <td class='value'>184</td>
+      <td class='value'>607</td>
+      <td class='value'>1,132</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=GHA">Ghana</a></td>
+      <td class='value'>19,306</td>
+      <td class='value'>231,730</td>
+      <td class='value'>46</td>
+      <td class='value'>110</td>
+      <td class='value'>172</td>
+      <td class='value'>126</td>
+      <td class='value'>175</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=GIB">Gibraltar</a></td>
+      <td class='value'>27</td>
+      <td class='value'>5</td>
+      <td class='value'>2</td>
+      <td class='value'>1</td>
+      <td class='value'>27</td>
+      <td class='value'>1</td>
+      <td class='value'>1</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=GRC">Greece</a></td>
+      <td class='value'>10,610</td>
+      <td class='value'>131,891</td>
+      <td class='value'>11</td>
+      <td class='value'>1,034</td>
+      <td class='value'>10</td>
+      <td class='value'>121</td>
+      <td class='value'>1,103</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=GRL">Greenland</a></td>
+      <td class='value'>56</td>
+      <td class='value'>377,972</td>
+      <td class='value'>149</td>
+      <td class='value'>17</td>
+      <td class='value'>3</td>
+      <td class='value'>1</td>
+      <td class='value'>14</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=GRD">Grenada</a></td>
+      <td class='value'>94</td>
+      <td class='value'>325</td>
+      <td class='value'>18</td>
+      <td class='value'>1</td>
+      <td class='value'>94</td>
+      <td class='value'>3</td>
+      <td class='value'>6</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=GLP">Guadeloupe</a></td>
+      <td class='value'>428</td>
+      <td class='value'>1,751</td>
+      <td class='value'>8</td>
+      <td class='value'>31</td>
+      <td class='value'>14</td>
+      <td class='value'>4</td>
+      <td class='value'>33</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=GUM">Guam</a></td>
+      <td class='value'>155</td>
+      <td class='value'>546</td>
+      <td class='value'>2</td>
+      <td class='value'>203</td>
+      <td class='value'>1</td>
+      <td class='value'>1</td>
+      <td class='value'>27</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=GTM">Guatemala</a></td>
+      <td class='value'>11,385</td>
+      <td class='value'>108,523</td>
+      <td class='value'>18</td>
+      <td class='value'>329</td>
+      <td class='value'>32</td>
+      <td class='value'>36</td>
+      <td class='value'>46</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=GGY">Guernsey</a></td>
+      <td class='value'>--</td>
+      <td class='value'>85</td>
+      <td class='value'>9</td>
+      <td class='value'>1</td>
+      <td class='value'>56</td>
+      <td class='value'>1</td>
+      <td class='value'>5</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=GIN">Guinea</a></td>
+      <td class='value'>8,154</td>
+      <td class='value'>245,860</td>
+      <td class='value'>86</td>
+      <td class='value'>33</td>
+      <td class='value'>257</td>
+      <td class='value'>33</td>
+      <td class='value'>44</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=GNB">Guinea-Bissau</a></td>
+      <td class='value'>1,199</td>
+      <td class='value'>34,106</td>
+      <td class='value'>30</td>
+      <td class='value'>37</td>
+      <td class='value'>33</td>
+      <td class='value'>13</td>
+      <td class='value'>19</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=GUY">Guyana</a></td>
+      <td class='value'>761</td>
+      <td class='value'>211,156</td>
+      <td class='value'>145</td>
+      <td class='value'>10</td>
+      <td class='value'>79</td>
+      <td class='value'>9</td>
+      <td class='value'>11</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=HTI">Haiti</a></td>
+      <td class='value'>8,142</td>
+      <td class='value'>26,876</td>
+      <td class='value'>14</td>
+      <td class='value'>135</td>
+      <td class='value'>57</td>
+      <td class='value'>13</td>
+      <td class='value'>15</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=VAT">Holy See</a></td>
+      <td class='value'>1</td>
+      <td class='value'>1</td>
+      <td class='value'>1</td>
+      <td class='value'>1</td>
+      <td class='value'>1</td>
+      <td class='value'>0</td>
+      <td class='value'>--</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=HND">Honduras</a></td>
+      <td class='value'>6,417</td>
+      <td class='value'>112,079</td>
+      <td class='value'>6</td>
+      <td class='value'>3,696</td>
+      <td class='value'>2</td>
+      <td class='value'>41</td>
+      <td class='value'>53</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=HKG">Hong Kong</a></td>
+      <td class='value'>6,860</td>
+      <td class='value'>1,054</td>
+      <td class='value'>8</td>
+      <td class='value'>18</td>
+      <td class='value'>367</td>
+      <td class='value'>18</td>
+      <td class='value'>13</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=HUN">Hungary</a></td>
+      <td class='value'>9,968</td>
+      <td class='value'>92,046</td>
+      <td class='value'>5</td>
+      <td class='value'>3,158</td>
+      <td class='value'>3</td>
+      <td class='value'>77</td>
+      <td class='value'>1,426</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=ISL">Iceland</a></td>
+      <td class='value'>279</td>
+      <td class='value'>91,116</td>
+      <td class='value'>27</td>
+      <td class='value'>123</td>
+      <td class='value'>2</td>
+      <td class='value'>5</td>
+      <td class='value'>29</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=IND">India</a></td>
+      <td class='value'>1,008,937</td>
+      <td class='value'>3,209,716</td>
+      <td class='value'>25</td>
+      <td class='value'>5,209</td>
+      <td class='value'>194</td>
+      <td class='value'>3,200</td>
+      <td class='value'>3,570</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=IDN">Indonesia</a></td>
+      <td class='value'>212,092</td>
+      <td class='value'>1,898,776</td>
+      <td class='value'>5</td>
+      <td class='value'>69,349</td>
+      <td class='value'>3</td>
+      <td class='value'>378</td>
+      <td class='value'>443</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=IRN">Iran</a></td>
+      <td class='value'>70,330</td>
+      <td class='value'>1,590,351</td>
+      <td class='value'>80</td>
+      <td class='value'>250</td>
+      <td class='value'>260</td>
+      <td class='value'>182</td>
+      <td class='value'>193</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=IRQ">Iraq</a></td>
+      <td class='value'>22,946</td>
+      <td class='value'>430,575</td>
+      <td class='value'>151</td>
+      <td class='value'>19</td>
+      <td class='value'>1,258</td>
+      <td class='value'>38</td>
+      <td class='value'>24</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=IRL">Ireland</a></td>
+      <td class='value'>3,803</td>
+      <td class='value'>69,474</td>
+      <td class='value'>4</td>
+      <td class='value'>3,440</td>
+      <td class='value'>1</td>
+      <td class='value'>52</td>
+      <td class='value'>189</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=IMN">Isle of Man</a></td>
+      <td class='value'>75</td>
+      <td class='value'>572</td>
+      <td class='value'>5</td>
+      <td class='value'>24</td>
+      <td class='value'>3</td>
+      <td class='value'>2</td>
+      <td class='value'>8</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=ISR">Israel</a></td>
+      <td class='value'>6,040</td>
+      <td class='value'>21,878</td>
+      <td class='value'>38</td>
+      <td class='value'>15</td>
+      <td class='value'>411</td>
+      <td class='value'>8</td>
+      <td class='value'>91</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=ITA">Italy</a></td>
+      <td class='value'>57,530</td>
+      <td class='value'>299,287</td>
+      <td class='value'>6</td>
+      <td class='value'>8,105</td>
+      <td class='value'>7</td>
+      <td class='value'>403</td>
+      <td class='value'>1,349</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=CIV">Ivory Coast</a></td>
+      <td class='value'>16,013</td>
+      <td class='value'>320,329</td>
+      <td class='value'>42</td>
+      <td class='value'>185</td>
+      <td class='value'>89</td>
+      <td class='value'>66</td>
+      <td class='value'>76</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=JAM">Jamaica</a></td>
+      <td class='value'>2,576</td>
+      <td class='value'>11,060</td>
+      <td class='value'>28</td>
+      <td class='value'>14</td>
+      <td class='value'>185</td>
+      <td class='value'>17</td>
+      <td class='value'>18</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=JPN">Japan</a></td>
+      <td class='value'>127,096</td>
+      <td class='value'>371,705</td>
+      <td class='value'>10</td>
+      <td class='value'>3,373</td>
+      <td class='value'>38</td>
+      <td class='value'>217</td>
+      <td class='value'>995</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=JEY">Jersey</a></td>
+      <td class='value'>--</td>
+      <td class='value'>119</td>
+      <td class='value'>11</td>
+      <td class='value'>1</td>
+      <td class='value'>87</td>
+      <td class='value'>1</td>
+      <td class='value'>12</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=JOR">Jordan</a></td>
+      <td class='value'>4,913</td>
+      <td class='value'>88,362</td>
+      <td class='value'>48</td>
+      <td class='value'>39</td>
+      <td class='value'>141</td>
+      <td class='value'>16</td>
+      <td class='value'>26</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=KAZ">Kazakhstan</a></td>
+      <td class='value'>16,172</td>
+      <td class='value'>2,619,352</td>
+      <td class='value'>101</td>
+      <td class='value'>256</td>
+      <td class='value'>62</td>
+      <td class='value'>47</td>
+      <td class='value'>34</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=KEN">Kenya</a></td>
+      <td class='value'>30,669</td>
+      <td class='value'>579,617</td>
+      <td class='value'>9</td>
+      <td class='value'>6,624</td>
+      <td class='value'>4</td>
+      <td class='value'>72</td>
+      <td class='value'>77</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=KIR">Kiribati</a></td>
+      <td class='value'>83</td>
+      <td class='value'>1,073</td>
+      <td class='value'>6</td>
+      <td class='value'>28</td>
+      <td class='value'>3</td>
+      <td class='value'>4</td>
+      <td class='value'>17</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=KOR">Korea</a></td>
+      <td class='value'>46,740</td>
+      <td class='value'>98,977</td>
+      <td class='value'>21</td>
+      <td class='value'>227</td>
+      <td class='value'>204</td>
+      <td class='value'>83</td>
+      <td class='value'>129</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=PRK">Korea, Dem. People's Rep. of</a></td>
+      <td class='value'>22,268</td>
+      <td class='value'>122,440</td>
+      <td class='value'>30</td>
+      <td class='value'>136</td>
+      <td class='value'>169</td>
+      <td class='value'>35</td>
+      <td class='value'>24</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=KWT">Kuwait</a></td>
+      <td class='value'>1,914</td>
+      <td class='value'>17,259</td>
+      <td class='value'>59</td>
+      <td class='value'>5</td>
+      <td class='value'>445</td>
+      <td class='value'>2</td>
+      <td class='value'>27</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=KGZ">Kyrgyz Republic</a></td>
+      <td class='value'>4,921</td>
+      <td class='value'>184,763</td>
+      <td class='value'>58</td>
+      <td class='value'>55</td>
+      <td class='value'>89</td>
+      <td class='value'>49</td>
+      <td class='value'>97</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=LAO">Lao People's Democratic Republic</a></td>
+      <td class='value'>5,279</td>
+      <td class='value'>230,230</td>
+      <td class='value'>42</td>
+      <td class='value'>133</td>
+      <td class='value'>39</td>
+      <td class='value'>15</td>
+      <td class='value'>17</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=LVA">Latvia</a></td>
+      <td class='value'>2,421</td>
+      <td class='value'>64,196</td>
+      <td class='value'>10</td>
+      <td class='value'>585</td>
+      <td class='value'>4</td>
+      <td class='value'>35</td>
+      <td class='value'>76</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=LBN">Lebanon</a></td>
+      <td class='value'>3,496</td>
+      <td class='value'>10,328</td>
+      <td class='value'>20</td>
+      <td class='value'>26</td>
+      <td class='value'>128</td>
+      <td class='value'>13</td>
+      <td class='value'>17</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=LSO">Lesotho</a></td>
+      <td class='value'>2,035</td>
+      <td class='value'>30,582</td>
+      <td class='value'>55</td>
+      <td class='value'>10</td>
+      <td class='value'>209</td>
+      <td class='value'>10</td>
+      <td class='value'>15</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=LBR">Liberia</a></td>
+      <td class='value'>2,913</td>
+      <td class='value'>96,166</td>
+      <td class='value'>42</td>
+      <td class='value'>54</td>
+      <td class='value'>70</td>
+      <td class='value'>17</td>
+      <td class='value'>27</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=LBY">Libyan Arab Jamahiriya</a></td>
+      <td class='value'>5,290</td>
+      <td class='value'>1,611,363</td>
+      <td class='value'>254</td>
+      <td class='value'>25</td>
+      <td class='value'>223</td>
+      <td class='value'>33</td>
+      <td class='value'>39</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=LIE">Liechtenstein</a></td>
+      <td class='value'>33</td>
+      <td class='value'>160</td>
+      <td class='value'>4</td>
+      <td class='value'>11</td>
+      <td class='value'>3</td>
+      <td class='value'>1</td>
+      <td class='value'>9</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=LTU">Lithuania</a></td>
+      <td class='value'>3,696</td>
+      <td class='value'>64,995</td>
+      <td class='value'>36</td>
+      <td class='value'>51</td>
+      <td class='value'>69</td>
+      <td class='value'>46</td>
+      <td class='value'>98</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=LUX">Luxembourg</a></td>
+      <td class='value'>437</td>
+      <td class='value'>2,587</td>
+      <td class='value'>5</td>
+      <td class='value'>118</td>
+      <td class='value'>4</td>
+      <td class='value'>3</td>
+      <td class='value'>82</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=MAC">Macao</a></td>
+      <td class='value'>444</td>
+      <td class='value'>19</td>
+      <td class='value'>3</td>
+      <td class='value'>3</td>
+      <td class='value'>142</td>
+      <td class='value'>3</td>
+      <td class='value'>1</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=MKD">Macedonia</a></td>
+      <td class='value'>2,034</td>
+      <td class='value'>24,702</td>
+      <td class='value'>14</td>
+      <td class='value'>123</td>
+      <td class='value'>16</td>
+      <td class='value'>21</td>
+      <td class='value'>30</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=MDG">Madagascar</a></td>
+      <td class='value'>15,970</td>
+      <td class='value'>592,965</td>
+      <td class='value'>22</td>
+      <td class='value'>1,242</td>
+      <td class='value'>12</td>
+      <td class='value'>74</td>
+      <td class='value'>98</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=MWI">Malawi</a></td>
+      <td class='value'>11,308</td>
+      <td class='value'>94,958</td>
+      <td class='value'>3</td>
+      <td class='value'>9,219</td>
+      <td class='value'>1</td>
+      <td class='value'>31</td>
+      <td class='value'>34</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=MYS">Malaysia</a></td>
+      <td class='value'>22,218</td>
+      <td class='value'>329,941</td>
+      <td class='value'>19</td>
+      <td class='value'>920</td>
+      <td class='value'>24</td>
+      <td class='value'>101</td>
+      <td class='value'>123</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=MDV">Maldives</a></td>
+      <td class='value'>291</td>
+      <td class='value'>189</td>
+      <td class='value'>3</td>
+      <td class='value'>21</td>
+      <td class='value'>13</td>
+      <td class='value'>0</td>
+      <td class='value'>58</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=MLI">Mali</a></td>
+      <td class='value'>11,351</td>
+      <td class='value'>1,248,137</td>
+      <td class='value'>68</td>
+      <td class='value'>272</td>
+      <td class='value'>39</td>
+      <td class='value'>105</td>
+      <td class='value'>155</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=MLT">Malta</a></td>
+      <td class='value'>390</td>
+      <td class='value'>315</td>
+      <td class='value'>2</td>
+      <td class='value'>67</td>
+      <td class='value'>6</td>
+      <td class='value'>2</td>
+      <td class='value'>60</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=MHL">Marshall Islands</a></td>
+      <td class='value'>51</td>
+      <td class='value'>219</td>
+      <td class='value'>3</td>
+      <td class='value'>33</td>
+      <td class='value'>2</td>
+      <td class='value'>2</td>
+      <td class='value'>2</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=MTQ">Martinique</a></td>
+      <td class='value'>383</td>
+      <td class='value'>1,146</td>
+      <td class='value'>34</td>
+      <td class='value'>1</td>
+      <td class='value'>383</td>
+      <td class='value'>1</td>
+      <td class='value'>32</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=MRT">Mauritania</a></td>
+      <td class='value'>2,665</td>
+      <td class='value'>1,036,905</td>
+      <td class='value'>140</td>
+      <td class='value'>53</td>
+      <td class='value'>48</td>
+      <td class='value'>17</td>
+      <td class='value'>27</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=MUS">Mauritius</a></td>
+      <td class='value'>1,161</td>
+      <td class='value'>1,993</td>
+      <td class='value'>3</td>
+      <td class='value'>186</td>
+      <td class='value'>6</td>
+      <td class='value'>5</td>
+      <td class='value'>85</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=MYT">Mayotte</a></td>
+      <td class='value'>153</td>
+      <td class='value'>372</td>
+      <td class='value'>19</td>
+      <td class='value'>1</td>
+      <td class='value'>155</td>
+      <td class='value'>3</td>
+      <td class='value'>3</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=MEX">Mexico</a></td>
+      <td class='value'>98,872</td>
+      <td class='value'>1,943,018</td>
+      <td class='value'>28</td>
+      <td class='value'>2,414</td>
+      <td class='value'>40</td>
+      <td class='value'>483</td>
+      <td class='value'>786</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=MCO">Monaco</a></td>
+      <td class='value'>33</td>
+      <td class='value'>10</td>
+      <td class='value'>3</td>
+      <td class='value'>1</td>
+      <td class='value'>34</td>
+      <td class='value'>2</td>
+      <td class='value'>4</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=MNG">Mongolia</a></td>
+      <td class='value'>2,533</td>
+      <td class='value'>1,546,294</td>
+      <td class='value'>265</td>
+      <td class='value'>22</td>
+      <td class='value'>108</td>
+      <td class='value'>21</td>
+      <td class='value'>24</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=MSR">Montserrat</a></td>
+      <td class='value'>4</td>
+      <td class='value'>103</td>
+      <td class='value'>10</td>
+      <td class='value'>1</td>
+      <td class='value'>4</td>
+      <td class='value'>0</td>
+      <td class='value'>1</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=MAR">Morocco (includes Western Sahara)</a></td>
+      <td class='value'>29,878</td>
+      <td class='value'>669,159</td>
+      <td class='value'>107</td>
+      <td class='value'>58</td>
+      <td class='value'>508</td>
+      <td class='value'>85</td>
+      <td class='value'>78</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=MOZ">Mozambique</a></td>
+      <td class='value'>18,292</td>
+      <td class='value'>777,123</td>
+      <td class='value'>44</td>
+      <td class='value'>402</td>
+      <td class='value'>42</td>
+      <td class='value'>78</td>
+      <td class='value'>78</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=MMR">Myanmar</a></td>
+      <td class='value'>47,749</td>
+      <td class='value'>669,310</td>
+      <td class='value'>49</td>
+      <td class='value'>284</td>
+      <td class='value'>165</td>
+      <td class='value'>90</td>
+      <td class='value'>64</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=NAM">Namibia</a></td>
+      <td class='value'>1,757</td>
+      <td class='value'>819,964</td>
+      <td class='value'>90</td>
+      <td class='value'>102</td>
+      <td class='value'>18</td>
+      <td class='value'>24</td>
+      <td class='value'>34</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=NRU">Nauru</a></td>
+      <td class='value'>12</td>
+      <td class='value'>18</td>
+      <td class='value'>4</td>
+      <td class='value'>1</td>
+      <td class='value'>12</td>
+      <td class='value'>1</td>
+      <td class='value'>1</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=NPL">Nepal</a></td>
+      <td class='value'>23,043</td>
+      <td class='value'>139,087</td>
+      <td class='value'>43</td>
+      <td class='value'>75</td>
+      <td class='value'>302</td>
+      <td class='value'>41</td>
+      <td class='value'>45</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=ANT">Netherland Antilles</a></td>
+      <td class='value'>215</td>
+      <td class='value'>818</td>
+      <td class='value'>3</td>
+      <td class='value'>71</td>
+      <td class='value'>2</td>
+      <td class='value'>4</td>
+      <td class='value'>1</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=NLD">Netherlands</a></td>
+      <td class='value'>15,864</td>
+      <td class='value'>41,364</td>
+      <td class='value'>9</td>
+      <td class='value'>469</td>
+      <td class='value'>33</td>
+      <td class='value'>87</td>
+      <td class='value'>230</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=NCL">New Caledonia</a></td>
+      <td class='value'>215</td>
+      <td class='value'>18,837</td>
+      <td class='value'>52</td>
+      <td class='value'>7</td>
+      <td class='value'>31</td>
+      <td class='value'>3</td>
+      <td class='value'>10</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=NZL">New Zealand</a></td>
+      <td class='value'>3,778</td>
+      <td class='value'>265,334</td>
+      <td class='value'>27</td>
+      <td class='value'>371</td>
+      <td class='value'>10</td>
+      <td class='value'>51</td>
+      <td class='value'>113</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=NIC">Nicaragua</a></td>
+      <td class='value'>5,071</td>
+      <td class='value'>118,279</td>
+      <td class='value'>29</td>
+      <td class='value'>144</td>
+      <td class='value'>37</td>
+      <td class='value'>32</td>
+      <td class='value'>40</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=NER">Niger</a></td>
+      <td class='value'>10,832</td>
+      <td class='value'>1,157,232</td>
+      <td class='value'>95</td>
+      <td class='value'>129</td>
+      <td class='value'>76</td>
+      <td class='value'>36</td>
+      <td class='value'>40</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=NGA">Nigeria</a></td>
+      <td class='value'>113,862</td>
+      <td class='value'>904,235</td>
+      <td class='value'>41</td>
+      <td class='value'>538</td>
+      <td class='value'>231</td>
+      <td class='value'>167</td>
+      <td class='value'>138</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=NIU">Niue</a></td>
+      <td class='value'>2</td>
+      <td class='value'>267</td>
+      <td class='value'>16</td>
+      <td class='value'>1</td>
+      <td class='value'>2</td>
+      <td class='value'>0</td>
+      <td class='value'>--</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=NFK">Norfolk Island</a></td>
+      <td class='value'>--</td>
+      <td class='value'>40</td>
+      <td class='value'>4</td>
+      <td class='value'>3</td>
+      <td class='value'>1</td>
+      <td class='value'>0</td>
+      <td class='value'>--</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=MNP">Northern Mariana Islands</a></td>
+      <td class='value'>73</td>
+      <td class='value'>466</td>
+      <td class='value'>3</td>
+      <td class='value'>72</td>
+      <td class='value'>1</td>
+      <td class='value'>1</td>
+      <td class='value'>13</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=NOR">Norway</a></td>
+      <td class='value'>4,469</td>
+      <td class='value'>318,524</td>
+      <td class='value'>27</td>
+      <td class='value'>434</td>
+      <td class='value'>10</td>
+      <td class='value'>74</td>
+      <td class='value'>305</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=PSE">Occupied Palestinian Territory</a></td>
+      <td class='value'>3,191</td>
+      <td class='value'>6,006</td>
+      <td class='value'>19</td>
+      <td class='value'>16</td>
+      <td class='value'>199</td>
+      <td class='value'>20</td>
+      <td class='value'>226</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=OMN">Oman</a></td>
+      <td class='value'>2,538</td>
+      <td class='value'>304,190</td>
+      <td class='value'>134</td>
+      <td class='value'>60</td>
+      <td class='value'>37</td>
+      <td class='value'>13</td>
+      <td class='value'>25</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=PAK">Pakistan</a></td>
+      <td class='value'>141,256</td>
+      <td class='value'>785,320</td>
+      <td class='value'>87</td>
+      <td class='value'>104</td>
+      <td class='value'>1,309</td>
+      <td class='value'>354</td>
+      <td class='value'>202</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=PLW">Palau</a></td>
+      <td class='value'>19</td>
+      <td class='value'>463</td>
+      <td class='value'>8</td>
+      <td class='value'>7</td>
+      <td class='value'>3</td>
+      <td class='value'>3</td>
+      <td class='value'>2</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=PAN">Panama</a></td>
+      <td class='value'>2,856</td>
+      <td class='value'>74,515</td>
+      <td class='value'>33</td>
+      <td class='value'>67</td>
+      <td class='value'>41</td>
+      <td class='value'>23</td>
+      <td class='value'>40</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=PNG">Papua New Guinea</a></td>
+      <td class='value'>4,809</td>
+      <td class='value'>464,043</td>
+      <td class='value'>152</td>
+      <td class='value'>20</td>
+      <td class='value'>241</td>
+      <td class='value'>23</td>
+      <td class='value'>33</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=PRY">Paraguay</a></td>
+      <td class='value'>5,496</td>
+      <td class='value'>395,886</td>
+      <td class='value'>41</td>
+      <td class='value'>236</td>
+      <td class='value'>21</td>
+      <td class='value'>20</td>
+      <td class='value'>37</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=PER">Peru</a></td>
+      <td class='value'>25,662</td>
+      <td class='value'>1,289,475</td>
+      <td class='value'>27</td>
+      <td class='value'>1,800</td>
+      <td class='value'>13</td>
+      <td class='value'>171</td>
+      <td class='value'>644</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=PHL">Philippines</a></td>
+      <td class='value'>75,653</td>
+      <td class='value'>295,408</td>
+      <td class='value'>14</td>
+      <td class='value'>1,541</td>
+      <td class='value'>49</td>
+      <td class='value'>134</td>
+      <td class='value'>130</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=PCN">Pitcairn</a></td>
+      <td class='value'>0</td>
+      <td class='value'>41</td>
+      <td class='value'>6</td>
+      <td class='value'>1</td>
+      <td class='value'>0</td>
+      <td class='value'>0</td>
+      <td class='value'>--</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=POL">Poland</a></td>
+      <td class='value'>38,605</td>
+      <td class='value'>311,195</td>
+      <td class='value'>11</td>
+      <td class='value'>2,489</td>
+      <td class='value'>16</td>
+      <td class='value'>263</td>
+      <td class='value'>226</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=PRT">Portugal</a></td>
+      <td class='value'>10,016</td>
+      <td class='value'>91,421</td>
+      <td class='value'>5</td>
+      <td class='value'>4,228</td>
+      <td class='value'>2</td>
+      <td class='value'>68</td>
+      <td class='value'>460</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=PRI">Puerto Rico</a></td>
+      <td class='value'>3,915</td>
+      <td class='value'>8,985</td>
+      <td class='value'>11</td>
+      <td class='value'>78</td>
+      <td class='value'>51</td>
+      <td class='value'>1</td>
+      <td class='value'>216</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=QAT">Qatar</a></td>
+      <td class='value'>565</td>
+      <td class='value'>10,973</td>
+      <td class='value'>35</td>
+      <td class='value'>9</td>
+      <td class='value'>70</td>
+      <td class='value'>2</td>
+      <td class='value'>10</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=MDA">Republic of Moldova</a></td>
+      <td class='value'>4,295</td>
+      <td class='value'>34,012</td>
+      <td class='value'>26</td>
+      <td class='value'>49</td>
+      <td class='value'>88</td>
+      <td class='value'>40</td>
+      <td class='value'>26</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=REU">Reunion</a></td>
+      <td class='value'>721</td>
+      <td class='value'>2,548</td>
+      <td class='value'>50</td>
+      <td class='value'>1</td>
+      <td class='value'>719</td>
+      <td class='value'>4</td>
+      <td class='value'>24</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=ROU">Romania</a></td>
+      <td class='value'>22,438</td>
+      <td class='value'>237,057</td>
+      <td class='value'>9</td>
+      <td class='value'>2,935</td>
+      <td class='value'>7</td>
+      <td class='value'>308</td>
+      <td class='value'>864</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=RUS">Russia</a></td>
+      <td class='value'>145,491</td>
+      <td class='value'>16,679,998</td>
+      <td class='value'>82</td>
+      <td class='value'>2,486</td>
+      <td class='value'>55</td>
+      <td class='value'>558</td>
+      <td class='value'>704</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=RWA">Rwanda</a></td>
+      <td class='value'>7,609</td>
+      <td class='value'>24,349</td>
+      <td class='value'>13</td>
+      <td class='value'>142</td>
+      <td class='value'>55</td>
+      <td class='value'>16</td>
+      <td class='value'>16</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=SHN">Saint Helena</a></td>
+      <td class='value'>6</td>
+      <td class='value'>127</td>
+      <td class='value'>7</td>
+      <td class='value'>3</td>
+      <td class='value'>2</td>
+      <td class='value'>0</td>
+      <td class='value'>1</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=KNA">Saint Kitts and Nevis</a></td>
+      <td class='value'>38</td>
+      <td class='value'>277</td>
+      <td class='value'>12</td>
+      <td class='value'>2</td>
+      <td class='value'>19</td>
+      <td class='value'>2</td>
+      <td class='value'>4</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=LCA">Saint Lucia</a></td>
+      <td class='value'>148</td>
+      <td class='value'>620</td>
+      <td class='value'>25</td>
+      <td class='value'>1</td>
+      <td class='value'>148</td>
+      <td class='value'>3</td>
+      <td class='value'>9</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=SPM">Saint Pierre and Miquelon</a></td>
+      <td class='value'>7</td>
+      <td class='value'>227</td>
+      <td class='value'>9</td>
+      <td class='value'>3</td>
+      <td class='value'>2</td>
+      <td class='value'>0</td>
+      <td class='value'>1</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=VCT">Saint Vincent</a></td>
+      <td class='value'>113</td>
+      <td class='value'>453</td>
+      <td class='value'>21</td>
+      <td class='value'>1</td>
+      <td class='value'>113</td>
+      <td class='value'>1</td>
+      <td class='value'>6</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=SMR">San Marino</a></td>
+      <td class='value'>27</td>
+      <td class='value'>62</td>
+      <td class='value'>8</td>
+      <td class='value'>1</td>
+      <td class='value'>26</td>
+      <td class='value'>1</td>
+      <td class='value'>4</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=STP">Sao Tome and Principe</a></td>
+      <td class='value'>138</td>
+      <td class='value'>1,008</td>
+      <td class='value'>22</td>
+      <td class='value'>2</td>
+      <td class='value'>72</td>
+      <td class='value'>3</td>
+      <td class='value'>11</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=SAU">Saudi Arabia</a></td>
+      <td class='value'>20,346</td>
+      <td class='value'>1,938,837</td>
+      <td class='value'>386</td>
+      <td class='value'>13</td>
+      <td class='value'>1,604</td>
+      <td class='value'>50</td>
+      <td class='value'>47</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=SEN">Senegal</a></td>
+      <td class='value'>9,421</td>
+      <td class='value'>196,151</td>
+      <td class='value'>46</td>
+      <td class='value'>93</td>
+      <td class='value'>107</td>
+      <td class='value'>38</td>
+      <td class='value'>37</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=SCG">Serbia and Montenegro</a></td>
+      <td class='value'>10,552</td>
+      <td class='value'>101,561</td>
+      <td class='value'>159</td>
+      <td class='value'>4</td>
+      <td class='value'>2,658</td>
+      <td class='value'>70</td>
+      <td class='value'>62</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=SYC">Seychelles</a></td>
+      <td class='value'>80</td>
+      <td class='value'>196</td>
+      <td class='value'>10</td>
+      <td class='value'>2</td>
+      <td class='value'>40</td>
+      <td class='value'>1</td>
+      <td class='value'>4</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=SLE">Sierra Leone</a></td>
+      <td class='value'>4,405</td>
+      <td class='value'>72,616</td>
+      <td class='value'>22</td>
+      <td class='value'>147</td>
+      <td class='value'>31</td>
+      <td class='value'>24</td>
+      <td class='value'>76</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=SGP">Singapore</a></td>
+      <td class='value'>4,018</td>
+      <td class='value'>597</td>
+      <td class='value'>9</td>
+      <td class='value'>8</td>
+      <td class='value'>488</td>
+      <td class='value'>8</td>
+      <td class='value'>1</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=SVK">Slovakia</a></td>
+      <td class='value'>5,399</td>
+      <td class='value'>48,875</td>
+      <td class='value'>4</td>
+      <td class='value'>2,919</td>
+      <td class='value'>2</td>
+      <td class='value'>66</td>
+      <td class='value'>137</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=SVN">Slovenia</a></td>
+      <td class='value'>1,988</td>
+      <td class='value'>20,224</td>
+      <td class='value'>2</td>
+      <td class='value'>5,989</td>
+      <td class='value'>0</td>
+      <td class='value'>29</td>
+      <td class='value'>116</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=SLB">Solomon Islands</a></td>
+      <td class='value'>447</td>
+      <td class='value'>28,707</td>
+      <td class='value'>54</td>
+      <td class='value'>10</td>
+      <td class='value'>42</td>
+      <td class='value'>1</td>
+      <td class='value'>4</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=SOM">Somalia</a></td>
+      <td class='value'>8,778</td>
+      <td class='value'>634,315</td>
+      <td class='value'>93</td>
+      <td class='value'>74</td>
+      <td class='value'>110</td>
+      <td class='value'>10</td>
+      <td class='value'>8</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=ZAF">South Africa</a></td>
+      <td class='value'>43,309</td>
+      <td class='value'>1,217,645</td>
+      <td class='value'>0</td>
+      <td class='value'>83,125</td>
+      <td class='value'>1</td>
+      <td class='value'>345</td>
+      <td class='value'>310</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=ESP">Spain</a></td>
+      <td class='value'>39,910</td>
+      <td class='value'>505,275</td>
+      <td class='value'>8</td>
+      <td class='value'>8,186</td>
+      <td class='value'>5</td>
+      <td class='value'>181</td>
+      <td class='value'>737</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=LKA">Sri Lanka</a></td>
+      <td class='value'>18,924</td>
+      <td class='value'>65,830</td>
+      <td class='value'>16</td>
+      <td class='value'>242</td>
+      <td class='value'>75</td>
+      <td class='value'>47</td>
+      <td class='value'>55</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=SDN">Sudan</a></td>
+      <td class='value'>31,095</td>
+      <td class='value'>2,492,385</td>
+      <td class='value'>171</td>
+      <td class='value'>85</td>
+      <td class='value'>358</td>
+      <td class='value'>73</td>
+      <td class='value'>71</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=SUR">Suriname</a></td>
+      <td class='value'>417</td>
+      <td class='value'>141,133</td>
+      <td class='value'>119</td>
+      <td class='value'>10</td>
+      <td class='value'>45</td>
+      <td class='value'>4</td>
+      <td class='value'>15</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=SJM">Svalbard</a></td>
+      <td class='value'>--</td>
+      <td class='value'>60,543</td>
+      <td class='value'>246</td>
+      <td class='value'>1</td>
+      <td class='value'>2</td>
+      <td class='value'>0</td>
+      <td class='value'>1</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=SWZ">Swaziland</a></td>
+      <td class='value'>925</td>
+      <td class='value'>17,410</td>
+      <td class='value'>66</td>
+      <td class='value'>4</td>
+      <td class='value'>247</td>
+      <td class='value'>5</td>
+      <td class='value'>15</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=SWE">Sweden</a></td>
+      <td class='value'>8,842</td>
+      <td class='value'>431,704</td>
+      <td class='value'>39</td>
+      <td class='value'>288</td>
+      <td class='value'>31</td>
+      <td class='value'>127</td>
+      <td class='value'>558</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=CHE">Switzerland</a></td>
+      <td class='value'>7,170</td>
+      <td class='value'>38,975</td>
+      <td class='value'>4</td>
+      <td class='value'>2,912</td>
+      <td class='value'>2</td>
+      <td class='value'>62</td>
+      <td class='value'>341</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=SYR">Syrian Arab Republic</a></td>
+      <td class='value'>16,189</td>
+      <td class='value'>184,366</td>
+      <td class='value'>119</td>
+      <td class='value'>13</td>
+      <td class='value'>1,241</td>
+      <td class='value'>58</td>
+      <td class='value'>36</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=TWN">Taiwan</a></td>
+      <td class='value'>--</td>
+      <td class='value'>36,223</td>
+      <td class='value'>42</td>
+      <td class='value'>21</td>
+      <td class='value'>1,030</td>
+      <td class='value'>10</td>
+      <td class='value'>89</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=TJK">Tajikistan</a></td>
+      <td class='value'>6,087</td>
+      <td class='value'>130,295</td>
+      <td class='value'>47</td>
+      <td class='value'>60</td>
+      <td class='value'>99</td>
+      <td class='value'>26</td>
+      <td class='value'>26</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=THA">Thailand</a></td>
+      <td class='value'>62,806</td>
+      <td class='value'>513,618</td>
+      <td class='value'>26</td>
+      <td class='value'>792</td>
+      <td class='value'>77</td>
+      <td class='value'>214</td>
+      <td class='value'>167</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=TGO">Togo</a></td>
+      <td class='value'>4,527</td>
+      <td class='value'>57,277</td>
+      <td class='value'>52</td>
+      <td class='value'>21</td>
+      <td class='value'>216</td>
+      <td class='value'>34</td>
+      <td class='value'>43</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=TKL">Tokelau</a></td>
+      <td class='value'>1</td>
+      <td class='value'>15</td>
+      <td class='value'>0</td>
+      <td class='value'>3</td>
+      <td class='value'>0</td>
+      <td class='value'>0</td>
+      <td class='value'>--</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=TON">Tonga</a></td>
+      <td class='value'>99</td>
+      <td class='value'>664</td>
+      <td class='value'>13</td>
+      <td class='value'>4</td>
+      <td class='value'>25</td>
+      <td class='value'>1</td>
+      <td class='value'>8</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=TTO">Trinidad and Tobago</a></td>
+      <td class='value'>1,294</td>
+      <td class='value'>5,202</td>
+      <td class='value'>13</td>
+      <td class='value'>30</td>
+      <td class='value'>41</td>
+      <td class='value'>3</td>
+      <td class='value'>21</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=TUN">Tunisia</a></td>
+      <td class='value'>9,459</td>
+      <td class='value'>147,882</td>
+      <td class='value'>80</td>
+      <td class='value'>23</td>
+      <td class='value'>416</td>
+      <td class='value'>64</td>
+      <td class='value'>114</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=TUR">Turkey</a></td>
+      <td class='value'>66,668</td>
+      <td class='value'>768,690</td>
+      <td class='value'>98</td>
+      <td class='value'>80</td>
+      <td class='value'>848</td>
+      <td class='value'>364</td>
+      <td class='value'>417</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=TKM">Turkmenistan</a></td>
+      <td class='value'>4,737</td>
+      <td class='value'>460,254</td>
+      <td class='value'>98</td>
+      <td class='value'>48</td>
+      <td class='value'>86</td>
+      <td class='value'>13</td>
+      <td class='value'>14</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=TCA">Turks and Caicos Islands</a></td>
+      <td class='value'>17</td>
+      <td class='value'>548</td>
+      <td class='value'>23</td>
+      <td class='value'>1</td>
+      <td class='value'>17</td>
+      <td class='value'>1</td>
+      <td class='value'>2</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=TUV">Tuvalu</a></td>
+      <td class='value'>10</td>
+      <td class='value'>32</td>
+      <td class='value'>2</td>
+      <td class='value'>9</td>
+      <td class='value'>1</td>
+      <td class='value'>0</td>
+      <td class='value'>--</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=UGA">Uganda</a></td>
+      <td class='value'>23,300</td>
+      <td class='value'>206,968</td>
+      <td class='value'>7</td>
+      <td class='value'>4,122</td>
+      <td class='value'>5</td>
+      <td class='value'>25</td>
+      <td class='value'>68</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=UKR">Ukraine</a></td>
+      <td class='value'>49,568</td>
+      <td class='value'>588,417</td>
+      <td class='value'>31</td>
+      <td class='value'>622</td>
+      <td class='value'>77</td>
+      <td class='value'>147</td>
+      <td class='value'>102</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=ARE">United Arab Emirates</a></td>
+      <td class='value'>2,606</td>
+      <td class='value'>74,777</td>
+      <td class='value'>97</td>
+      <td class='value'>8</td>
+      <td class='value'>399</td>
+      <td class='value'>11</td>
+      <td class='value'>9</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=GBR">United Kingdom</a></td>
+      <td class='value'>59,415</td>
+      <td class='value'>247,193</td>
+      <td class='value'>11</td>
+      <td class='value'>2,143</td>
+      <td class='value'>27</td>
+      <td class='value'>154</td>
+      <td class='value'>447</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=TZA">United Rep. of Tanzania</a></td>
+      <td class='value'>35,119</td>
+      <td class='value'>891,021</td>
+      <td class='value'>99</td>
+      <td class='value'>90</td>
+      <td class='value'>362</td>
+      <td class='value'>58</td>
+      <td class='value'>56</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=VIR">United States Virgin Islands</a></td>
+      <td class='value'>121</td>
+      <td class='value'>374</td>
+      <td class='value'>3</td>
+      <td class='value'>32</td>
+      <td class='value'>3</td>
+      <td class='value'>3</td>
+      <td class='value'>8</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=USA">United States of America</a></td>
+      <td class='value'>283,230</td>
+      <td class='value'>9,210,755</td>
+      <td class='value'>12</td>
+      <td class='value'>60,884</td>
+      <td class='value'>5</td>
+      <td class='value'>2,103</td>
+      <td class='value'>14,462</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=URY">Uruguay</a></td>
+      <td class='value'>3,337</td>
+      <td class='value'>173,985</td>
+      <td class='value'>96</td>
+      <td class='value'>19</td>
+      <td class='value'>171</td>
+      <td class='value'>40</td>
+      <td class='value'>106</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=UZB">Uzbekistan</a></td>
+      <td class='value'>24,881</td>
+      <td class='value'>412,914</td>
+      <td class='value'>45</td>
+      <td class='value'>208</td>
+      <td class='value'>118</td>
+      <td class='value'>94</td>
+      <td class='value'>83</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=VUT">Vanuatu</a></td>
+      <td class='value'>197</td>
+      <td class='value'>12,274</td>
+      <td class='value'>45</td>
+      <td class='value'>6</td>
+      <td class='value'>27</td>
+      <td class='value'>3</td>
+      <td class='value'>2</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=VEN">Venezuela</a></td>
+      <td class='value'>24,170</td>
+      <td class='value'>911,559</td>
+      <td class='value'>53</td>
+      <td class='value'>324</td>
+      <td class='value'>70</td>
+      <td class='value'>76</td>
+      <td class='value'>591</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=VNM">Viet Nam</a></td>
+      <td class='value'>78,137</td>
+      <td class='value'>328,535</td>
+      <td class='value'>6</td>
+      <td class='value'>10,476</td>
+      <td class='value'>7</td>
+      <td class='value'>119</td>
+      <td class='value'>55</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=WLF">Wallis and Futuna</a></td>
+      <td class='value'>14</td>
+      <td class='value'>176</td>
+      <td class='value'>9</td>
+      <td class='value'>2</td>
+      <td class='value'>7</td>
+      <td class='value'>0</td>
+      <td class='value'>2</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=WSM">Western Samoa</a></td>
+      <td class='value'>159</td>
+      <td class='value'>2,888</td>
+      <td class='value'>31</td>
+      <td class='value'>3</td>
+      <td class='value'>58</td>
+      <td class='value'>2</td>
+      <td class='value'>20</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=YEM">Yemen</a></td>
+      <td class='value'>18,349</td>
+      <td class='value'>415,196</td>
+      <td class='value'>43</td>
+      <td class='value'>227</td>
+      <td class='value'>77</td>
+      <td class='value'>43</td>
+      <td class='value'>33</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=ZMB">Zambia</a></td>
+      <td class='value'>10,421</td>
+      <td class='value'>745,317</td>
+      <td class='value'>114</td>
+      <td class='value'>57</td>
+      <td class='value'>173</td>
+      <td class='value'>38</td>
+      <td class='value'>44</td>
+    </tr>
+  
+    <tr>
+      <td><a href="?file=gpwv3&data=pcount&level=country&level-scope=country&level=country&code=ZWE">Zimbabwe</a></td>
+      <td class='value'>12,627</td>
+      <td class='value'>389,055</td>
+      <td class='value'>82</td>
+      <td class='value'>58</td>
+      <td class='value'>196</td>
+      <td class='value'>25</td>
+      <td class='value'>27</td>
+    </tr>
+  
+  </tbody>
+</table>
+      
+    
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+    <script type="text/javascript" src="scripts.js"></script>
+    <script xmlns="" src="https://sedac.ciesin.columbia.edu/SSI/ntpagetag.js" type="text/javascript" language="JavaScript"></script>
+    <noscript><img alt="" vspace="0" hspace="0" border="0" width="1" height="1" src="https://ws1.ems.eosdis.nasa.gov/images/ntpagetag.gif?js=0" /></noscript>
+    
+  </body>
+</html>
