@@ -2,12 +2,18 @@
 # Local (no GEE) replacement for the retired R/07_gee_dmsp_global.R.
 #
 # Extracts DMSP-OLS stable_lights zonal means (1992-2013) for all PLAD
-# countries at ADM2, falling back to ADM1 for the small set of countries
-# with no ADM2-level geometry -- identical country/geometry universe logic
-# to the original GEE script (GADM 4.1 geoboundaries per-country GeoJSONs,
-# data/raw/gadm_4.1/global/geoboundaries/<ISO3>_ADM{1,2}.geojson, with
-# data/raw/gadm_4.1/global/no_adm2_countries.txt forcing the ADM1 fallback
-# for a couple of territories even when an ADM2 file exists).
+# countries at ADM2, falling back to ADM1 for countries with no ADM2-level
+# geometry.
+#
+# Geometry: GADM 3.6 (data/raw/gadm_3.6/gadm36_levels.gpkg, layers level2/
+# level1) -- matches DHR's own replication panel and HR 2014's original
+# vintage exactly (DHR's `adm_2.csv.gz` uses GADM 3.6 GID_2 identifiers,
+# format COL.1.1_1). Previously this script used GADM 4.1 per-country
+# geoboundaries GeoJSONs, which required a GID crosswalk
+# (data/processed/gadm36_41_crosswalk.csv) to reconcile back to the
+# analysis panel's other GADM-3.6-vintage inputs (PLAD birthplace match,
+# GPWv4 population) -- switching the source geometry to GADM 3.6 directly
+# removes that translation step entirely for the core replication.
 #
 # Band: stable_lights (HR 2014 p.998's NOAA noise-cleaned product, not the
 # raw avg_vis band). Multi-satellite years are pixel-wise averaged by the
@@ -17,7 +23,7 @@
 # Output: data/processed/ntl/dmsp_adm2_panel.csv
 #   Columns: region_id, iso3, adm_level, year, dmsp_ntl
 #   (region_id = GID_2 for ADM2 rows, GID_1 for ADM1-fallback rows -- same
-#   schema 05_panel/01_build_analysis_panel.R expects.)
+#   schema 06_panel/01_build_analysis_panel.R expects.)
 
 library(sf)
 library(data.table)
@@ -25,44 +31,33 @@ library(data.table)
 source("00_utils/local_ntl_extraction.R")
 source("00_utils/dmsp_raster_catalog.R")
 
-gb_dir <- "data/raw/gadm_4.1/global/geoboundaries"
-no_adm2_file <- "data/raw/gadm_4.1/global/no_adm2_countries.txt"
-no_adm2 <- if (file.exists(no_adm2_file)) readLines(no_adm2_file) else character(0)
-
 plad  <- data.table::fread("data/raw/plad/PLAD_April_2024.tab", sep = "\t")
 iso3s <- sort(unique(plad$gid_0))
 iso3s <- iso3s[iso3s != "."]
 
-cat(sprintf("=== Load GADM 4.1 geoboundaries (ADM2, ADM1 fallback) for %d PLAD countries ===\n", length(iso3s)))
+cat(sprintf("=== Load GADM 3.6 (ADM2, ADM1 fallback) for %d PLAD countries ===\n", length(iso3s)))
 sf::sf_use_s2(FALSE)
 
-country_sf_list <- vector("list", length(iso3s))
-for (i in seq_along(iso3s)) {
-  iso3 <- iso3s[i]
-  adm2_file <- file.path(gb_dir, paste0(iso3, "_ADM2.geojson"))
-  adm1_file <- file.path(gb_dir, paste0(iso3, "_ADM1.geojson"))
-  use_adm2  <- !iso3 %in% no_adm2 && file.exists(adm2_file)
-  geo_file  <- if (use_adm2) adm2_file else adm1_file
-  adm_level <- if (use_adm2) "ADM2" else "ADM1"
-  if (!file.exists(geo_file)) next
+adm2 <- sf::st_read("data/raw/gadm_3.6/gadm36_levels.gpkg", layer = "level2", quiet = TRUE)
+sf::st_geometry(adm2) <- "geometry"
+adm2 <- adm2[adm2$GID_0 %in% iso3s, c("GID_0", "GID_2", "geometry")]
+data.table::setnames(adm2, c("GID_0", "GID_2"), c("iso3", "region_id"))
+adm2$adm_level <- "ADM2"
 
-  g <- tryCatch(sf::st_read(geo_file, quiet = TRUE), error = function(e) NULL)
-  if (is.null(g) || nrow(g) == 0) next
+adm1 <- sf::st_read("data/raw/gadm_3.6/gadm36_level1_only.gpkg", quiet = TRUE)
+sf::st_geometry(adm1) <- "geometry"
+adm1 <- adm1[adm1$GID_0 %in% iso3s, c("GID_0", "GID_1", "geometry")]
+data.table::setnames(adm1, c("GID_0", "GID_1"), c("iso3", "region_id"))
+adm1$adm_level <- "ADM1"
 
-  id_col <- if ("GID_2" %in% names(g)) "GID_2" else
-            if ("GID_1" %in% names(g)) "GID_1" else
-            if ("shapeID" %in% names(g)) "shapeID" else names(g)[1]
+# ADM1 fallback only for countries with no ADM2 geometry at all -- same
+# logic as the retired GADM 4.1 version (a couple of small territories
+# have no level2 breakdown in GADM).
+has_adm2 <- unique(adm2$iso3)
+adm1_fallback <- adm1[!adm1$iso3 %in% has_adm2, ]
 
-  g <- g[, c(id_col, "geometry")]
-  names(g)[1] <- "region_id"
-  g$iso3 <- iso3
-  g$adm_level <- adm_level
-  country_sf_list[[i]] <- g
-}
-country_sf_list <- country_sf_list[!vapply(country_sf_list, is.null, logical(1))]
-grid <- do.call(rbind, country_sf_list)
-rm(country_sf_list)
-sf::st_geometry(grid) <- "geometry"
+grid <- rbind(adm2[, c("region_id", "iso3", "adm_level")],
+              adm1_fallback[, c("region_id", "iso3", "adm_level")])
 cat(sprintf("Regions: %d | ADM2: %d | ADM1-fallback: %d | countries: %d\n",
     nrow(grid), sum(grid$adm_level == "ADM2"), sum(grid$adm_level == "ADM1"),
     data.table::uniqueN(grid$iso3)))
