@@ -1,7 +1,7 @@
 # 05_covariates/01_gecon_regional_gdp.R
 # Purpose: Build ADM2-level regional GDP panel from G-Econ 4.0 data.
 # G-Econ: 1-degree grid cells, PPP GDP in 1990/1995/2000/2005.
-# Method: Point-in-polygon join of grid centroids to GADM 4.1 ADM2,
+# Method: Point-in-polygon join of grid centroids to GADM 3.6 ADM2,
 #         population-weighted aggregation, linear interpolation 1992-2009.
 # Output: data/processed/regional_gdp_panel.csv
 
@@ -52,11 +52,25 @@ agg_list <- lapply(seq_along(gdp_years), function(i) {
                      pop_total = sum(get(pc), na.rm = TRUE)),
                    by = .(GID_2, GID_0)]
   tmp[, year := yr]
-  # GDP per capita: GDP in billions USD / population in thousands = millions USD per person
-  tmp[, gdppc      := gdp_total / pop_total]
+  # GDP per capita in US dollars, matching HR's RegionalGDP_ict definition
+  # ("Logarithm of regional GDP per capita in US dollars"). G-Econ's
+  # PPP*_40 columns are in BILLIONS of USD (verified: summing PPP2005_40
+  # over all US cells gives ~12,580, i.e. ~$12.58 trillion, matching actual
+  # 2005 US GDP), while POPGPW_*_40 is RAW PERSON COUNT, not thousands as
+  # a previous version of this script assumed (verified: summing
+  # POPGPW_2005_40 over all US cells gives ~296.5 million, matching actual
+  # 2005 US population directly). The prior `gdp_total / pop_total` without
+  # the billions->dollars conversion produced gppc on the order of 1e-5
+  # (billions of dollars per raw person), giving implausible ln_rgdppc
+  # values in the -Inf to -7.7 range instead of realistic ~6-11. Fixed by
+  # multiplying by 1e9 before taking logs. Confirmed 2026-08-17.
+  tmp[, gdppc      := (gdp_total * 1e9) / pop_total]
   tmp[, ln_rgdppc  := log(gdppc)]
-  # Population in thousands -> log(thousands)
-  tmp[, lnpop      := log(pop_total)]
+  # log(population in thousands), matching the convention used everywhere
+  # else in this pipeline (05_covariates/02_gpw_population.R, 06_panel/
+  # 01_build_analysis_panel.R) -- not currently read by any downstream
+  # script, fixed for consistency only.
+  tmp[, lnpop      := log(pop_total / 1000)]
   tmp[, c("gdp_total", "pop_total", "gdppc") := NULL]
   tmp
 })

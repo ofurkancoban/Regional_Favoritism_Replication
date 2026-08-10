@@ -39,7 +39,16 @@ cat(sprintf("Polity rows: %d | Language (time-invariant) countries: %d\n", nrow(
 cat("\n=== NationalGDP: Penn World Table 7.1 (HR's exact source) ===\n")
 data(pwt7.1, package = "pwt")
 pwt_dt <- data.table::as.data.table(pwt7.1)
-pwt_dt <- pwt_dt[year %in% years_rep & !is.na(rgdpch), .(iso3 = isocode, year, national_gdp = log(rgdpch))]
+# PWT 7.1 uses several non-ISO3166 legacy codes -- verified by diffing PWT's
+# code list against our analysis panel's iso3 set: GER (not DEU) for
+# Germany, ZAR (not COD, pre-1997 "Zaire" name) for DR Congo, ROM (not ROU)
+# for Romania. Remap before merging so these three countries aren't
+# silently dropped. Myanmar/North Korea/Kosovo are genuinely absent from
+# PWT 7.1 (real coverage gaps, not a coding issue -- nothing to remap).
+pwt_iso3_fix <- c(GER = "DEU", ZAR = "COD", ROM = "ROU")
+pwt_dt[, iso3_raw := as.character(isocode)]
+pwt_dt[, iso3 := data.table::fifelse(iso3_raw %in% names(pwt_iso3_fix), pwt_iso3_fix[iso3_raw], iso3_raw)]
+pwt_dt <- pwt_dt[year %in% years_rep & !is.na(rgdpch), .(iso3, year, national_gdp = log(rgdpch))]
 cat(sprintf("PWT 7.1 rows: %d | countries: %d\n", nrow(pwt_dt), data.table::uniqueN(pwt_dt$iso3)))
 
 cat("\n=== Schooling: Barro-Lee (already on disk) ===\n")
