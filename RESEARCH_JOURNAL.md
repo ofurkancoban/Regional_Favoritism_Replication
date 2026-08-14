@@ -338,7 +338,7 @@ Example chunking outcomes: Brazil (5,572 regions, 64 chunks, ~2.5 hours), Austra
 **Files:**
 - `data/processed/ntl/dmsp_stable_global_panel.csv` -- raw `stable_lights` panel by ADM2-year (1,074,575 rows, 172 countries)
 - `data/processed/ntl/ntl_stable_global_panel.csv` -- reformatted to match the analysis-panel build script's expected schema
-- `data/processed/analysis_panel.csv` -- **canonical panel**, overwritten with the corrected `stable_lights` version on 2026-08-07 (959,625 rows, 46,337 regions, 148 countries), including GPWv4 `lnpop` and `ln_ntlpc`
+- `data/processed/analysis_panel.csv` -- **canonical panel**, `stable_lights` NTL from the local extraction pipeline (958,266 rows, 46,266 regions, 148 countries), including GPWv4 `lnpop` and `ln_ntlpc`
 - `data/processed/analysis_panel_avgvis_deprecated.csv` -- old avg_vis-based panel, kept only as a reference backup
 - `R/07_gee_dmsp_global.R` -- corrected extraction script (band fix + chunking fallback)
 
@@ -385,7 +385,7 @@ HR 2014's Table IV robustness section tests whether the birth-region effect is a
 
 **Scripts:** `R/14_table4_col23.R` (initial approximation), `R/17_table4_col3_final.R` (final, exact)
 
-Col(2) uses ADM1 ("SN1") as the unit instead of ADM2, with `is_birthregion_sn1` = 1 if the ADM1 contains the leader's birth ADM2. Col(3) repeats this but "omit[s] all SN2 regions in which a political leader from our sample was ever born" (p. 1018) when computing each SN1's NTL average -- implemented via genuine `st_difference` hole-punching of the 582 affected ADM1 polygons (see `R/15_build_holepunched_adm1.R`), not a population/area-weighted approximation.
+Col(2) uses ADM1 ("SN1") as the unit instead of ADM2, with `is_birthregion_sn1` = 1 if the ADM1 contains the leader's birth ADM2. Col(3) repeats this but "omit[s] all SN2 regions in which a political leader from our sample was ever born" (p. 1018) when computing each SN1's NTL average -- implemented via genuine `st_difference` hole-punching of the 556 affected ADM1 polygons (see `03_geometry/02_build_holepunched_adm1.R`), not a population/area-weighted approximation.
 
 Both columns replicate directionally: HR report the Col(1)->Col(2) coefficient "drops by around one third" but stays significant, and Col(3) "becomes again slightly smaller but remains statistically significant" -- our estimates show the same pattern.
 
@@ -484,12 +484,12 @@ HR's original 126-country list was transcribed from the paper's own Supplementar
 - [x] Archigos 4.1 leader-spell cluster construction
 - [x] GPWv4 population panel (45,962 regions, 1993-2013)
 - [x] G-Econ 4.0 regional GDP panel (6,982 regions, 1992-2009)
-- [x] Analysis panel, corrected (`analysis_panel_stable.csv`, 959,625 obs, all variables merged)
+- [x] Analysis panel, corrected (`analysis_panel.csv`, 958,266 obs, all variables merged, local extraction)
 - [x] HR Table II replication Track 1: DHR + Archigos (all 8 columns)
 - [x] HR Table II replication Track 2: GEE + PLAD + GPWv4 + Archigos, corrected `stable_lights` band (all 8 columns) -- now matches Track 1 and HR 2014 closely
 - [x] Diagnosed and fixed `avg_vis` vs `stable_lights` DMSP-OLS band bug (Section 3.4)
 - [x] HR Table III: Dynamics of regional favoritism -- placebo/pretrend test passes cleanly (all Future/Past coefficients insignificant); Experience/TotalTenure interactions match HR's sign and magnitude (0.007-0.009), significant at * vs HR's *** (wider sample)
-- [x] HR Table IV Col(2)-(3): SN1 regions, full-area and hole-punched (exact `st_difference`, 582 affected ADM1s)
+- [x] HR Table IV Col(2)-(3): SN1 regions, full-area and hole-punched (exact `st_difference`, 556 affected ADM1s)
 - [x] HR Table IV Col(4)-(7): Grid-cell geographic extent, 50/100/200/400 km, local `exactextractr` pipeline (no GEE) -- coefficient attenuates with coarser resolution (50/100km significant, 200/400km not), confirmed robust to restricting to HR's original 126-country sample
 
 ### Pending
@@ -520,36 +520,53 @@ HR's original 126-country list was transcribed from the paper's own Supplementar
 
 ### Processed Data (`data/processed/`)
 
+As of 2026-08-14, **every NTL zonal-statistics output in this project is produced locally** (`terra` + `exactextractr`, no Google Earth Engine) from raw GeoTIFFs downloaded directly from EOG. See "Eliminating GEE: full local NTL pipeline" below for the migration. All deprecated/superseded outputs (old `avg_vis`-band panels, GEE-era by-country cache directories, GEE task logs, unused Turkey scratch files) were permanently deleted as part of that migration, not archived -- current state reflects only live, canonical files.
+
 | File | Description | Rows |
 |---|---|---|
-| `analysis_panel.csv` | **Canonical panel** -- corrected `stable_lights` NTL band + GPWv4 lnpop/ln_ntlpc (overwrote the old avg_vis-based version on 2026-08-07) | 959,625 |
-| `analysis_panel_avgvis_deprecated.csv` | Old panel built on wrong `avg_vis` NTL band, kept only as a reference backup -- do not use for analysis | 957,892 |
+| `analysis_panel.csv` | **Canonical panel** -- `stable_lights` NTL (local extraction) + GPWv4 lnpop/ln_ntlpc, ADM2-year | 958,266 |
 | `population_adm2.csv` | GPWv4 ADM2 population 1993-2013 | 965,202 |
 | `regional_gdp_panel.csv` | G-Econ ADM2 GDP 1992-2009 | 125,676 |
-| `plad_gadm_crosswalk.csv` | PLAD leaders to GADM ADM2 | 710 |
 | `gadm36_41_crosswalk.csv` | GADM 3.6 to 4.1 GID mapping | -- |
-| `ntl/dmsp_global_panel.csv` | **Superseded** -- raw DMSP NTL, wrong `avg_vis` band | 1,069,882 |
-| `ntl/dmsp_stable_global_panel.csv` | Raw DMSP NTL, corrected `stable_lights` band, by ADM2-year | 1,074,575 |
-| `ntl/ntl_stable_global_panel.csv` | `stable_lights` panel reformatted for `09_build_analysis_panel.R` schema | 1,027,099 |
+| `gadm_holepunched_adm1.gpkg` | 556 hole-punched ADM1 polygons (birth-ADM2 sub-regions removed) | 556 |
+| `grid_cells_{50,100,200,400}km.gpkg` | Global rectangular grid cells, per resolution | 65,036 / 18,794 / 5,933 / 2,131 |
 | `qog_subset.csv` | QoG country-year controls | -- |
+| `ntl/dmsp_adm2_panel.csv` | DMSP `stable_lights` zonal means, ADM2 (ADM1-fallback), 1992-2013, local | 1,070,938 |
+| `ntl/dmsp_adm1_panel.csv` | DMSP `stable_lights` zonal means, ADM1 full-area, 1992-2013, local (Table IV Col 2) | 69,366 |
+| `ntl/dmsp_adm1_holepunched_panel.csv` | DMSP `stable_lights` zonal means, hole-punched ADM1, 1992-2013, local (Table IV Col 3) | 12,232 |
+| `ntl/dmsp_grid{50,100,200,400}km_panel.csv` | DMSP `stable_lights` zonal means, grid cells, 1992-2013, local (Table IV Col 4-7) | 1,405,602 / 405,900 / 128,194 / 46,398 |
+| `ntl/viirs_adm2_panel.csv` | VIIRS VNL annual `average_masked` zonal means, ADM2, 2012-2024, local (extension, not HR 2014) | 634,790 |
 
-### R Scripts (`R/`)
+### Pipeline scripts (numbered top-level folders, replaces the old flat `R/`)
 
-| Script | Purpose |
+| Folder | Purpose |
 |---|---|
-| `00_session_info.R` | Package versions |
-| `01_data_download.R` | Initial data downloads |
-| `05_plad_gadm_crosswalk.R` | PLAD-GADM attribute join |
-| `05b_plad_spatial_join.R` | PLAD-GADM spatial join |
-| `05c_gadm36_crosswalk.R` | GADM 3.6/4.1 crosswalk |
-| `06_gecon_regional_gdp.R` | G-Econ to ADM2 aggregation |
-| `06b_gpw_population.R` | GPWv4 to ADM2 population |
-| `07_gee_dmsp_global.R` | GEE DMSP `stable_lights` extraction, with chunked fallback for large/complex-geometry countries (corrected; run on VPS) |
-| `07a_gee_dmsp_submit.R` | GEE DMSP task submission (legacy) |
-| `07b_gee_dmsp_download.R` | GEE DMSP results download (legacy) |
-| `09_build_analysis_panel.R` | Merge all sources to panel |
-| `10e_hr_table2_full.R` | Table II Track 1 (DHR+Archigos) |
-| `11_our_table2_full.R` | Table II Track 2 (GEE+PLAD+GPWv4), run against `analysis_panel_stable.csv` |
+| `00_utils/` | Shared local NTL extraction engine (`local_ntl_extraction.R`), DMSP/VIIRS raster catalogs, session info |
+| `01_download/` | Raw data acquisition -- GADM, QoG, DMSP raw GeoTIFFs (EOG), VIIRS raw GeoTIFFs (EOG) |
+| `02_crosswalk/` | PLAD-GADM attribute + spatial join, GADM 3.6/4.1 version crosswalk |
+| `03_geometry/` | Grid-cell construction, hole-punched ADM1 geometry (`st_difference`) |
+| `04_extraction/` | All NTL zonal extraction -- DMSP ADM2/ADM1/ADM1-holepunched/grid-cells, VIIRS ADM2 |
+| `05_covariates/` | G-Econ regional GDP, GPWv4 population, both aggregated to ADM2 |
+| `06_panel/` | Build the canonical `analysis_panel.csv` |
+| `07_regression/` | `table2/`, `table3/`, `table4/` -- all HR 2014 replication regressions |
+
+---
+
+## Eliminating GEE: full local NTL pipeline (2026-08-14)
+
+Every remaining Google Earth Engine zonal-extraction step (ADM2, ADM1 full-area, ADM1 hole-punched, VIIRS ADM2 -- the grid-cell step had already moved local, see the Table IV Col(4)-(7) section above) was rewritten to run entirely locally, once the raw VIIRS archive finished downloading (13 years, 2012-2024, direct from EOG).
+
+**Shared engine** (`00_utils/local_ntl_extraction.R`): generalizes the grid-cell pipeline's proven architecture (year-outer-loop, `exactextractr::exact_extract()` with the `majority_rule` summary function, per-year resume-cache) into one reusable function taking any polygon set + raster-year catalog. Four thin driver scripts in `04_extraction/` wire it to each geometry/source combination.
+
+**Methodology fidelity, preserved exactly per script:**
+- ADM2 (`04_extraction/01_dmsp_adm2.R`, replacing `R/07_gee_dmsp_global.R`): same GADM 4.1 geoboundaries geometry and ADM1-fallback logic as the retired GEE script (172 countries, 48,679 regions: 48,679 ADM2 + 122 ADM1-fallback).
+- ADM1 full (`04_extraction/02_dmsp_adm1_full.R`, replacing `R/13_gee_adm1_stable.R`): GADM 3.6 level1, same vintage as before.
+- ADM1 hole-punched (`04_extraction/03_dmsp_adm1_holepunched.R`, replacing `R/16_gee_adm1_holepunched.R`): the same 556-polygon hole-punched geometry.
+- VIIRS ADM2 (`04_extraction/05_viirs_adm2.R`, replacing `R/08a`/`R/08b`): **methodology deliberately changed**, not preserved -- the retired GEE script used VIIRS Monthly V1 (`avg_rad`, VCMCFG/VCMSLCFG), while the local version uses the Annual v2.1/v2.2 `average_masked` product downloaded this session (v2.1 fixes a real v2.0 averaging bug; v2.2 fixes an August 2022 SNPP sensor gap). HR 2014 itself uses no VIIRS at all (DMSP-only, 1992-2013), so there is no "original paper" spec to match here -- this is purely the project's own NTL-source extension.
+
+**Validation before deleting any GEE-era output:** each new panel was spot-checked against its old GEE-produced counterpart on the 1992 slice. ADM2: correlation 0.9995, mean abs diff 0.13 (0-63 scale). ADM1 full: correlation 0.97, mean abs diff 1.04, with the largest outliers concentrated in small/coastal/island ADM1 units (Sri Lanka, Bahrain, Hong Kong, Barbados, Mauritius) -- explained by the old GEE script's 500m geometric simplification (needed for GEE payload limits, absent locally), not a bug; the local, full-precision version is if anything more accurate. After validation, the full downstream chain was re-run end-to-end (`06_panel/01_build_analysis_panel.R` -> Table II Track 2, Table III, Table IV Col(2)-(3) and Col(4)-(7)) and every coefficient matched what had already been reported from the GEE-era pipeline, within the same small tolerance.
+
+**Performance root cause (documented for future reference):** `terra::extract()` was benchmarked at 19-26+ minutes for a single year's zonal-mean against a small polygon set. Profiling with macOS `sample` showed it rasterizes the polygon set over the *entire* raster extent (726M+ cells) on every call regardless of how few polygons are requested -- an algorithmic property of `terra`, not fixable by retiling the source GeoTIFF (tried) or reducing polygon count (chunking made it *worse*, since it multiplied redundant full-raster reads). `exactextractr::exact_extract()`, which reads only each polygon's own bounding-box window, reduced the same operation to ~11 seconds (~100x). Its default summary function is sub-pixel area-weighted (equivalent to `terra`'s much slower `exact=TRUE`); a custom `majority_rule` function (keep pixels with `coverage_fraction >= 0.5`, plain mean) was used instead to match GEE's own `reduceRegions(mean())` pixel-sampling semantics, preserving methodology while gaining the speedup.
 
 ---
 
