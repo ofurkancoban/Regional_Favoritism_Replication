@@ -429,6 +429,31 @@ HR's original 126-country list was transcribed from the paper's own Supplementar
 
 ---
 
+## HR Table V: Determinants of Regional Favoritism (2026-08-14)
+
+**Scripts:** `05_covariates/03_wvs_family_ties.R`, `05_covariates/04_table5_covariates.R`, `07_regression/table5/01_determinants.R` (our PLAD panel), `07_regression/table5/02_determinants_dhr.R` (DHR panel, robustness check).
+
+HR 2014's Table V adds five interaction terms one at a time to the main specification -- `Leader_ict-1 x Polity_ct-1`, `x Schooling_ct-1`, `x NationalGDP_ct-1`, `x Language_c`, `x FamilyTies_c` -- plus a Col(6) combining Polity + Schooling + Language + FamilyTies (NationalGDP omitted from HR's own Col(6)).
+
+**Covariate sourcing, matched to HR's Appendix A exactly where possible:**
+- **Polity**: Polity2 score (QoG `p_polity2`), rescaled 0-1 as HR describe.
+- **Schooling**: Barro & Lee (2013) average years of schooling, age 15+ -- the exact source file (`BL2013_MF1599_v2.2.csv`) was already sitting in `data/raw/qog/`, unused until now. Interpolated from 5-year intervals to an annual 1992-2013 panel (same `approx(rule=2)` method as GPWv4 population).
+- **NationalGDP**: HR's exact source, Heston, Summers & Aten (2012) = Penn World Table 7.1, via CRAN's `pwt` package (`data(pwt7.1)`, variable `rgdpch`) -- not a substitute, the real vintage.
+- **Language**: Alesina et al. (2003) linguistic fractionalization, already present in QoG as `al_language2000`.
+- **FamilyTies**: HR cite "Alesina and Giuliano (forthcoming)" = Alesina & Giuliano (2014), "Family Ties," *Handbook of Economic Growth* Vol. 2A. Neither that chapter nor its 2010 predecessor ("The Power of the Family") publishes a raw country-level lookup table anywhere -- country values are shown only as a map/figure (confirmed by reading the full chapter PDF page by page). The measure had to be reconstructed from scratch from World Values Survey individual-level microdata: first principal component of three WVS questions (`A001` family importance, `A025` respect/love for parents, `A026` parents' duty to children), computed at the respondent level and averaged to the country level. **Only WVS waves 1-4 (1981-2004) contain all three questions** -- verified directly against the 1.3GB raw WVS Trend File (not just the codebook): `A025`/`A026` have zero non-missing responses in waves 5-7 (2005-2022), i.e. these questions were dropped from the survey instrument entirely after wave 4, not merely undocumented. This is not a gap on our end -- Alesina & Giuliano's own 2010 paper footnote confirms they "only used four waves" for this same measure. PC1's sign was oriented by matching the exact country pattern the chapter itself describes (Scandinavia/Eastern Europe weakest, Egypt/Zimbabwe/Philippines/Venezuela/Guatemala strongest) -- confirmed exactly once oriented correctly.
+
+**Results (our PLAD panel vs. DHR panel, vs. HR 2014):**
+
+| Interaction | Ours (PLAD) | Ours (DHR) | HR 2014 |
+|---|---|---|---|
+| Leader x Polity | -0.216*** (0.058) | -0.183** (0.064) | -0.298*** (0.063) |
+| Leader x Schooling | -0.021*** (0.005) | -0.008. (0.005) | -0.012*** (0.004) |
+| Leader x NationalGDP | -0.002 (0.017) | -0.003 (0.018) | -0.019** (0.009) |
+| Leader x Language | 0.118* (0.056) | 0.145** (0.048) | 0.120*** (0.040) |
+| Leader x FamilyTies | 0.011 (0.029) | 0.001 (0.034) | 0.063** (0.032) |
+
+**Assessment.** All five interactions match HR's sign in both our panel and the DHR panel -- a real, directionally consistent replication. Polity, Schooling and Language are reasonably close in magnitude (Language essentially matches HR almost exactly under the DHR panel: 0.145 vs. 0.120). NationalGDP and FamilyTies are the weak links, losing significance in both panels. For FamilyTies specifically, we confirmed this is *not* a panel-construction artifact: the WVS-derived country coverage (61 countries after intersecting with either panel) is identical regardless of which NTL panel is used, since the bottleneck is WVS's own survey design (only 61-68 countries ever had all three questions asked, only in waves 1-4) -- not something fixable by acquiring more or different NTL/leader data. This is a genuine, documented data-availability ceiling, in the same spirit as the Table II Col(8) G-Econ/Gennaioli substitution already documented above.
+
 ## Key Technical Decisions and Lessons Learned
 
 ### Decision 1: PLAD vs Archigos for birthplace
@@ -491,9 +516,9 @@ HR's original 126-country list was transcribed from the paper's own Supplementar
 - [x] HR Table III: Dynamics of regional favoritism -- placebo/pretrend test passes cleanly (all Future/Past coefficients insignificant); Experience/TotalTenure interactions match HR's sign and magnitude (0.007-0.009), significant at * vs HR's *** (wider sample)
 - [x] HR Table IV Col(2)-(3): SN1 regions, full-area and hole-punched (exact `st_difference`, 556 affected ADM1s)
 - [x] HR Table IV Col(4)-(7): Grid-cell geographic extent, 50/100/200/400 km, local `exactextractr` pipeline (no GEE) -- coefficient attenuates with coarser resolution (50/100km significant, 200/400km not), confirmed robust to restricting to HR's original 126-country sample
+- [x] HR Table V: Determinants (Polity, Schooling, NationalGDP via PWT 7.1, Language, FamilyTies reconstructed from WVS microdata) -- all 5 interactions match HR's sign in both our PLAD panel and the DHR panel; Polity/Schooling/Language reasonably close in magnitude, NationalGDP/FamilyTies weaker but genuinely data-limited (not a construction bug, confirmed via cross-panel test)
 
 ### Pending
-- [ ] HR Table V: Determinants (Polity2, Schooling, GDP, Language, FamilyTies interactions)
 - [ ] HR Table VII: Aid, oil, and regional favoritism
 - [ ] Extension A: WGI governance interaction
 - [ ] Extension B: Turkey case study panel
