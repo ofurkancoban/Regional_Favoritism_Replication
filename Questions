@@ -1,0 +1,28 @@
+Questions 
+
+When you change the nightlight data from 1 km to 5 km, one pixel becomes 25 square kilometers. Doesn't this completely hide the smaller tribes, or mix their data with larger neighbors? How can we be sure that your results are not biased toward the larger tribes?
+
+
+
+literature , what's the value of paper, cite literature, 
+
+dmsp viirs difference? açıklanabilir olmalı?
+
+dmps comes 0-1 
+viirs correct units
+
+how many pixels how many countries ? time information 
+
+
+what s the advantage of this model or what's wrong with it?
+
+why it s log transformed?
+
+
+t test if it's needed  
+
+
+sample size and t test 
+
+
+robustness analysis using different badwiths

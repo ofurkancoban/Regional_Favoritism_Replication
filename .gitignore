@@ -13,3 +13,4 @@ output/tables/
 *.7z
 .DS_Store
 renv/library/
+eogdata.mines.edu.har

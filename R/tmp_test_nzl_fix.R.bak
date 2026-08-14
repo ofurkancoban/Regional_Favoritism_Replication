@@ -1,0 +1,18 @@
+suppressWarnings(library(sf))
+sf::sf_use_s2(FALSE)
+
+simplify_metric <- function(geom, tol_m) {
+  geom_3857 <- sf::st_transform(sf::st_sfc(geom, crs = 4326), 3857)
+  geom_simplified <- sf::st_simplify(geom_3857, preserveTopology = TRUE, dTolerance = tol_m)
+  sf::st_geometry(sf::st_transform(geom_simplified, 4326))[[1]]
+}
+
+l1 <- sf::st_read("data/raw/gadm_3.6/gadm36_levels.gpkg", layer = "level1", quiet = TRUE)
+sf::st_geometry(l1) <- "geometry"
+
+geom1 <- sf::st_geometry(l1[l1$GID_1 == "NZL.1_1", ])[[1]]
+cat("raw coord rows:", nrow(sf::st_coordinates(sf::st_sfc(geom1))), "\n")
+
+clean10 <- simplify_metric(geom1, 10)
+cat("after proper 10m simplify: coord rows:", nrow(sf::st_coordinates(sf::st_sfc(clean10))),
+    "valid:", sf::st_is_valid(sf::st_sfc(clean10)), "\n")

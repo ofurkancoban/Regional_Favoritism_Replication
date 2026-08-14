@@ -1,9 +1,14 @@
 # R/07_gee_dmsp_global.R
-# Purpose: Week 3 -- extract DMSP-OLS annual zonal statistics (1992-2013)
+# Purpose: Extract DMSP-OLS annual zonal statistics (1992-2013)
 # for all PLAD countries using ADM2 boundaries (ADM1 fallback).
-# Output: data/processed/ntl/dmsp_global_panel.csv
+# Output: data/processed/ntl/dmsp_stable_global_panel.csv
 #
 # Resume-safe: results are written per country. Already-done countries are skipped.
+#
+# Large/complex-geometry countries: if building a single FeatureCollection for
+# the whole country fails (or reduceRegions fails for any year), the country is
+# reprocessed by recursively splitting its regions into smaller feature chunks
+# at FULL geometry precision (no simplification), so no polygon detail is lost.
 
 library(reticulate)
 library(sf)
@@ -13,13 +18,16 @@ source("R/utils/gee_helpers.R")
 
 # ---- Settings ----
 gb_dir   <- "data/raw/gadm_4.1/global/geoboundaries"  # GADM JSON files stored here by 06
-out_dir  <- "data/processed/ntl/dmsp_by_country"
+out_dir  <- "data/processed/ntl/dmsp_stable_by_country"
 dir.create(out_dir, showWarnings = FALSE, recursive = TRUE)
 dir.create("data/processed/ntl", showWarnings = FALSE, recursive = TRUE)
 
-years    <- 1992:2013
-dtol     <- 500   # geometry simplification tolerance (meters)
-scale_m  <- 1000L # DMSP native resolution ~1 km
+years         <- 1992:2013
+dtol          <- 500   # geometry simplification tolerance (meters) -- single-FC fast path only
+scale_m       <- 1000L # DMSP native resolution ~1 km
+chunk_max_mb  <- 8      # max geojson payload per chunk
+chunk_max_n   <- 100    # max features per chunk (initial split) -- payload check still
+                        # splits further if a chunk's geojson exceeds chunk_max_mb
 
 no_adm2_file <- "data/raw/gadm_4.1/global/no_adm2_countries.txt"
 no_adm2 <- if (file.exists(no_adm2_file)) readLines(no_adm2_file) else character(0)
@@ -33,9 +41,12 @@ iso3s <- iso3s[iso3s != "."]
 gee_initialize()
 ee <- reticulate::import("ee")
 
-# DMSP-OLS collection: annual composites, band avg_vis (matches HR 2014)
+# DMSP-OLS collection: annual composites, band stable_lights.
+# HR 2014 (p. 998) use NOAA's noise-cleaned product: readings likely to
+# reflect fires, ephemeral lights, or background noise are set to zero.
+# This is the "stable_lights" band, not the raw "avg_vis" band.
 # Multiple satellites may exist per year -- take mean across satellites.
-dmsp_col <- ee$ImageCollection("NOAA/DMSP-OLS/NIGHTTIME_LIGHTS")$select("avg_vis")
+dmsp_col <- ee$ImageCollection("NOAA/DMSP-OLS/NIGHTTIME_LIGHTS")$select("stable_lights")
 
 get_year_image <- function(yr) {
   dmsp_col$
@@ -43,7 +54,7 @@ get_year_image <- function(yr) {
     mean()
 }
 
-# ---- Helper: sf -> GEE FeatureCollection ----
+# ---- Fast path: sf -> single GEE FeatureCollection (simplified geometry) ----
 sf_to_gee <- function(sf_obj, id_col, tol = dtol) {
   sf_sub <- sf_obj[, c(id_col, "geometry")]
   sf_sub <- sf::st_simplify(sf_sub, preserveTopology = TRUE, dTolerance = tol)
@@ -55,14 +66,7 @@ sf_to_gee <- function(sf_obj, id_col, tol = dtol) {
   gjson <- paste(readLines(tmp, warn = FALSE), collapse = "")
 
   payload_mb <- round(nchar(gjson) / 1e6, 2)
-  # Iteratively simplify until payload < 9 MB
-  for (extra_tol in c(1000, 2000, 5000, 10000)) {
-    if (payload_mb <= 9) break
-    sf_sub <- sf::st_simplify(sf_sub, preserveTopology = TRUE, dTolerance = extra_tol)
-    sf::st_write(sf_sub, tmp, driver = "GeoJSON", quiet = TRUE, delete_dsn = TRUE)
-    gjson <- paste(readLines(tmp, warn = FALSE), collapse = "")
-    payload_mb <- round(nchar(gjson) / 1e6, 2)
-  }
+  if (payload_mb > 9) stop("payload too large for single FC")
 
   reticulate::py_run_string(paste0(
     "import json, ee\n",
@@ -71,6 +75,81 @@ sf_to_gee <- function(sf_obj, id_col, tol = dtol) {
     "'))"
   ))
   list(fc = reticulate::py$`_fc`, mb = payload_mb, n = nrow(sf_sub))
+}
+
+# ---- Fallback path: recursive chunking at FULL precision (no simplify) ----
+sf_chunk_to_fc <- function(sf_chunk, id_col) {
+  sf_sub <- sf_chunk[, c(id_col, "geometry")]
+  sf_sub <- sf::st_transform(sf_sub, 4326)
+  tmp <- tempfile(fileext = ".geojson")
+  on.exit(unlink(tmp), add = TRUE)
+  sf::st_write(sf_sub, tmp, driver = "GeoJSON", quiet = TRUE, delete_dsn = TRUE)
+  gjson <- paste(readLines(tmp, warn = FALSE), collapse = "")
+  round(nchar(gjson) / 1e6, 2) -> payload_mb
+  list(gjson = gjson, mb = payload_mb)
+}
+
+# Recursively split sf_obj into chunks small enough to upload, at full precision.
+build_chunk_fcs <- function(sf_obj, id_col, max_mb = chunk_max_mb, max_n = chunk_max_n) {
+  n <- nrow(sf_obj)
+  if (n == 0) return(list())
+
+  if (n <= max_n) {
+    obj <- sf_chunk_to_fc(sf_obj, id_col)
+    if (obj$mb <= max_mb || n == 1) {
+      reticulate::py_run_string(paste0(
+        "import json, ee\n",
+        "_fc_chunk = ee.FeatureCollection(json.loads('",
+        gsub("'", "\\'", obj$gjson, fixed = TRUE),
+        "'))"
+      ))
+      return(list(reticulate::py$`_fc_chunk`))
+    }
+    # payload still too big even at <=max_n features -- split further
+  }
+
+  half <- max(1L, floor(n / 2))
+  c(
+    build_chunk_fcs(sf_obj[seq_len(half), ], id_col, max_mb, max_n),
+    build_chunk_fcs(sf_obj[(half + 1):n, ], id_col, max_mb, max_n)
+  )
+}
+
+# Process a country via chunked, full-precision geometry.
+process_country_chunked <- function(sf_obj, id_col, iso3, adm_level) {
+  fcs <- tryCatch(build_chunk_fcs(sf_obj, id_col), error = function(e) NULL)
+  if (is.null(fcs) || length(fcs) == 0) return(list(status = "chunk_error", rows = NULL))
+
+  rows <- data.table::rbindlist(lapply(years, function(yr) {
+    img <- tryCatch(get_year_image(yr), error = function(e) NULL)
+    if (is.null(img)) return(NULL)
+
+    chunk_feats <- lapply(fcs, function(fc) {
+      tryCatch(
+        img$reduceRegions(collection = fc, reducer = ee$Reducer$mean(), scale = scale_m)$getInfo()[["features"]],
+        error = function(e) NULL
+      )
+    })
+    feats <- unlist(chunk_feats, recursive = FALSE)
+    if (length(feats) == 0) return(NULL)
+
+    dt <- data.table::rbindlist(lapply(feats, function(f) {
+      as.data.frame(f[["properties"]], stringsAsFactors = FALSE)
+    }), fill = TRUE)
+    dt[, year      := yr]
+    dt[, iso3      := iso3]
+    dt[, adm_level := adm_level]
+    if ("mean" %in% names(dt)) data.table::setnames(dt, "mean", "dmsp_stable_lights")
+    dt
+  }), fill = TRUE)
+
+  if (is.null(rows) || nrow(rows) == 0) return(list(status = "chunk_error", rows = NULL))
+
+  list(
+    status = sprintf("ok_chunked_%s_%dr_%dchunks_%dyr",
+                      adm_level, nrow(sf_obj), length(fcs), uniqueN(rows$year)),
+    rows = rows
+  )
 }
 
 # ---- Process one country ----
@@ -96,48 +175,45 @@ process_country <- function(iso3) {
             if ("shapeID" %in% names(sf_obj)) "shapeID" else
             names(sf_obj)[1]
 
+  # ---- Fast path: single simplified FeatureCollection ----
   gee_obj <- tryCatch(sf_to_gee(sf_obj, id_col), error = function(e) NULL)
-  if (is.null(gee_obj)) return("gee_error")
 
-  # Extract zonal mean per year; retry with ADM1 fallback on persistent error
-  retry_adm1 <- FALSE
-  rows <- data.table::rbindlist(lapply(years, function(yr) {
-    img <- tryCatch(get_year_image(yr), error = function(e) NULL)
-    if (is.null(img)) return(data.table(year = yr, error = "img_error"))
-
-    result <- tryCatch(
-      img$reduceRegions(
-        collection = gee_obj$fc,
-        reducer    = ee$Reducer$mean(),
-        scale      = scale_m
-      )$getInfo()[["features"]],
-      error = function(e) {
-        # Retry once with higher simplification
-        tryCatch({
-          gee_retry <- sf_to_gee(sf_obj, id_col, tol = 5000)
-          img$reduceRegions(
-            collection = gee_retry$fc,
-            reducer    = ee$Reducer$mean(),
-            scale      = scale_m
-          )$getInfo()[["features"]]
-        }, error = function(e2) NULL)
-      }
-    )
-    if (is.null(result)) return(data.table(year = yr, error = "reduce_error"))
-
-    dt <- data.table::rbindlist(lapply(result, function(f) {
-      props <- f[["properties"]]
-      as.data.frame(props, stringsAsFactors = FALSE)
+  if (!is.null(gee_obj)) {
+    rows <- data.table::rbindlist(lapply(years, function(yr) {
+      img <- tryCatch(get_year_image(yr), error = function(e) NULL)
+      if (is.null(img)) return(NULL)
+      result <- tryCatch(
+        img$reduceRegions(
+          collection = gee_obj$fc,
+          reducer    = ee$Reducer$mean(),
+          scale      = scale_m
+        )$getInfo()[["features"]],
+        error = function(e) NULL
+      )
+      if (is.null(result)) return(NULL)
+      dt <- data.table::rbindlist(lapply(result, function(f) {
+        as.data.frame(f[["properties"]], stringsAsFactors = FALSE)
+      }), fill = TRUE)
+      dt[, year      := yr]
+      dt[, iso3      := iso3]
+      dt[, adm_level := adm_level]
+      if ("mean" %in% names(dt)) data.table::setnames(dt, "mean", "dmsp_stable_lights")
+      dt
     }), fill = TRUE)
-    dt[, year      := yr]
-    dt[, iso3      := iso3]
-    dt[, adm_level := adm_level]
-    if ("mean" %in% names(dt)) data.table::setnames(dt, "mean", "dmsp_avg_vis")
-    dt
-  }), fill = TRUE)
 
-  data.table::fwrite(rows, out_file)
-  return(sprintf("ok_%s_%dr", adm_level, nrow(sf_obj)))
+    n_years_ok <- if (is.null(rows)) 0L else uniqueN(rows$year)
+    if (n_years_ok == length(years)) {
+      data.table::fwrite(rows, out_file)
+      return(sprintf("ok_%s_%dr", adm_level, nrow(sf_obj)))
+    }
+    # else: partial failure -- fall through to chunked fallback for full precision + robustness
+  }
+
+  # ---- Fallback path: recursive chunking, full precision, no simplify ----
+  chunked <- process_country_chunked(sf_obj, id_col, iso3, adm_level)
+  if (is.null(chunked$rows)) return("chunk_error")
+  data.table::fwrite(chunked$rows, out_file)
+  return(chunked$status)
 }
 
 # ---- Main loop ----
@@ -155,7 +231,7 @@ cat("\nAssembling global panel...\n")
 csv_files <- list.files(out_dir, pattern = "_dmsp\\.csv$", full.names = TRUE)
 panel <- data.table::rbindlist(lapply(csv_files, data.table::fread), fill = TRUE)
 
-data.table::fwrite(panel, "data/processed/ntl/dmsp_global_panel.csv")
+data.table::fwrite(panel, "data/processed/ntl/dmsp_stable_global_panel.csv")
 cat(sprintf("Panel saved: %d rows, %d columns\n", nrow(panel), ncol(panel)))
 cat(sprintf("Countries: %d | Years: %d-%d\n",
     uniqueN(panel$iso3), min(panel$year, na.rm = TRUE), max(panel$year, na.rm = TRUE)))
