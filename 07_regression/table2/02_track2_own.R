@@ -27,12 +27,14 @@ arch <- data.table::as.data.table(haven::read_dta("data/raw/archigos/Archigos_4.
 arch[, startyear := as.integer(substr(startdate, 1, 4))]
 arch[, endyear   := as.integer(substr(enddate,   1, 4))]
 arch <- arch[!is.na(startyear) & !is.na(endyear)]
-arch[, iso3 := suppressWarnings(countrycode::countrycode(ccode, "cown", "iso3c"))]
+arch[, iso3 := suppressWarnings(countrycode::countrycode(ccode, "cown", "iso3c",
+  custom_match = c("260" = "DEU", "340" = "SRB", "345" = "SRB", "678" = "YEM")))]
 arch <- arch[!is.na(iso3)]
 
 arch_yr <- arch[, {
-  yrs <- seq(max(startyear, 1993L), min(endyear, 2013L))
-  if (length(yrs) == 0L) yrs <- integer(0)
+  lo <- max(startyear, 1993L)
+  hi <- min(endyear, 2013L)
+  yrs <- if (lo > hi) integer(0) else seq(lo, hi)
   .(year = yrs, iso3 = iso3)
 }, by = .(obsid)]
 arch_yr <- arch_yr[year %between% c(1993L, 2013L)]
@@ -77,11 +79,17 @@ m3 <- fixest::feols(
   data = d_fe, vcov = ~spell_cluster
 )
 
-cat("=== Col(4): + lagged light + pop (dynamic panel) ===\n")
+cat("=== Col(4): + lagged light (dynamic panel) ===\n")
+# HR 2014 Table II (p. 1010): Pop_ict's row is blank under column (4) --
+# verified by precise character-position alignment of the table's PDF text
+# against the header row's column markers (Pop_ict's coefficient 0.958***
+# aligns to column 7, not column 4). No population control here, unlike a
+# previous version of this script which incorrectly included `lnpop`.
+# Confirmed 2026-08-17.
 d_fe4 <- fixest::panel(
-  d[!is.na(is_birthregion) & !is.na(ln_ntl_lag) & !is.na(lnpop)], ~gid_2 + year)
+  d[!is.na(is_birthregion) & !is.na(ln_ntl_lag)], ~gid_2 + year)
 m4 <- fixest::feols(
-  ln_ntl ~ fixest::l(is_birthregion) + ln_ntl_lag + lnpop | gid_2 + gid_0^year,
+  ln_ntl ~ fixest::l(is_birthregion) + ln_ntl_lag | gid_2 + gid_0^year,
   data = d_fe4, vcov = ~spell_cluster
 )
 
@@ -115,18 +123,22 @@ gdp <- gdp[!is.na(ln_rgdppc) & is.finite(ln_rgdppc)]
 gdp[, gid_base := sub("_[0-9]+$", "", GID_2)]
 d[,   gid_base := sub("_[0-9]+$", "", gid_2)]
 
+# HR 2014 Table II (p. 1010): Pop_ict's row DOES have a coefficient under
+# column (8) (0.201***) -- verified by the same character-position
+# alignment check as Col(4) above. A previous version of this script
+# omitted the population control here. Confirmed 2026-08-17.
 gdp_d <- merge(
   gdp[, .(gid_base = sub("_[0-9]+$","",GID_2), GID_2, GID_0, year, ln_rgdppc)],
-  d[, .(gid_base, gid_2, gid_0 = iso3, year, is_birthregion, spell_cluster)],
+  d[, .(gid_base, gid_2, gid_0 = iso3, year, is_birthregion, lnpop, spell_cluster)],
   by = c("gid_base", "year"), all.x = TRUE
 )
-gdp_d <- gdp_d[!is.na(is_birthregion)]
+gdp_d <- gdp_d[!is.na(is_birthregion) & !is.na(lnpop)]
 gdp_d <- merge(gdp_d, arch_yr[, .(iso3, year, spell_cluster_arch = spell_cluster)],
                by.x = c("gid_0","year"), by.y = c("iso3","year"), all.x = TRUE)
 gdp_d[is.na(spell_cluster), spell_cluster := gid_0]
 d_fe8 <- fixest::panel(gdp_d, ~GID_2 + year)
 m8 <- fixest::feols(
-  ln_rgdppc ~ fixest::l(is_birthregion) | GID_2 + GID_0^year,
+  ln_rgdppc ~ fixest::l(is_birthregion) + lnpop | GID_2 + GID_0^year,
   data = d_fe8, vcov = ~spell_cluster
 )
 
@@ -144,7 +156,7 @@ hr_bench <- list(
   list(col="(1) Leader_t-1",        hr_b=0.038, hr_se=0.014, m=m1, var=1),
   list(col="(2) Leader_t",          hr_b=0.039, hr_se=0.015, m=m2, var=1),
   list(col="(3) Leader_t-2",        hr_b=0.041, hr_se=0.013, m=m3, var=1),
-  list(col="(4) +lag light +pop",   hr_b=0.019, hr_se=0.010, m=m4, var=1),
+  list(col="(4) +lag light      ",   hr_b=0.019, hr_se=0.010, m=m4, var=1),
   list(col="(5) OLS no region FE",  hr_b=0.061, hr_se=0.010, m=m5, var=1),
   list(col="(6) Extensive margin",  hr_b=0.029, hr_se=0.013, m=m6, var=1),
   list(col="(7) Per capita light",  hr_b=0.062, hr_se=0.024, m=m7, var=1),

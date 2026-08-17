@@ -36,12 +36,14 @@ arch <- data.table::as.data.table(haven::read_dta("data/raw/archigos/Archigos_4.
 arch[, startyear := as.integer(substr(startdate, 1, 4))]
 arch[, endyear   := as.integer(substr(enddate,   1, 4))]
 arch <- arch[!is.na(startyear) & !is.na(endyear)]
-arch[, iso3 := suppressWarnings(countrycode::countrycode(ccode, "cown", "iso3c"))]
+arch[, iso3 := suppressWarnings(countrycode::countrycode(ccode, "cown", "iso3c",
+  custom_match = c("260" = "DEU", "340" = "SRB", "345" = "SRB", "678" = "YEM")))]
 arch <- arch[!is.na(iso3)]
 
 arch_yr <- arch[, {
-  yrs <- seq(max(startyear, 1992L), min(endyear, 2009L))
-  if (length(yrs) == 0L) yrs <- integer(0)
+  lo <- max(startyear, 1992L)
+  hi <- min(endyear, 2009L)
+  yrs <- if (lo > hi) integer(0) else seq(lo, hi)
   .(year = yrs, iso3 = iso3)
 }, by = .(obsid)]
 arch_yr <- arch_yr[year %between% c(1992L, 2009L)]
@@ -92,10 +94,14 @@ m3 <- fixest::feols(
   data = d_fe, vcov = ~spell_cluster
 )
 
-# Col(4): + lagged light + pop (dynamic panel, region FE)
+# Col(4): + lagged light (dynamic panel, region FE)
+# HR 2014 Table II (p. 1010): Pop_ict's row is blank under column (4) --
+# verified by character-position alignment of the table's PDF text against
+# the header row (Pop_ict's 0.958*** coefficient aligns to column 7, not
+# column 4). No population control here. Confirmed 2026-08-17.
 d_fe4 <- fixest::panel(d[!is.na(is_birthregion) & !is.na(ln_light_lag)], ~gid_2 + year)
 m4 <- fixest::feols(
-  ln_light ~ fixest::l(is_birthregion) + ln_light_lag + lnpop | gid_2 + gid_0^year,
+  ln_light ~ fixest::l(is_birthregion) + ln_light_lag | gid_2 + gid_0^year,
   data = d_fe4, vcov = ~spell_cluster
 )
 
@@ -122,18 +128,25 @@ m7 <- fixest::feols(
 
 # Col(8): RegionalGDP_ict -- G-Econ proxy (see data deviation note in header)
 cat("\n=== Col(8): Loading G-Econ regional GDP panel ===\n")
+# HR 2014 Table II (p. 1010): Pop_ict's row DOES have a coefficient under
+# column (8) (0.201***) -- verified by the same alignment check as Col(4)
+# above. Confirmed 2026-08-17.
 gdp <- data.table::fread("data/processed/regional_gdp_panel.csv")
 gdp <- gdp[!is.na(ln_rgdppc) & is.finite(ln_rgdppc)]
-gdp_d <- merge(gdp, d[, .(gid_0, gid_2, year, is_birthregion)],
+# G-Econ's own panel also carries an (unused) lnpop column -- drop it so the
+# merge below doesn't produce lnpop.x/lnpop.y; we want the main panel's
+# GPWv4-derived lnpop, not G-Econ's own population figure.
+gdp[, lnpop := NULL]
+gdp_d <- merge(gdp, d[, .(gid_0, gid_2, year, is_birthregion, lnpop)],
                by.x = c("GID_0", "GID_2", "year"),
                by.y = c("gid_0", "gid_2", "year"), all.x = TRUE)
 gdp_d <- merge(gdp_d, arch_yr[, .(GID_0 = iso3, year, spell_cluster)],
                by = c("GID_0", "year"), all.x = TRUE)
 gdp_d[is.na(spell_cluster), spell_cluster := GID_0]
-gdp_d <- gdp_d[!is.na(is_birthregion)]
+gdp_d <- gdp_d[!is.na(is_birthregion) & !is.na(lnpop)]
 d_fe8 <- fixest::panel(gdp_d, ~GID_2 + year)
 m8 <- fixest::feols(
-  ln_rgdppc ~ fixest::l(is_birthregion) | GID_2 + GID_0^year,
+  ln_rgdppc ~ fixest::l(is_birthregion) + lnpop | GID_2 + GID_0^year,
   data = d_fe8, vcov = ~spell_cluster
 )
 
@@ -152,7 +165,7 @@ hr_bench <- list(
   list(col="(1) Leader_t-1",        hr_b=0.038, hr_se=0.014, m=m1, var=1),
   list(col="(2) Leader_t",          hr_b=0.039, hr_se=0.015, m=m2, var=1),
   list(col="(3) Leader_t-2",        hr_b=0.041, hr_se=0.013, m=m3, var=1),
-  list(col="(4) +lag light +pop",   hr_b=0.019, hr_se=0.010, m=m4, var=1),
+  list(col="(4) +lag light      ",   hr_b=0.019, hr_se=0.010, m=m4, var=1),
   list(col="(5) OLS no region FE",  hr_b=0.061, hr_se=0.010, m=m5, var=1),
   list(col="(6) Extensive margin",  hr_b=0.029, hr_se=0.013, m=m6, var=1),
   list(col="(7) Per capita light",  hr_b=0.062, hr_se=0.024, m=m7, var=1),
