@@ -41,6 +41,13 @@ library(countrycode)
 
 cat("=== Load analysis panel (canonical, stable_lights) ===\n")
 d <- data.table::fread("data/processed/analysis_panel.csv")
+# HR 2014 exact-sample restriction test (2026-08-17): drop countries with
+# avg population < 500,000 and ADM2 regions entirely above 65N latitude,
+# matching HR's own stated exclusion criteria (p. 1001).
+hr126 <- data.table::fread("data/raw/plad/hr2014_126_countries.csv")
+hr_65n <- data.table::fread("data/processed/hr_excluded_above65n_regions.csv")
+d <- d[iso3 %in% hr126$iso3]
+d <- d[!gid_2 %in% hr_65n$gid_2]
 cat(sprintf("Panel: %d obs | %d regions | %d countries\n",
     nrow(d), uniqueN(d$gid_2), uniqueN(d$iso3)))
 
@@ -55,11 +62,11 @@ arch <- arch[!is.na(iso3)]
 
 arch_yr <- arch[, {
   lo <- max(startyear, 1992L)
-  hi <- min(endyear, 2013L)
+  hi <- min(endyear, 2009L)
   yrs <- if (lo > hi) integer(0) else seq(lo, hi)
   .(year = yrs, iso3 = iso3)
 }, by = .(obsid)]
-arch_yr <- arch_yr[year %between% c(1992L, 2013L)]
+arch_yr <- arch_yr[year %between% c(1992L, 2009L)]
 data.table::setorder(arch_yr, iso3, year, obsid)
 arch_yr <- unique(arch_yr, by = c("iso3", "year"))
 data.table::setorder(arch_yr, iso3, year)
@@ -89,11 +96,11 @@ cat("\n=== Build country-year current-leader table (Experience, TotalTenure) ===
 spells[, spell_row := .I]
 cur_leader <- spells[, {
   lo <- max(startyear, 1992L)
-  hi <- min(endyear, 2013L)
+  hi <- min(endyear, 2009L)
   yrs <- if (lo > hi) integer(0) else seq(lo, hi)
   .(year = yrs, startyear = startyear, endyear = endyear, totaltenure = totaltenure)
 }, by = .(gid_0, spell_row)]
-cur_leader <- cur_leader[year %between% c(1992L, 2013L)]
+cur_leader <- cur_leader[year %between% c(1992L, 2009L)]
 data.table::setorder(cur_leader, gid_0, year)
 cur_leader <- unique(cur_leader, by = c("gid_0", "year"))
 cur_leader[, experience := year - startyear]
@@ -110,7 +117,7 @@ future_rows <- spells[, {
     future3 = 1L, future1 = as.integer(yrs == startyear - 1L),
     pretrend = startyear - yrs)
 }, by = .(spell_row)]
-future_rows <- future_rows[year %between% c(1992L, 2013L)]
+future_rows <- future_rows[year %between% c(1992L, 2009L)]
 future_rows[, spell_row := NULL]
 future_rows <- unique(future_rows, by = c("gid_2", "gid_0", "year"))
 
@@ -120,7 +127,7 @@ past_rows <- spells[, {
     past3 = 1L, past1 = as.integer(yrs == endyear + 1L),
     posttrend = yrs - endyear)
 }, by = .(spell_row)]
-past_rows <- past_rows[year %between% c(1992L, 2013L)]
+past_rows <- past_rows[year %between% c(1992L, 2009L)]
 past_rows[, spell_row := NULL]
 past_rows <- unique(past_rows, by = c("gid_2", "gid_0", "year"))
 
