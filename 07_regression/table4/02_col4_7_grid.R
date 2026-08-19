@@ -56,7 +56,32 @@ plad_yr <- plad[, {
 plad_yr <- plad_yr[year %between% range(years_rep)]
 data.table::setorder(plad_yr, gid_0, year)
 plad_yr <- unique(plad_yr, by = c("gid_0", "year"))
-cat(sprintf("Country-years with a birthplace-located leader: %d (%d countries)\n",
+cat(sprintf("PLAD country-years with a birthplace-located leader: %d (%d countries)\n",
+    nrow(plad_yr), uniqueN(plad_yr$gid_0)))
+
+# Supplement PLAD gaps with Wikidata-geocoded coordinates for the leaders it
+# has no birthplace for (see RESEARCH_JOURNAL.md, "PLAD coverage gap"
+# section, 2026-08-17). Point-in-country validity is enforced downstream by
+# the existing `join_dt[gid_0 == GID_0]` filter (line ~121), so it's safe to
+# include all resolved coordinates here, not just the pre-validated subset
+# -- any wrong-country geocode (e.g. a leader genuinely born abroad) simply
+# fails that filter and contributes no birth cell, same as PLAD entries would.
+wd_coords <- data.table::fread("data/processed/wikidata_supplement_coords.csv")
+wd_coords_yr <- wd_coords[, {
+  yr_seq <- seq(max(startyear, min(years_rep)), min(endyear, max(years_rep)))
+  if (length(yr_seq) == 0) yr_seq <- integer(0)
+  .(year = yr_seq, gid_0 = iso3, latitude = lat, longitude = lon)
+}, by = .(leader, iso3, startyear, endyear)]
+wd_coords_yr <- wd_coords_yr[year %between% range(years_rep)]
+wd_coords_yr <- wd_coords_yr[!plad_yr, on = .(gid_0, year)]
+data.table::setorder(wd_coords_yr, gid_0, year)
+wd_coords_yr <- unique(wd_coords_yr, by = c("gid_0", "year"))
+cat(sprintf("Wikidata supplement: %d additional country-years | %d countries\n",
+    nrow(wd_coords_yr), uniqueN(wd_coords_yr$gid_0)))
+
+plad_yr <- rbind(plad_yr[, .(leader, gid_0, year, latitude, longitude)],
+                  wd_coords_yr[, .(leader, gid_0, year, latitude, longitude)])
+cat(sprintf("Combined (PLAD + Wikidata supplement): %d country-years | %d countries\n",
     nrow(plad_yr), uniqueN(plad_yr$gid_0)))
 
 birth_pts <- sf::st_as_sf(plad_yr, coords = c("longitude", "latitude"), crs = 4326)
@@ -74,12 +99,14 @@ arch <- data.table::as.data.table(haven::read_dta("data/raw/archigos/Archigos_4.
 arch[, startyear := as.integer(substr(startdate, 1, 4))]
 arch[, endyear   := as.integer(substr(enddate,   1, 4))]
 arch <- arch[!is.na(startyear) & !is.na(endyear)]
-arch[, iso3 := suppressWarnings(countrycode::countrycode(ccode, "cown", "iso3c"))]
+arch[, iso3 := suppressWarnings(countrycode::countrycode(ccode, "cown", "iso3c",
+  custom_match = c("260" = "DEU", "340" = "SRB", "345" = "SRB", "678" = "YEM")))]
 arch <- arch[!is.na(iso3)]
 
 arch_yr <- arch[, {
-  yrs <- seq(max(startyear, min(years_rep)), min(endyear, max(years_rep)))
-  if (length(yrs) == 0L) yrs <- integer(0)
+  lo <- max(startyear, min(years_rep))
+  hi <- min(endyear, max(years_rep))
+  yrs <- if (lo > hi) integer(0) else seq(lo, hi)
   .(year = yrs, iso3 = iso3)
 }, by = .(obsid)]
 arch_yr <- arch_yr[year %between% range(years_rep)]

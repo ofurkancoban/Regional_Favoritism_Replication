@@ -22,16 +22,31 @@ library(countrycode)
 cat("=== Load canonical ADM2 panel (for birth-region flags and gid_1 universe) ===\n")
 d2 <- data.table::fread("data/processed/analysis_panel.csv")
 d2 <- d2[year %between% c(1992L, 2013L)]
-d2[, birth_gid1 := data.table::fcase(
-  grepl("^[A-Z]{3}\\.[0-9]+\\.[0-9]+_[0-9]+$", birth_gid2),
-  sub("(\\.[0-9]+)\\.[0-9]+_[0-9]+$", "\\1_1", birth_gid2),
-  grepl("^[A-Z]{3}\\.[0-9]+_[0-9]+$", birth_gid2),
-  birth_gid2,
-  default = NA_character_
-)]
 n_before <- nrow(d2)
 d2 <- d2[gid_1 != ""]
 cat(sprintf("Dropped %d rows with malformed gid_1 (out of %d)\n", n_before - nrow(d2), n_before))
+
+# analysis_panel.csv no longer carries a broadcast `birth_gid2` column (it
+# was replaced by a per-row `is_birthregion` flag so that country-years
+# with multiple concurrent leaders -- e.g. Bosnia's rotating presidency --
+# can correctly have more than one TRUE birth region; see
+# 06_panel/01_build_analysis_panel.R Step 3). Derive the SN1-level
+# (gid_1, gid_0, year) birth-region membership table directly from that
+# flag, converting each birth ADM2's gid_2 to its parent gid_1, as a
+# membership join rather than a scalar merge -- otherwise concurrent-leader
+# country-years would silently collapse to a single birth region.
+birth_gid1_ry <- unique(d2[is_birthregion == TRUE, .(
+  gid_1 = data.table::fcase(
+    grepl("^[A-Z]{3}\\.[0-9]+\\.[0-9]+_[0-9]+$", gid_2),
+    sub("(\\.[0-9]+)\\.[0-9]+_[0-9]+$", "\\1_1", gid_2),
+    grepl("^[A-Z]{3}\\.[0-9]+_[0-9]+$", gid_2),
+    gid_2,
+    default = NA_character_
+  ),
+  gid_0, year
+)])
+birth_gid1_ry <- birth_gid1_ry[!is.na(gid_1)]
+cat(sprintf("Birth-region (gid_1, year) rows: %d\n", nrow(birth_gid1_ry)))
 
 cat("\n=== Load Col(2) full-area ADM1 stable_lights (baseline for unaffected regions) ===\n")
 adm1_full <- data.table::fread("data/processed/ntl/dmsp_adm1_panel.csv")
@@ -53,20 +68,15 @@ sn1_ntl[, dmsp_ntl_sn1_excl := data.table::fcase(
 )]
 cat(sprintf("Regions using real hole-punched value: %d\n", uniqueN(sn1_ntl[!is.na(dmsp_ntl_holed), gid_1])))
 
-cat("\n=== Build SN1-level is_birthregion (country-year) ===\n")
-sn1_birth <- unique(d2[has_leader == 1, .(gid_0, year, birth_gid1)])
-data.table::setorder(sn1_birth, gid_0, year)
-sn1_birth <- unique(sn1_birth, by = c("gid_0", "year"))
-
 cat("\n=== Build SN1 region universe and assemble panel ===\n")
 sn1_regions <- unique(d2[, .(gid_1, gid_0)])
 years_rep <- 1992:2013
 sn1 <- sn1_regions[, .(year = years_rep), by = .(gid_1, gid_0)]
 sn1 <- merge(sn1, sn1_ntl[, .(gid_1, gid_0, year, dmsp_ntl_sn1 = dmsp_ntl_full, dmsp_ntl_sn1_excl)],
              by = c("gid_1", "gid_0", "year"), all.x = TRUE)
-sn1 <- merge(sn1, sn1_birth, by = c("gid_0", "year"), all.x = TRUE)
 
-sn1[, is_birthregion_sn1 := !is.na(birth_gid1) & gid_1 == birth_gid1]
+sn1[, is_birthregion_sn1 := FALSE]
+sn1[birth_gid1_ry, on = .(gid_1, gid_0, year), is_birthregion_sn1 := TRUE]
 sn1 <- sn1[gid_0 %in% unique(d2[has_leader == 1, gid_0])]
 
 cat(sprintf("SN1 panel: %d rows | %d regions | %d countries\n",
@@ -82,12 +92,14 @@ arch <- data.table::as.data.table(haven::read_dta("data/raw/archigos/Archigos_4.
 arch[, startyear := as.integer(substr(startdate, 1, 4))]
 arch[, endyear   := as.integer(substr(enddate,   1, 4))]
 arch <- arch[!is.na(startyear) & !is.na(endyear)]
-arch[, iso3 := suppressWarnings(countrycode::countrycode(ccode, "cown", "iso3c"))]
+arch[, iso3 := suppressWarnings(countrycode::countrycode(ccode, "cown", "iso3c",
+  custom_match = c("260" = "DEU", "340" = "SRB", "345" = "SRB", "678" = "YEM")))]
 arch <- arch[!is.na(iso3)]
 
 arch_yr <- arch[, {
-  yrs <- seq(max(startyear, 1992L), min(endyear, 2013L))
-  if (length(yrs) == 0L) yrs <- integer(0)
+  lo <- max(startyear, 1992L)
+  hi <- min(endyear, 2013L)
+  yrs <- if (lo > hi) integer(0) else seq(lo, hi)
   .(year = yrs, iso3 = iso3)
 }, by = .(obsid)]
 arch_yr <- arch_yr[year %between% c(1992L, 2013L)]
