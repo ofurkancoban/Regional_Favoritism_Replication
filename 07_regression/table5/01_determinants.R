@@ -2,8 +2,11 @@
 # HR 2014 Table V: Determinants of Regional Favoritism.
 # Spec (p.1020-1021): ln_ntl ~ l(is_birthregion) + l(is_birthregion):X | gid_2 + gid_0^year
 # for X in {Polity, Schooling, NationalGDP, Language, FamilyTies}, plus a
-# combined Col(6) with Polity + Schooling + Language + FamilyTies together
-# (HR's own Col(6) omits NationalGDP -- matched here).
+# combined Col(6) with all five determinants together -- confirmed against
+# the paper text ("In column (6), we look at all five potential
+# determinants together," p.1022) and the table's own Col(6) values, which
+# include Leader x NationalGDP = 0.050***. A previous version of this
+# script incorrectly omitted NationalGDP from Col(6).
 #
 # Covariates: 05_covariates/04_table5_covariates.R (Polity2 rescaled 0-1,
 # Barro-Lee schooling interpolated to annual, QoG PWT-based GDP per capita,
@@ -38,12 +41,14 @@ arch <- data.table::as.data.table(haven::read_dta("data/raw/archigos/Archigos_4.
 arch[, startyear := as.integer(substr(startdate, 1, 4))]
 arch[, endyear   := as.integer(substr(enddate,   1, 4))]
 arch <- arch[!is.na(startyear) & !is.na(endyear)]
-arch[, iso3 := suppressWarnings(countrycode::countrycode(ccode, "cown", "iso3c"))]
+arch[, iso3 := suppressWarnings(countrycode::countrycode(ccode, "cown", "iso3c",
+  custom_match = c("260" = "DEU", "340" = "SRB", "345" = "SRB", "678" = "YEM")))]
 arch <- arch[!is.na(iso3)]
 
 arch_yr <- arch[, {
-  yrs <- seq(max(startyear, 1992L), min(endyear, 2013L))
-  if (length(yrs) == 0L) yrs <- integer(0)
+  lo <- max(startyear, 1992L)
+  hi <- min(endyear, 2013L)
+  yrs <- if (lo > hi) integer(0) else seq(lo, hi)
   .(year = yrs, iso3 = iso3)
 }, by = .(obsid)]
 arch_yr <- arch_yr[year %between% c(1992L, 2013L)]
@@ -67,17 +72,21 @@ data.table::setorder(d, gid_2, year)
 d_fe <- fixest::panel(d, ~gid_2 + year)
 
 cat("\n=== Table V regressions ===\n")
-m1 <- fixest::feols(ln_ntl ~ fixest::l(is_birthregion) * polity | gid_2 + gid_0^year,
+# HR's notation is Leader_ict-1 x Polity_ct-1 / Schooling_ct-1 / NationalGDP_ct-1
+# -- the time-varying covariates are ALSO lagged one period, not just Leader.
+# Language_c and FamilyTies_c carry no time subscript (time-invariant), so
+# they are correctly left unlagged.
+m1 <- fixest::feols(ln_ntl ~ fixest::l(is_birthregion) * fixest::l(polity) | gid_2 + gid_0^year,
                      data = d_fe, vcov = ~spell_cluster)
-m2 <- fixest::feols(ln_ntl ~ fixest::l(is_birthregion) * schooling | gid_2 + gid_0^year,
+m2 <- fixest::feols(ln_ntl ~ fixest::l(is_birthregion) * fixest::l(schooling) | gid_2 + gid_0^year,
                      data = d_fe, vcov = ~spell_cluster)
-m3 <- fixest::feols(ln_ntl ~ fixest::l(is_birthregion) * national_gdp | gid_2 + gid_0^year,
+m3 <- fixest::feols(ln_ntl ~ fixest::l(is_birthregion) * fixest::l(national_gdp) | gid_2 + gid_0^year,
                      data = d_fe, vcov = ~spell_cluster)
 m4 <- fixest::feols(ln_ntl ~ fixest::l(is_birthregion) * language | gid_2 + gid_0^year,
                      data = d_fe, vcov = ~spell_cluster)
 m5 <- fixest::feols(ln_ntl ~ fixest::l(is_birthregion) * family_ties | gid_2 + gid_0^year,
                      data = d_fe, vcov = ~spell_cluster)
-m6 <- fixest::feols(ln_ntl ~ fixest::l(is_birthregion) * (polity + schooling + language + family_ties) | gid_2 + gid_0^year,
+m6 <- fixest::feols(ln_ntl ~ fixest::l(is_birthregion) * (fixest::l(polity) + fixest::l(schooling) + fixest::l(national_gdp) + language + family_ties) | gid_2 + gid_0^year,
                      data = d_fe, vcov = ~spell_cluster)
 
 fixest::etable(m1, m2, m3, m4, m5, m6,
@@ -91,6 +100,9 @@ cat("Col(2) HR: Leader 0.119*** (0.040), Leader x Schooling -0.012*** (0.004)\n"
 cat("Col(3) HR: Leader 0.196** (0.082), Leader x NationalGDP -0.019** (0.009)\n")
 cat("Col(4) HR: Leader -0.008 (0.017), Leader x Language 0.120*** (0.040)\n")
 cat("Col(5) HR: Leader 0.008 (0.012), Leader x FamilyTies 0.063** (0.032)\n")
+cat("Col(6) HR: Leader 0.036 (0.134), Leader x Polity -0.240*** (0.065),\n")
+cat("           Leader x Schooling -0.024*** (0.007), Leader x NationalGDP 0.050*** (0.018),\n")
+cat("           Leader x Language 0.016 (0.052), Leader x FamilyTies 0.035 (0.034)\n")
 
 out_dir <- "data/processed/ntl"
 saveRDS(list(m1 = m1, m2 = m2, m3 = m3, m4 = m4, m5 = m5, m6 = m6),
