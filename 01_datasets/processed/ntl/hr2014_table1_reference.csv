@@ -1,0 +1,3 @@
+variable,obs,mean,sd_overall,sd_between,sd_within,min,max
+Lightict,690495,0.05,2.482,2.425,0.538,-4.605,4.143
+Leaderict-1,690495,0.004,0.06,0.045,0.04,0,1
