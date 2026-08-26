@@ -1,0 +1,1876 @@
+/*-- scss:defaults --*/
+
+// Regional Favoritism -- academic conference-talk theme.
+// One consistent visual system throughout (no light/dark slide-to-slide
+// switching): warm paper ground, ink text, deep-navy headings, a single
+// restrained gold accent used only for rules and the current section.
+
+$paper:        #fbf9f4;
+$paper-panel:  #f3efe3;
+$ink:          #24211c;
+$ink-soft:     #6b6459;
+$ink-faint:    #a29a89;
+$navy:         #1d2f52;
+$navy-soft:    #3a4d73;
+$gold:         #a97e2f;
+$gold-soft:    #e4d3a8;
+$rule:         #e3dac2;
+
+$body-bg: $paper;
+$body-color: $ink;
+$link-color: $navy;
+$selection-bg: $gold-soft;
+
+$presentation-heading-color: $navy;
+$presentation-heading-font: "Fraunces", Georgia, serif;
+$presentation-heading-font-weight: 600;
+$presentation-font-size-root: 26px;
+$presentation-line-height: 1.5;
+
+$mainFont: "Helvetica Neue", Helvetica, Arial, sans-serif;
+$font-family-sans-serif: "Helvetica Neue", Helvetica, Arial, sans-serif;
+$presentation-font: "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+$code-block-bg: $paper-panel;
+$code-color: $navy-soft;
+
+/*-- scss:rules --*/
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+// Progress Indicator extension colors
+:root {
+  --primary-color: #{$navy};
+  --completed-color: #{$gold};
+  --inactive-color: #{$rule};
+}
+
+html, body { background: $paper; }
+
+.reveal {
+  font-family: $presentation-font;
+  font-size: 26px;
+  color: $ink;
+
+  .slides { text-align: left; }
+
+  // Defensive override: with transition:none, reveal.js doesn't always
+  // attach the [data-transition] positioning CSS that normally pins the
+  // current/nearby slides to top:0/left:0 -- without it, absolutely
+  // positioned sections fall back to their in-flow static position and
+  // stack below one another (each ~1 slide-height lower), clipping
+  // content off the bottom of the viewport. Force the correct position
+  // unconditionally rather than depend on that mechanism.
+  .slides section {
+    top: 0 !important;
+    left: 0 !important;
+  }
+
+  // Quarto auto-adds `.center` to any slide with sparse content
+  // (heading-only section slides, the title slide) which forces reveal's
+  // own centered/flex layout and overrides our left-aligned system --
+  // cancel it uniformly, then each slide type below re-establishes its
+  // own intentional layout.
+  .slides section.center {
+    display: block !important;
+    text-align: left !important;
+  }
+  .slides section.center.section-slide,
+  .slides section.center#title-slide,
+  .slides section.center#thank-you-slide,
+  .slides section#thank-you-slide {
+    display: flex !important;
+  }
+
+  ::selection { background: $selection-bg; }
+
+  h1, h2, h3 { font-family: $presentation-heading-font; letter-spacing: -0.01em; }
+  h1 { font-weight: 700; color: $navy; }
+  h2 { font-weight: 600; color: $navy; }
+  h3 { font-weight: 600; color: $ink; }
+
+  p, li { line-height: 1.55; }
+
+  ul > li::marker { color: $gold; }
+
+  // ---------- Title slide ----------
+  // Quarto's cover page is <section id="title-slide" class="quarto-title-block center">
+  // -- `.title-slide` as a class is NOT unique to it (Quarto also stamps
+  // it onto every level-1 section heading), so target the id.
+  #title-slide {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+
+    // Nighttime-lights raster is set as this element's own background via
+    // an inline <style> in index.qmd's include-in-header (kept out of
+    // this SCSS file because Quarto resolves scss url() paths against the
+    // compiled theme's own directory, not the project root -- an inline
+    // <style> in the qmd resolves relative to the qmd itself instead).
+    // The ::after pseudo-element (z-index:-1, see below) paints a
+    // paper-colored fade directly on top of that image -- behind the
+    // text content, in front of the raw image -- so the text zone stays
+    // on solid ground.
+    position: relative;
+    z-index: 0;
+
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background-image: linear-gradient(to right, $paper 0%, $paper 38%, rgba(251, 249, 244, 0.5) 58%, rgba(251, 249, 244, 0.08) 100%);
+    }
+
+    // The one gold element on this slide: a single-line eyebrow naming
+    // the source paper being replicated. Everything else on the slide is
+    // ink/navy -- gold is spent exactly once, here, so it reads as a
+    // deliberate signal ("this is what grounds the talk"), not decoration.
+    &::before {
+      content: "Replication & Extension of Hodler & Raschky (2014), QJE";
+      display: block;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.46em;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      color: $gold;
+      margin-bottom: 1.3em;
+    }
+
+    h1.title {
+      font-size: 2.6em;
+      line-height: 1.05;
+      color: $navy;
+      margin: 0 0 0.28em;
+      max-width: 16ch;
+    }
+
+    p.subtitle {
+      font-family: $presentation-heading-font;
+      font-style: italic;
+      font-weight: 400;
+      color: $navy-soft;
+      font-size: 0.5em;
+      line-height: 1.35;
+      margin: 0 0 1.5em;
+      // Forced onto one line, so no wrap width -- the full sentence has
+      // to fit the slide's width at whatever font-size makes that true.
+      max-width: none;
+      white-space: nowrap;
+    }
+
+    // Presenter block (name) + original-paper citation, in natural DOM
+    // order (title -> subtitle -> name -> citation -> date). A thin rule
+    // above it separates "what this talk is" from "who's giving it /
+    // what it's based on" -- one clean divider instead of a boxed badge.
+    .quarto-title-authors {
+      padding-top: 0.9em;
+      border-top: 1px solid $rule;
+      max-width: 40ch;
+      display: block !important;
+      text-align: left !important;
+    }
+    .quarto-title-author {
+      display: block !important;
+      text-align: left !important;
+      justify-content: flex-start !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    .quarto-title-author-name {
+      font-family: $presentation-heading-font;
+      font-size: 1.05em;
+      color: $navy;
+      font-weight: 600;
+      letter-spacing: 0;
+      text-transform: none;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    // Course / instructor context -- styled as a clear mono "label" (same
+    // tracked-uppercase voice as the section eyebrows elsewhere in the
+    // deck) so it reads as its own distinct fact, not a faded afterthought.
+    // Color stays navy rather than gold -- gold is spent once, on the
+    // citation above -- but weight/spacing give it real presence.
+    // Course block, set as two tiers rather than one dense line: the course
+    // itself carries the tracked-uppercase label voice used elsewhere in the
+    // deck, and the instructor/term sit under it a step quieter, so the eye
+    // reads "what course" before "who and when".
+    .quarto-title-affiliation {
+      margin: 0.75em 0 0;
+
+      // Course line carries the display serif, so it reads as a proper
+      // title rather than a tracked-out technical label; the instructor
+      // sits under it in the body face, a step quieter.
+      .course-name {
+        display: block;
+        font-family: $presentation-heading-font;
+        font-size: 0.94em;
+        font-weight: 500;
+        letter-spacing: 0.005em;
+        text-transform: none;
+        line-height: 1.35;
+        color: $navy;
+      }
+
+      .course-meta {
+        display: block;
+        font-family: $presentation-font;
+        font-size: 0.82em;
+        font-weight: 400;
+        letter-spacing: 0.015em;
+        line-height: 1.4;
+        color: $ink-soft;
+        margin-top: 0.32em;
+      }
+    }
+
+    // Numerals go in the mono face, matching how the deck sets every other
+    // number (slide numbers, section ordinals, figure axes).
+    p.date {
+      font-family: $presentation-font;
+      font-size: 0.58em;
+      color: $ink-faint;
+      letter-spacing: 0.09em;
+      margin-top: 0.95em;
+    }
+  }
+
+  // ---------- Thank You slide ----------
+  // Reuses the title slide's animated night-lights background (JS-driven,
+  // see index.qmd's include-in-header). This needs the exact same recipe
+  // #title-slide already uses, not just position+height: reveal's own
+  // `.slides section.present { display: block }` rule outranks a plain
+  // `display: flex` here on specificity, so without !important the
+  // section silently stays block-level and reveal's normal top-aligned
+  // flow (not full-height, content sized to its own short intrinsic
+  // height) is what was containing the absolutely positioned .ntl-frame
+  // layers to a thin band -- and, worse, is what let the text content
+  // itself render far outside the visible slide.
+  .slides section#thank-you-slide,
+  .slides section.center#thank-you-slide {
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    text-align: left;
+    position: relative;
+    height: 100% !important;
+    margin-top: 0 !important;
+    z-index: 0;
+
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background-image: linear-gradient(to right, $paper 0%, $paper 38%, rgba(251, 249, 244, 0.5) 58%, rgba(251, 249, 244, 0.08) 100%);
+    }
+
+    h1, h2 {
+      font-family: $presentation-heading-font;
+      font-weight: 700;
+      font-size: 3.2em;
+      color: $navy;
+      margin: 0 0 0.15em;
+      line-height: 1.1;
+      border-bottom: none !important;
+      padding-bottom: 0 !important;
+    }
+
+    .questions-line {
+      font-family: $presentation-heading-font;
+      font-weight: 500;
+      font-style: italic;
+      font-size: 1.8em;
+      color: $gold;
+      margin: 0;
+    }
+  }
+
+  // ---------- Section divider slides (level-1 headings) ----------
+  // No background-color switching -- same paper ground as every other
+  // slide, distinguished instead by a large ordinal, generous
+  // whitespace, and a gold rule. Section number comes from a CSS counter
+  // driven by .section-slide markers.
+  section.section-slide {
+    // !important: reveal core's `.slides section.present{display:block}`
+    // rule outranks a plain `section.section-slide` selector on
+    // specificity, so a bare `display:flex` here is silently overridden.
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    text-align: left;
+    // Needed for justify-content to have anything to distribute: as a
+    // vertical child inside a .stack, reveal sizes this section to its
+    // content, so without an explicit height it collapses to the title
+    // and "centring" lands at the top of the frame.
+    height: 100%;
+
+    // Section number is written explicitly in the markdown (a CSS
+    // counter was tried first, but Reveal.js only keeps slides within
+    // its `view-distance` window as display:block -- slides outside that
+    // window become display:none and CSS counters skip non-rendered
+    // boxes entirely, so the count silently stalled once more than a
+    // few sections had been visited. Hardcoding avoids that.)
+    .section-eyebrow {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.55em;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: $gold;
+      margin-bottom: 0.4em;
+      order: 1;
+    }
+
+    h1 {
+      font-size: 3em;
+      margin: 0;
+      padding-bottom: 0.35em;
+      border-bottom: 3px solid $gold;
+      display: inline-block;
+      order: 2;
+    }
+  }
+
+
+  // ---------- Content slide headings ----------
+  // Content slides are H1 (not H2) so they sit as their own horizontal
+  // slide rather than nesting as a vertical child of the section-slide
+  // above them -- reveal.js vertical stacks triggered a layout bug with
+  // the progress-indicator extension, so the deck avoids them entirely.
+  section.content-slide {
+    padding-top: 0.4em;
+
+    // Content slides are level-2 headings so that the level-1 section
+    // dividers above them group these slides in the progress indicator
+    // (the extension opens a new section on every h1 it sees).
+    h2 {
+      font-size: 1.7em;
+      color: $navy;
+      border-bottom: 1px solid $rule;
+      margin: 0 0 0.6em;
+      padding-bottom: 0.3em;
+    }
+
+    // Sub-headers within a content slide's body (e.g. "Research Question")
+    // -- an italic serif echo of the display face, quieter and smaller
+    // than h1 rather than a second all-caps technical label.
+    h3 {
+      font-family: $presentation-heading-font;
+      font-size: 0.85em;
+      font-style: normal;
+      font-weight: 600;
+      letter-spacing: 0;
+      text-transform: none;
+      color: $navy;
+      margin: 1em 0 0.35em;
+    }
+    h3:first-child { margin-top: 0; }
+
+    p, li { font-size: 0.95em; }
+  }
+
+  a { color: $navy; text-decoration: underline; text-decoration-color: $gold-soft; text-underline-offset: 2px; }
+  a:hover { color: $gold; }
+
+  .citation {
+    font-family: "IBM Plex Mono", monospace;
+    color: $gold;
+    text-decoration: none;
+
+    a {
+      font-family: inherit;
+      color: inherit;
+      text-decoration: underline;
+      text-decoration-color: rgba($navy, 0.25);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+      margin: 0 0.12em;
+      padding: 0 1px;
+    }
+
+    &:hover, a:hover {
+      color: $navy;
+      text-decoration-color: rgba($navy, 0.8);
+    }
+  }
+
+  a[role="doc-biblioref"],
+  a.quarto-xref {
+    font-family: "IBM Plex Mono", monospace;
+    color: $gold;
+    text-decoration: underline;
+    text-decoration-color: rgba($navy, 0.25);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    margin: 0 0.12em;
+    padding: 0 1px;
+
+    &:hover {
+      color: $navy;
+      text-decoration-color: rgba($navy, 0.8);
+    }
+  }
+
+  strong { color: $navy; font-weight: 600; }
+
+  blockquote {
+    border-left: 3px solid $gold;
+    padding: 0.2em 0 0.2em 1em;
+    font-style: italic;
+    color: $ink-soft;
+    background: none;
+    margin: 0.8em 0;
+  }
+
+  table {
+    font-size: 0.65em;
+    border-collapse: collapse;
+  }
+  thead th {
+    color: $paper;
+    background: $navy;
+    border: none;
+    font-weight: 600;
+    text-align: left;
+  }
+  tbody tr:nth-child(even) { background: $paper-panel; }
+  td, th { padding: 0.5em 0.8em; }
+
+  code { font-family: "IBM Plex Mono", monospace; font-size: 0.85em; }
+  pre.sourceCode { border: 1px solid $rule; border-radius: 6px; }
+
+  .footnotes, .aside-footnotes { font-size: 0.45em; color: $ink-faint; }
+
+  // Slide numbers (top-right, quiet)
+  .slide-number {
+    background: none;
+    color: $ink-faint;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.45em;
+  }
+
+  .reveal:has(#title-slide.present) .slide-number,
+  .reveal:has(section#title-slide.present) .slide-number,
+  #title-slide .slide-number {
+    display: none !important;
+  }
+
+  // ---------- Layout helpers ----------
+  .columns-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2em;
+    align-items: start;
+  }
+
+  .col-heading {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.72em;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: $gold;
+    margin-bottom: 0.5em;
+    display: block;
+  }
+
+  .keybox {
+    background: $paper-panel;
+    border-left: 4px solid $gold;
+    padding: 0.7em 1.1em;
+    border-radius: 0 6px 6px 0;
+    margin: 0.8em 0;
+    font-size: 0.85em;
+  }
+
+  .stat {
+    font-family: $presentation-heading-font;
+    font-weight: 700;
+    color: $navy;
+    font-size: 2.2em;
+    line-height: 1;
+  }
+  .stat-label {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.5em;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: $ink-soft;
+  }
+
+  // Extension slide's "what changed" summary: three compact cards instead
+  // of a wall of bullet text, one number-led fact each so the slide reads
+  // in a glance rather than as prose to work through line by line.
+  .ext-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: stretch;
+    gap: 0.8em;
+    margin: 0.7em 0 0;
+  }
+  .ext-card {
+    background: $paper-panel;
+    border-left: 4px solid $gold;
+    border-radius: 0 8px 8px 0;
+    padding: 0.7em 0.85em 0.8em;
+
+    .stat {
+      font-size: 1.05em;
+      display: block;
+      line-height: 1.15;
+    }
+    .stat-label {
+      display: block;
+      margin-top: 0.2em;
+      font-size: 0.4em;
+    }
+    p {
+      font-size: 0.5em;
+      color: $ink-soft;
+      line-height: 1.4;
+      margin: 0.5em 0 0;
+    }
+
+    // Footnote-style citation strip: superscript numbers in the sentence
+    // above point down here instead of each citation's full "(Author,
+    // Year)" text sitting inline mid-sentence, which read as visual
+    // clutter once a card carried more than one source.
+    .ext-footnote {
+      font-size: 0.36em;
+      color: $ink-faint;
+      border-top: 1px solid $rule;
+      margin-top: 0.5em;
+      padding-top: 0.35em;
+      line-height: 1.5;
+
+      sup { margin-right: 0.05em; }
+
+      .citation a {
+        color: $ink-faint;
+        text-decoration: none;
+        border-bottom: 1px dotted currentColor;
+      }
+    }
+  }
+
+  // Literature-review slide: each paper is (title, authors), then three
+  // labelled bullets -- data / scope / finding -- so every entry answers the
+  // same three questions in the same order and the eye can scan down a
+  // column rather than read each block as prose.
+  section.lit-slide {
+    .columns-2 { gap: 2.4em; }
+
+    .lit-entry {
+      margin-bottom: 1.1em;
+
+      &:last-child { margin-bottom: 0; }
+    }
+
+    .lit-title {
+      font-family: $presentation-heading-font;
+      font-size: 0.78em;
+      font-weight: 600;
+      color: $navy;
+      line-height: 1.35;
+    }
+
+    // Citation sits inline right after the title, same paragraph, same body
+    // typeface as the rest of the slide -- only the colour marks it as a
+    // reference, so it reads as part of the sentence rather than a separate
+    // technical label. Size/family are set ONLY on the outer .paper-cite:
+    // em units compound at each nested level (.citation, then <a>), so
+    // repeating the same 0.72em on all three shrank the link to roughly
+    // 0.72 x 0.72 of the title instead of matching it.
+    .paper-cite {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.72em;
+      font-weight: 400;
+      letter-spacing: normal;
+      color: $gold;
+    }
+
+    .paper-cite .citation {
+      font-family: inherit;
+      text-decoration: none;
+    }
+
+    .paper-cite a {
+      font-family: inherit;
+      font-size: inherit;
+      font-weight: inherit;
+      color: inherit;
+      text-decoration: underline;
+      text-decoration-color: rgba($navy, 0.25);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+      margin: 0 0.12em;
+      padding: 0 1px;
+    }
+
+    ul {
+      margin: 0.35em 0 0;
+      padding-left: 1.1em;
+    }
+
+    li {
+      font-size: 0.62em;
+      line-height: 1.42;
+      margin-bottom: 0.15em;
+      color: $ink-soft;
+
+      &::marker { color: $gold; }
+
+      strong {
+        font-family: $presentation-heading-font;
+        font-weight: 600;
+        color: $navy;
+      }
+    }
+  }
+
+  // A slide whose body is a single figure: lay the slide out as a column so
+  // the figure gets exactly the space left under the heading and is centred
+  // in it. height:100% on the figure alone overflowed by the heading's
+  // height, which pushed the image down and left a gap above it.
+  section.figure-slide {
+    display: flex !important;
+    flex-direction: column;
+    height: 100%;
+
+    > h2 { flex: 0 0 auto; }
+  }
+
+  // Data-sources slide: a real table (Source / Coverage / Used For) grouped
+  // by category rows, rather than the card-per-source layout used elsewhere
+  // -- with ten sources across two slides, a table reads faster than prose
+  // cards and gives every row the same three answers in the same place.
+  section.ds-slide {
+    .ds-table-wrap { width: 100%; }
+
+    table.ds-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    // The deck's general `table { }` rule (thead th navy fill, even-row
+    // shading) targets any table including this one -- override it
+    // explicitly rather than relying on selector order.
+    .ds-table {
+      font-size: 1em;
+
+      thead th {
+        background: transparent;
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.5em;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: $ink-faint;
+        text-align: left;
+        font-weight: 500;
+        padding: 0 0.8em 0.5em 0;
+        border-bottom: 1px solid $rule;
+      }
+
+      td {
+        vertical-align: top;
+        padding: 0.4em 1em 0.4em 0;
+        border-bottom: 1px solid $rule;
+        font-size: 0.5em;
+      }
+
+      tbody tr { background: transparent; }
+      tbody tr:last-child td { border-bottom: none; }
+    }
+
+    tr.ds-cat td {
+      padding: 0.4em 0 0.15em;
+      border-bottom: none;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.46em;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: $gold;
+      font-weight: 600;
+    }
+    tr.ds-cat:first-child td { padding-top: 0; }
+
+    // A dataset built by stacking three sources top to bottom (Archigos ->
+    // PLAD -> Wikidata) -- tightened so the cascade reads as one combined
+    // build, not three unrelated rows.
+    tr.ds-subrow td { padding-top: 0.2em; padding-bottom: 0.2em; }
+    .ds-cascade-arrow {
+      display: inline-block;
+      font-family: "IBM Plex Mono", monospace;
+      color: $gold;
+      margin-right: 0.3em;
+    }
+
+    td.ds-source { width: 30%; }
+    td.ds-coverage { width: 26%; color: $ink-soft; line-height: 1.4; }
+    td.ds-use { width: 44%; color: $ink-soft; line-height: 1.4; }
+
+    td.ds-coverage strong, td.ds-use strong {
+      font-family: $presentation-heading-font;
+      font-weight: 600;
+      color: $navy;
+    }
+
+    .ds-source-inner {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.7em;
+
+      > div { min-width: 0; }
+    }
+
+    // Sequential position across the full ten-source (plus our own
+    // substitutions) list -- the sources are literally an enumerated set
+    // here, so a number is real information, not decoration.
+    .ds-num {
+      flex: 0 0 auto;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 1.1em;
+      font-weight: 700;
+      color: $gold;
+      min-width: 1.6em;
+      margin-top: 0.05em;
+    }
+
+    // Height-fixed, width-auto: several of these marks are wide logotypes
+    // (World Bank, OECD are ~4-5:1), so a fixed width box under object-fit
+    // forced the constraining dimension to width and left the logo only a
+    // sliver tall. Scaling by height keeps every logo the same visual
+    // weight regardless of its own aspect ratio.
+    .ds-logo {
+      height: 2.2em;
+      width: auto;
+      max-width: 5.2em;
+      object-fit: contain;
+      object-position: left center;
+      flex: 0 0 auto;
+      margin-top: 0.1em;
+    }
+
+    // Two source marks sharing one row (e.g. the combined Alesina
+    // fractionalization + family-ties row) -- stacked rather than side by
+    // side so the pair stays as narrow as a single logo.
+    .ds-logo-pair {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3em;
+      flex: 0 0 auto;
+    }
+    .ds-logo-sm {
+      height: 1.4em;
+      max-width: 4.2em;
+      margin-top: 0;
+    }
+    // Three sources sharing one row (Archigos base + our own PLAD/Wikidata
+    // birthplace supplement) -- wraps as a 2x2 grid instead of stacking
+    // three deep, which would make this row visibly taller than every
+    // other row on the slide.
+    .ds-logo-trio {
+      flex-direction: row;
+      flex-wrap: wrap;
+      max-width: 3.4em;
+    }
+
+    .ds-logo-pair .ds-badge {
+      height: 1.1em;
+      min-width: 2.6em;
+      font-size: 0.56em;
+      padding: 0 0.35em;
+    }
+
+    // Badge for datasets with no distinct institutional mark of their own
+    // (an academic project or a working-paper series, not a branded org) --
+    // styled as a small tracked chip in the deck's own palette so it reads
+    // as deliberate, not as a missing logo.
+    .ds-badge {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 3em;
+      height: 2.1em;
+      padding: 0 0.5em;
+      border: 1px solid $gold-soft;
+      border-radius: 4px;
+      background: $paper-panel;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.62em;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      color: $navy;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .ds-name {
+      font-family: $presentation-heading-font;
+      font-weight: 700;
+      color: $ink;
+      font-size: 1em;
+      line-height: 1.3;
+    }
+
+    .ds-geo {
+      display: block;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.58em;
+      color: $ink-faint;
+      margin-top: 0.15em;
+      line-height: 1.25;
+    }
+
+    .ds-cite {
+      display: block;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.72em;
+      color: $gold;
+      margin-top: 0.2em;
+    }
+
+    .ds-flag {
+      display: inline-block;
+      margin-top: 0.2em;
+      padding: 0.1em 0.4em;
+      border: 1px solid $navy;
+      border-radius: 3px;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.6em;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: $navy;
+      background: rgba($navy, 0.06);
+    }
+
+    code {
+      font-size: 0.92em;
+      background: $paper-panel;
+      padding: 0.1em 0.3em;
+      border-radius: 3px;
+    }
+  }
+
+  // Descriptive-statistics comparison slide: HR's own Table I rebuilt on
+  // our panel, side by side.
+  section.cmp-slide {
+    .cmp-table-wrap { width: 100%; overflow-x: auto; }
+
+    table.cmp-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 1em;
+    }
+
+    .cmp-table {
+      thead tr:first-child th {
+        background: transparent;
+        font-family: $presentation-heading-font;
+        font-size: 0.58em;
+        font-weight: 700;
+        color: $navy;
+        text-align: center;
+        padding: 0 0.45em 0.3em;
+        border-bottom: 1px solid $gold-soft;
+      }
+      // "Variable" spans both header rows (rowspan=2), so it lives only
+      // in row 1 -- row 2's actual first <th> is "Obs.", not a repeat of
+      // "Variable". Bottom-align the spanning cell so its baseline sits
+      // with row 2, not floating against row 1 alone.
+      thead tr:first-child th:first-child {
+        text-align: left;
+        border-bottom: none;
+        vertical-align: bottom;
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.44em;
+        font-weight: 500;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: $ink-faint;
+      }
+
+      thead tr:last-child th {
+        background: transparent;
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.44em;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: $ink-faint;
+        font-weight: 500;
+        text-align: right;
+        padding: 0 0.45em 0.4em;
+        border-bottom: 1px solid $rule;
+      }
+
+      td {
+        font-family: "IBM Plex Mono", monospace;
+        font-variant-numeric: tabular-nums;
+        font-size: 0.54em;
+        text-align: right;
+        padding: 0.26em 0.4em;
+        border-bottom: 1px solid $rule;
+        color: $ink;
+        white-space: nowrap;
+      }
+
+      // First column of the "Our Panel" block gets a hairline left rule,
+      // separating the two source blocks visually without a heavier border.
+      td:nth-child(7) { border-left: 1px solid $gold-soft; }
+
+      tbody tr:last-child td { border-bottom: none; }
+
+      // Override the deck's generic tbody-nth-child(even) zebra: with a
+      // country-year subrow following only some variables, DOM-order
+      // striping no longer lines up with variable boundaries. Shading is
+      // applied explicitly per variable instead, via .cmp-shade on both
+      // a main row and its own subrow.
+      tbody tr:nth-child(even) { background: transparent; }
+      tr.cmp-shade td { background: rgba($gold, 0.07); }
+
+      // Country-year-level row (HR's own parenthetical convention) sits
+      // directly under its region-year row -- tightened and muted so it
+      // reads as a footnote to that row, not a sibling variable.
+      // A main row followed by its own country-year subrow gets no
+      // border of its own -- the rule belongs between VARIABLES, not
+      // between a variable and its own parenthetical row.
+      tr:has(+ tr.cmp-subrow) td { border-bottom: none; }
+
+      tr.cmp-subrow td {
+        padding-top: 0;
+        padding-bottom: 0.22em;
+        font-size: 0.48em;
+        color: $ink-faint;
+        border-bottom: 1px solid $rule;
+      }
+      tr.cmp-subrow td:nth-child(7) { border-left: 1px solid $gold-soft; }
+    }
+
+    // Extension Table II re-estimate (Columns 1-7, one value per model, no
+    // Orig/Repl pairing): same visual language as .cmp-table16 above --
+    // same fonts, sizes, tooltip mechanics, outer frame, lastcoef rule --
+    // recalibrated for a single header row and 8 total columns (label +
+    // 7 models) instead of 17 (label + 8 HR/Us pairs).
+    .cmp-table7 {
+      border: 1px solid $rule;
+      table-layout: auto;
+      width: 100%;
+
+      td:first-child, td.cmp-var-sub { white-space: nowrap; }
+
+      // Label column divider, both header and body.
+      td:first-child, thead th:first-child { border-right: 1px solid $rule; }
+
+      // A vertical rule after every model column keeps the seven
+      // regressions visually distinct, same job the HR/Us pair dividers
+      // do in the main Table II.
+      td:not(:last-child):not(:first-child), thead th:not(:last-child):not(:first-child) {
+        border-right: 1px solid $rule;
+      }
+
+      tr.cmp-lastcoef td { border-bottom: 1px solid $rule !important; }
+
+      tr.cmp-subrow td {
+        font-style: normal;
+        font-family: "IBM Plex Mono", monospace;
+        color: $ink-soft;
+      }
+      tr.cmp-subrow:first-of-type td { border-top: 1px solid $rule; padding-top: 0.4em; }
+
+      .cmp-depvar {
+        display: block;
+        position: relative;
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.8em;
+        font-weight: 500;
+        text-transform: none;
+        letter-spacing: normal;
+        color: $gold;
+        margin-top: 0.2em;
+        cursor: help;
+        border-bottom: 1px dotted currentColor;
+        max-width: 100%;
+        overflow-wrap: anywhere;
+        text-align: center;
+
+        sub { font-size: 0.85em; }
+
+        &::after {
+          content: attr(data-tooltip);
+          position: absolute;
+          bottom: 135%;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 15em;
+          padding: 0.6em 0.8em;
+          background: $navy;
+          color: $paper;
+          font-family: $presentation-font;
+          font-size: 1.15em;
+          font-weight: 400;
+          text-transform: none;
+          letter-spacing: normal;
+          line-height: 1.4;
+          text-align: left;
+          border-radius: 5px;
+          box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+          opacity: 0;
+          visibility: hidden;
+          transition: opacity 150ms ease;
+          pointer-events: none;
+          z-index: 500;
+        }
+
+        &:hover::after, &:focus::after { opacity: 1; visibility: visible; }
+      }
+
+      .cmp-tip {
+        position: relative;
+        cursor: help;
+        border-bottom: 1px dotted currentColor;
+
+        &::after {
+          content: attr(data-tooltip);
+          position: absolute;
+          bottom: 135%;
+          left: 0;
+          width: 18em;
+          padding: 0.5em 0.7em;
+          background: $navy;
+          color: $paper;
+          font-family: $presentation-font;
+          font-size: 0.85em;
+          font-weight: 400;
+          text-transform: none;
+          letter-spacing: normal;
+          line-height: 1.4;
+          text-align: left;
+          white-space: normal;
+          border-radius: 5px;
+          box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+          opacity: 0;
+          visibility: hidden;
+          transition: opacity 150ms ease;
+          pointer-events: none;
+          z-index: 500;
+        }
+
+        &:hover::after, &:focus::after { opacity: 1; visibility: visible; }
+      }
+
+      td.cmp-var-sub { font-style: normal; }
+
+      // A single header row is simultaneously :first-child AND :last-child
+      // (there's only one <tr>), so the base .cmp-table block's rules for
+      // BOTH pseudo-classes match it at once -- its :last-child rule
+      // (small uppercase mono, right-aligned, ink-faint) has the same
+      // specificity as a plain "thead th" selector here and was winning,
+      // overriding the intended bold navy centered look. Targeting both
+      // pseudo-classes explicitly matches that specificity so this rule
+      // wins instead, on source order (declared after the base block).
+      thead tr:first-child th, thead tr:last-child th {
+        font-size: 0.58em;
+        font-weight: 700;
+        color: $navy;
+        font-family: $presentation-heading-font;
+        text-align: center;
+        text-transform: none;
+        letter-spacing: normal;
+        padding: 0.35em 0.3em 0.25em;
+        background: transparent;
+        border-bottom: 1px solid $gold-soft;
+      }
+      thead tr:first-child th:first-child, thead tr:last-child th:first-child {
+        border-right: 1px solid $rule;
+      }
+
+      td {
+        font-size: 0.5em;
+        padding: 0.22em 0.15em;
+        line-height: 1.25;
+        white-space: normal;
+        overflow-wrap: anywhere;
+        text-align: center;
+      }
+
+      td.cmp-var { font-size: 0.56em; text-align: left; }
+      td.cmp-var-sub { font-size: 0.5em; text-align: left; }
+
+      // Every second model column gets a faint tint, the same visual
+      // separator the main Table II uses between its eight HR/Us pairs.
+      td:nth-child(3), td:nth-child(5), td:nth-child(7),
+      thead th:nth-child(3), thead th:nth-child(5), thead th:nth-child(7) {
+        background: rgba($gold, 0.05);
+      }
+    }
+
+    td.cmp-var {
+      text-align: left;
+      font-family: $presentation-heading-font;
+      font-weight: 700;
+      color: $navy;
+
+      sub { font-family: "IBM Plex Mono", monospace; font-size: 0.75em; color: $ink-faint; }
+    }
+
+    // Regression-spec label under a column number (e.g. "Leader_t-1,
+    // baseline") -- quiet body text, not part of the bold column label.
+    .cmp-spec {
+      display: block;
+      font-family: $presentation-font;
+      font-weight: 400;
+      font-size: 0.85em;
+      color: $ink-soft;
+      margin-top: 0.15em;
+
+      sub { font-size: 0.85em; }
+    }
+
+    // Same substitution flag as the data-sources tables (.ds-flag lives
+    // scoped under section.ds-slide, out of reach here).
+    .ds-flag {
+      display: inline-block;
+      margin-top: 0.2em;
+      padding: 0.1em 0.4em;
+      border: 1px solid $navy;
+      border-radius: 3px;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.8em;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: $navy;
+      background: rgba($navy, 0.06);
+    }
+
+    // Font-size intentionally omitted here -- tr.cmp-subrow td (higher
+    // specificity, same element) sets the actual size; a value here would
+    // be dead code that misleads about which rule wins.
+    td.cmp-var-sub {
+      text-align: left;
+      font-family: "IBM Plex Mono", monospace;
+      font-style: italic;
+      color: $ink-faint;
+    }
+
+    .cmp-sub {
+      display: block;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.85em;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      text-transform: none;
+      color: $ink-faint;
+      margin-top: 0.2em;
+    }
+
+    .cmp-footnote {
+      margin-top: 0.6em;
+      font-size: 0.48em;
+      line-height: 1.4;
+      color: $ink-faint;
+
+      code {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.95em;
+        background: $paper-panel;
+        padding: 0.1em 0.3em;
+        border-radius: 3px;
+      }
+    }
+
+    // Our own methodology note, set apart from HR's own quoted table
+    // note above it -- a bordered aside rather than a continuation of
+    // the same footnote paragraph.
+    .cmp-callout {
+      margin-top: 0.5em;
+      padding: 0.55em 0.8em;
+      border-left: 3px solid $gold;
+      background: rgba($gold, 0.06);
+      border-radius: 0 4px 4px 0;
+      font-size: 0.5em;
+      line-height: 1.5;
+      color: $ink-soft;
+
+      strong { font-family: $presentation-heading-font; font-weight: 700; color: $navy; }
+
+      code {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.95em;
+        background: $paper-panel;
+        padding: 0.1em 0.3em;
+        border-radius: 3px;
+      }
+    }
+
+    // Table II laid out the way the paper itself does it: 8 numbered
+    // columns across, each split into an HR/Us pair -- 16 data columns
+    // plus the row label, so every cell is necessarily tiny. Overrides
+    // the descriptive-stats table's HR/Us divider (meant for one pair,
+    // not eight) and shrinks everything further to fit.
+    // overflow-x: auto forces overflow-y to auto too, per spec, no matter
+    // what it's explicitly set to here -- an element can't scroll one axis
+    // and stay unclipped on the other. The depvar tooltip opens downward
+    // (below the header, into the table's own tall interior) specifically
+    // so it never needs to escape this box's rendered edge at all.
+    // No horizontal scroll here (unlike the narrower descriptive-stats
+    // table): with the table now genuinely fixed at 100% width and every
+    // cell able to wrap its own content, a scrolling container is not
+    // needed -- and dropping it is what lets the depvar tooltip render
+    // above the header without being clipped by an overflow ancestor.
+    .cmp-wide { overflow: visible; }
+
+    .cmp-table16 {
+      // Outer frame around the whole table -- border-collapse means this
+      // renders as a single clean edge, not doubled with the cells'
+      // own borders.
+      border: 1px solid $rule;
+
+      // Auto layout: the browser sizes each column from its own content,
+      // then shrinks everything proportionally to fit width: 100% --
+      // genuinely automatic, unlike table-layout: fixed's flat equal
+      // shares, which needed constant manual per-column tuning to stop
+      // any one column's content from wrapping to three lines. This only
+      // works because overflow-wrap: anywhere (below) already guarantees
+      // no single unbreakable token can force the table wider than its
+      // container, which was the original reason fixed layout was used.
+      table-layout: auto;
+      width: 100%;
+
+      td:first-child, td.cmp-var-sub { white-space: nowrap; }
+
+      td:nth-child(7), tr.cmp-subrow td:nth-child(7) { border-left: none; }
+
+      // Separates the row-label (Variable) column from the model data
+      // columns, in every row of the table, not just Units of observation.
+      // The corner cell (rowspan=2) is the true first cell of header row
+      // one; row two's DOM-first <th> is actually "HR" for model one --
+      // rowspan reserves its column silently, so row two never has its
+      // own cell there. Bordering the corner cell alone is enough: the
+      // rule visually continues down through both header rows.
+      // The header corner used to be one rowspan=2 cell, which drew this
+      // line next to "(1)/(2)" too since border-right applies to the
+      // whole box. Split into two real empty <th> cells (one per header
+      // row) so each can be bordered independently: none alongside the
+      // model-number row, one alongside "HR / Us".
+      td:first-child, thead tr:last-child th:first-child { border-right: 1px solid $rule; }
+      thead tr:first-child th:first-child { border-right: none; }
+
+      // Vertical rule between each numbered model's HR/Us pair, so the
+      // eight columns of HR's own table stay visually distinct even
+      // packed this tightly.
+      td:nth-child(3), td:nth-child(5), td:nth-child(7), td:nth-child(9),
+      td:nth-child(11), td:nth-child(13), td:nth-child(15),
+      thead tr:last-child th:nth-child(3), thead tr:last-child th:nth-child(5),
+      thead tr:last-child th:nth-child(7), thead tr:last-child th:nth-child(9),
+      thead tr:last-child th:nth-child(11), thead tr:last-child th:nth-child(13),
+      thead tr:last-child th:nth-child(15) {
+        border-right: 1px solid $rule;
+      }
+
+      // Closes the coefficient block: the last coefficient row (Pop)
+      // gets its own bottom rule, on top of the existing top rule above
+      // "Number of regions", framing the diagnostics rows on both sides.
+      // !important: the shared `tr:has(+ tr.cmp-subrow) td` rule above
+      // (written for the descriptive-stats table's own subrow pairing)
+      // has higher specificity than this override on its own -- :has()'s
+      // argument selector (tr.cmp-subrow) counts toward specificity too.
+      tr.cmp-lastcoef td { border-bottom: 1px solid $rule !important; }
+
+      // Regression summary statistics (N, R-squared, FE rows): italic
+      // read poorly at this font size across 16 dense number columns, so
+      // the block is set apart with a rule and a muted mono face instead.
+      tr.cmp-subrow td {
+        font-style: normal;
+        font-family: "IBM Plex Mono", monospace;
+        color: $ink-soft;
+      }
+      tr.cmp-subrow:first-of-type td { border-top: 1px solid $rule; padding-top: 0.4em; }
+
+      // Dependent-variable name, stacked under the column number itself
+      // inside the header cell -- same information HR's Table II shows
+      // as its own row, folded into the column heading instead.
+      .cmp-depvar {
+        display: block;
+        position: relative;
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.8em;
+        font-weight: 500;
+        text-transform: none;
+        letter-spacing: normal;
+        color: $gold;
+        margin-top: 0.2em;
+        cursor: help;
+        border-bottom: 1px dotted currentColor;
+        // Not fit-content: an unbreakable label like "RegionalGDPict" would
+        // report that as its intrinsic width and drag the whole table
+        // wider than its fixed column even without a min-width bug --
+        // this stays a normal in-flow block, free to wrap on the line
+        // below via overflow-wrap.
+        max-width: 100%;
+        overflow-wrap: anywhere;
+        text-align: center;
+
+        sub { font-size: 0.85em; }
+
+        // CSS-only tooltip -- HR's own Appendix A wording, shown below
+        // the header so it drops into open table space instead of
+        // fighting the slide edge above.
+        &::after {
+          content: attr(data-tooltip);
+          position: absolute;
+          bottom: 135%;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 15em;
+          padding: 0.6em 0.8em;
+          background: $navy;
+          color: $paper;
+          font-family: $presentation-font;
+          font-size: 1.15em;
+          font-weight: 400;
+          text-transform: none;
+          letter-spacing: normal;
+          line-height: 1.4;
+          text-align: left;
+          border-radius: 5px;
+          box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+          opacity: 0;
+          visibility: hidden;
+          transition: opacity 150ms ease;
+          pointer-events: none;
+          z-index: 500;
+        }
+
+        &:hover::after, &:focus::after {
+          opacity: 1;
+          visibility: visible;
+        }
+      }
+      // Row-label tooltip (Leader_ict-1, Pop_ict, etc.): same mechanism
+      // as .cmp-depvar above, but no color/alignment override -- it
+      // inherits the row label's own navy Fraunces styling from .cmp-var.
+      .cmp-tip {
+        position: relative;
+        cursor: help;
+        border-bottom: 1px dotted currentColor;
+
+        &::after {
+          content: attr(data-tooltip);
+          position: absolute;
+          bottom: 135%;
+          left: 0;
+          width: 18em;
+          padding: 0.5em 0.7em;
+          background: $navy;
+          color: $paper;
+          font-family: $presentation-font;
+          // 1.3em, not the header tooltip's 1.15em: .cmp-var's own
+          // font-size (0.56em of the table) is smaller than .cmp-depvar's
+          // (0.8em), so the same multiplier rendered noticeably tinier
+          // here -- this brings the two tooltips back to a matching
+          // effective size.
+          font-size: 0.85em;
+          font-weight: 400;
+          text-transform: none;
+          letter-spacing: normal;
+          line-height: 1.4;
+          text-align: left;
+          // The label cell this sits inside (td:first-child) forces
+          // white-space: nowrap so "Leader_ict-1" itself stays on one
+          // line -- that's an inherited property, so it was reaching
+          // this tooltip too, forcing the whole sentence onto one line
+          // and overflowing the box instead of wrapping inside it.
+          white-space: normal;
+          border-radius: 5px;
+          box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+          opacity: 0;
+          visibility: hidden;
+          transition: opacity 150ms ease;
+          pointer-events: none;
+          z-index: 500;
+        }
+
+        &:hover::after, &:focus::after {
+          opacity: 1;
+          visibility: visible;
+        }
+      }
+
+      td.cmp-var-sub { font-style: normal; }
+
+      thead tr:first-child th {
+        font-size: 0.58em;
+        padding: 0.35em 0.3em 0.25em;
+      }
+      thead tr:last-child th {
+        font-size: 0.44em;
+        padding: 0 0.3em 0.3em;
+        // Overrides the base .cmp-table block's right-alignment (written
+        // for the descriptive-stats table's own Obs./Mean/SD header row)
+        // -- "Orig."/"Repl." read better centered over their own column.
+        text-align: center;
+      }
+
+      td {
+        font-size: 0.5em;
+        padding: 0.22em 0.15em;
+        line-height: 1.25;
+        white-space: normal;
+        // Coefficient values like "-0.720***" are single unbreakable
+        // tokens (no spaces) -- white-space: normal alone can't wrap
+        // them, so they were forcing their column wider than its fixed
+        // share, which is what was pushing the whole table past 100%
+        // width. overflow-wrap: anywhere breaks only as a last resort,
+        // when a token genuinely can't fit.
+        overflow-wrap: anywhere;
+        // Overrides the base .cmp-table block's td { text-align: right },
+        // written for the descriptive-stats table's numeric columns --
+        // Table II/IV's own coefficient cells read better centered under
+        // their model-number header, matching the paper's own layout.
+        text-align: center;
+      }
+
+      // Row labels ("Variable" column: Leader_ict-1, Number of regions,
+      // etc.) stay left-aligned -- only the model-number data cells above
+      // were meant to center.
+      td.cmp-var { font-size: 0.56em; text-align: left; }
+      td.cmp-var-sub { font-size: 0.5em; text-align: left; }
+
+      // Every second column-pair -- (2), (4), (6), (8) -- gets a faint
+      // tint so the eight groups stay visually separable across 16
+      // tightly packed columns, the job zebra striping does elsewhere.
+      // The "HR / Us" header row now has the same one-cell offset as
+      // the body rows (both gained a leading empty/label cell), so the
+      // same nth-child positions line up in both.
+      td:nth-child(4), td:nth-child(5),
+      td:nth-child(8), td:nth-child(9),
+      td:nth-child(12), td:nth-child(13),
+      td:nth-child(16), td:nth-child(17),
+      thead tr:last-child th:nth-child(4), thead tr:last-child th:nth-child(5),
+      thead tr:last-child th:nth-child(8), thead tr:last-child th:nth-child(9),
+      thead tr:last-child th:nth-child(12), thead tr:last-child th:nth-child(13),
+      thead tr:last-child th:nth-child(16), thead tr:last-child th:nth-child(17) {
+        background: rgba($gold, 0.05);
+      }
+
+      // "Units of observation" merges each model's pair back into one
+      // colspan="2" cell (same text either side, no need to repeat it) --
+      // that halves its cell count versus every other row, so the
+      // nth-child tint above would land on the wrong cells here. Turned
+      // off for this row alone rather than aligned, since a label row
+      // has no HR/Us columns to separate in the first place.
+      // Both the divider and the tint above target nth-child positions
+      // that assume one cell per HR/Us column -- colspan="2" here means
+      // this row has 7 model cells, not 14, so neither ever applied.
+      // Redrawn directly against this row's own (different) structure.
+      tr.cmp-units td {
+        background: transparent;
+        border-right: 1px solid $rule;
+      }
+      tr.cmp-units td:nth-child(3), tr.cmp-units td:nth-child(5), tr.cmp-units td:nth-child(7) {
+        background: rgba($gold, 0.05);
+      }
+
+      // Erdoğan icon row: small real-geometry thumbnails per column group,
+      // sharing cmp-units' divider/tint alignment above.
+      // Erdoğan icon above each model's (N) number: real GADM/grid
+      // geometry thumbnail, one per column group, sitting inside the
+      // existing top header row (no new <tr>, so it doesn't shift any
+      // :first-child/:last-child row rules elsewhere in this block).
+      thead tr:first-child th a {
+        display: block;
+        text-decoration: none;
+        cursor: zoom-in;
+      }
+      thead tr:first-child th img {
+        display: block;
+        margin: 0 auto 0.3em;
+        height: 6.4em;
+        width: auto;
+        border-radius: 3px;
+        border: 1px solid $rule;
+        transition: border-color 0.15s ease;
+      }
+      thead tr:first-child th a:hover img {
+        border-color: $gold;
+      }
+    }
+  }
+
+
+  // Paper-introduction slide: prose beside the article's own front page.
+  section.paper-slide {
+    .columns { align-items: start; }
+
+    strong, b {
+      font-family: $presentation-heading-font;
+      font-weight: 700;
+      color: $navy;
+    }
+
+    h3 {
+      font-family: $presentation-heading-font;
+      font-size: 0.85em;
+      font-weight: 600;
+      color: $navy;
+      margin: 0 0 0.75em;
+      padding-bottom: 0.4em;
+      border-bottom: 1px solid $rule;
+    }
+
+    // Each fact is a tracked label with its sentence underneath, rather than
+    // a paragraph opening with a bold run -- the label column gives the eye a
+    // fixed entry point for "sample / design / finding".
+    .fact {
+      margin: 0 0 0.8em;
+
+      p {
+        font-size: 0.68em;
+        line-height: 1.45;
+        margin: 0;
+        color: $ink;
+      }
+
+      p + p {
+        margin-top: 0.15em;
+
+        &::before {
+          content: "➤ ";
+          display: inline-block;
+          margin-right: 0.35em;
+          color: $gold;
+          font-weight: bold;
+        }
+      }
+    }
+
+    .fact-label {
+      display: block;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 1.4em;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: $gold;
+      margin-bottom: 0.15em;
+    }
+  }
+
+  .paper-cover {
+    display: flex;
+    justify-content: center;
+
+    img {
+      // em, not vh: the slide is scaled to fit the window, so a vh cap is
+      // measured against the window rather than the slide and overflows the
+      // frame on taller displays.
+      max-height: 21em;
+      max-width: 100%;
+      width: auto;
+      border: 1px solid $rule;
+      box-shadow: 0 6px 22px rgba(36, 33, 28, 0.10);
+    }
+  }
+
+  // Empirical framework slide: HR's own model equation displayed as a
+  // numbered academic equation, followed by fact cards reusing the
+  // paper-slide's label/sentence pattern.
+  section.eq-slide {
+    // Covers both the display equation and every inline $...$ term inside
+    // the .fact prose below it -- MathJax otherwise renders in its own
+    // default black, clashing with the deck's navy/ink palette.
+    mjx-container, .MathJax { color: $gold !important; }
+
+    .eq-block {
+      margin: 0 0 0.9em;
+      padding: 0.3em 1.2em;
+      background: $paper-panel;
+      border: 1px solid $rule;
+      border-radius: 6px;
+      text-align: center;
+      font-size: 1.2em;
+      color: $navy;
+
+      mjx-container, .MathJax { color: $navy !important; }
+    }
+
+    .fact {
+      margin: 0 0 1.3em;
+
+      p, li {
+        font-size: 0.78em;
+        line-height: 1.5;
+        margin: 0;
+        color: $ink;
+      }
+
+      // Same arrow glyph as the paper-slide's p+p convention, not the
+      // default disc, so this deck's two bulleted-fact patterns match.
+      ul {
+        list-style: none;
+        margin: 0.2em 0 0;
+        padding-left: 1.4em;
+      }
+
+      li::before {
+        content: "➤";
+        display: inline-block;
+        margin-left: -1.4em;
+        width: 1.4em;
+        color: $navy;
+        font-weight: bold;
+      }
+
+      li + li { margin-top: 0.1em; }
+
+      strong, b { font-family: $presentation-heading-font; font-weight: 700; color: $navy; }
+    }
+
+    .fact-label {
+      display: block;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.85em;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: $gold;
+      margin-bottom: 0.1em;
+
+      // Overrides the section-wide navy math color -- inline LaTeX inside
+      // the label itself should read as part of the label, not as a
+      // separate navy-colored insert.
+      mjx-container, .MathJax { color: $gold !important; }
+    }
+  }
+
+  // Bibliography slide: entries are reference data, so they get the quiet
+  // body face and a hanging indent rather than the slide's list styling.
+  section.refs-slide {
+    #refs {
+      font-size: 0.52em;
+      line-height: 1.45;
+      max-height: 74vh;
+      overflow-y: auto;
+      padding-right: 0.6em;
+    }
+    #refs > div {
+      padding-left: 1.6em;
+      text-indent: -1.6em;
+      margin-bottom: 0.55em;
+      color: $ink-soft;
+    }
+    #refs a { text-decoration: none; }
+  }
+
+  .case-study-figure {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1 1 auto;
+    min-height: 0;
+
+    img {
+      max-height: 100%;
+      max-width: 100%;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+    }
+  }
+
+  // Footer & Slide Number Layout (Matching Reference custom.css):
+  .footer {
+    font-family: "IBM Plex Mono", monospace;
+    border-top: 1px solid $rule;
+    padding-top: 2px;
+    line-height: 1.4;
+    bottom: 2px !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    text-transform: uppercase;
+    text-align: center;
+    background: transparent;
+    pointer-events: none;
+
+    p {
+      color: inherit;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      pointer-events: auto;
+    }
+
+    .footer-top {
+      font-size: 0.65em;
+      letter-spacing: 0.06em;
+      color: $ink-soft;
+      text-transform: uppercase;
+      font-weight: 500;
+      line-height: 1.25;
+    }
+
+    .footer-bottom {
+      font-size: 0.58em;
+      letter-spacing: 0.06em;
+      color: $navy;
+      font-weight: 600;
+      text-transform: uppercase;
+      margin-top: 2px;
+      line-height: 1.2;
+    }
+  }
+
+  // Slide number - bottom right (Matching Reference custom.css)
+  .reveal .slide-number,
+  div.slide-number {
+    font-family: "IBM Plex Mono", monospace !important;
+    font-size: 0.65em !important;
+    font-weight: 600 !important;
+    color: $navy !important;
+    background: transparent !important;
+    position: fixed !important;
+    bottom: 6px !important;
+    right: 24px !important;
+    top: auto !important;
+    left: auto !important;
+    z-index: 31 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    line-height: 1.4 !important;
+    transform: none !important;
+
+    a {
+      color: $navy !important;
+      text-decoration: none !important;
+      display: inline-block !important;
+      line-height: 1.4 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    .slide-number-delimiter {
+      margin: 0 3px !important;
+      color: $ink-faint !important;
+      font-weight: 400 !important;
+    }
+  }
+
+  // Menu & settings buttons - bottom left (Matching Reference custom.css)
+  .slide-menu-button {
+    position: fixed !important;
+    bottom: -5px !important;
+    left: 24px !important;
+    top: auto !important;
+    right: auto !important;
+    transform: none !important;
+    z-index: 35 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1.4 !important;
+    display: flex !important;
+    align-items: center !important;
+
+    a {
+      display: flex !important;
+      align-items: center !important;
+      line-height: 1.4 !important;
+      color: inherit !important;
+      text-decoration: none !important;
+    }
+
+    i {
+      font-size: 16px !important;
+      line-height: 1.4 !important;
+      display: inline-block !important;
+    }
+  }
+
+  // Make navigation menu / control buttons clear, crisp and styled in $navy
+  .controls,
+  .slide-menu-button,
+  .controls button,
+  .slide-menu-button a,
+  .slide-menu-button i {
+    opacity: 0.85 !important;
+    color: $navy !important;
+    transition: opacity 0.2s ease, color 0.2s ease;
+
+    &:hover {
+      opacity: 1 !important;
+      color: $ink !important;
+    }
+  }
+}
+
+// Lightbox popup overlays (top-level so elements appended to document.body are styled correctly)
+.lightbox-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  // One below the laser-pointer extension's #laser-container (z-index
+  // 999999, see _extensions/ofurkancoban/laser-pointer). Equal z-index
+  // ties resolve by DOM order, and this overlay gets appended to <body>
+  // only when opened -- always AFTER the laser layer, which is appended
+  // once on page load -- so at equal z-index it was painting on top of
+  // the laser canvas and hiding it entirely (cursor and strokes both),
+  // even though the laser was still drawing underneath the whole time.
+  z-index: 999998;
+  background: rgba($ink, 0.88);
+  backdrop-filter: blur(4px);
+  align-items: center;
+  justify-content: center;
+  padding: 4vh 4vw;
+
+  &.is-open, &.visible {
+    display: flex !important;
+  }
+
+  img {
+    max-width: 90vw;
+    max-height: 90vh;
+    border-radius: 6px;
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
+    background: #ffffff;
+    object-fit: contain;
+  }
+
+  .lightbox-close {
+    position: absolute;
+    top: 3vh;
+    right: 4vw;
+    color: $paper;
+    font-size: 2.5em;
+    line-height: 1;
+    text-decoration: none;
+    font-family: "Georgia", serif;
+    opacity: 0.85;
+    cursor: pointer;
+    z-index: 1000000;
+    background: transparent;
+    border: none;
+    outline: none;
+    padding: 0;
+    margin: 0;
+
+    &:hover { opacity: 1; }
+  }
+}
+
+
