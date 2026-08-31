@@ -1,0 +1,109 @@
+leader,iso3,country_name,wikidata_qid,birthplace_label,birthplace_qid,lat,lon,status
+Ter-Petrosyan,ARM,Armenia,Q612949,,Q41183,36.2,37.16,resolved
+Kocharian,ARM,Armenia,,,,,,not_found
+Sarkisyan,ARM,Armenia,,,,,,not_found
+Isa Ibn Al-Khalifah,BHR,Bahrain,,,,,,not_found
+Hamad Isa Ibn Al-Khalifah,BHR,Bahrain,,,,,,not_found
+Pindling,BHS,Bahamas,,,,,,not_found
+Ingraham,BHS,Bahamas,,,,,,not_found
+Christie,BHS,Bahamas,,,,,,not_found
+Cynthia A. Pratt,BHS,Bahamas,,,,,,not_found
+Price,BLZ,Belize,,,,,,not_found
+Esquivel,BLZ,Belize,,,,,,not_found
+Musa,BLZ,Belize,,,,,,not_found
+D.Barrow,BLZ,Belize,,,,,,not_found
+Sandiford,BRB,Barbados,,,,,,not_found
+Arthur,BRB,Barbados,,,,,,not_found
+Thompson,BRB,Barbados,,,,,,not_found
+Stuart,BRB,Barbados,,,,,,not_found
+Tobgay,BTN,Bhutan,,,,,,not_found
+Djohar,COM,Comoros,Q888465,,Q218753,-15.716666666667,46.316666666667,resolved
+Bob Denard,COM,Comoros,,,,,,not_found
+el-Yachroutu,COM,Comoros,,,,,,not_found
+Abdoulkarim,COM,Comoros,Q888837,,Q3121010,-11.5,43.38333333,resolved
+Massounde,COM,Comoros,Q888853,,Q2721251,-12.258611,44.530278,resolved
+Azali Assoumani,COM,Comoros,Q515602,,Q3317188,-11.816667,43.266667,resolved
+Hamada Madi,COM,Comoros,Q3111209,,Q271797,-12.3166666666667,43.7333333333333,resolved
+Sambi,COM,Comoros,,,,,,not_found
+Dhoinine,COM,Comoros,Q57458,,Q271797,-12.3166666666667,43.7333333333333,resolved
+Veiga,CPV,Cape Verde,,,,,,not_found
+do Rosario,CPV,Cape Verde,,,,,,not_found
+Neves,CPV,Cape Verde,,,,,,not_found
+Vassiliou,CYP,Cyprus,,,,,,not_found
+Clerides,CYP,Cyprus,,,,,,not_found
+Tassos Nikolaou Papadopoulos,CYP,Cyprus,Q200776,,Q15195492,35.16506033,33.37052721,resolved
+Dimitris Christofias,CYP,Cyprus,Q57334,,Q56266888,35.26672245,33.32229621,resolved
+Anastasiades,CYP,Cyprus,,,,,,not_found
+Gouled Aptidon,DJI,Djibouti,,,,,,not_found
+Guelleh,DJI,Djibouti,Q57390,,Q193486,9.5833333333333,41.866666666667,resolved
+Colom Caballeros,GTM,Guatemala,,,,,,not_found
+Perez Molina,GTM,Guatemala,Q57539,,Q1555,14.6416666666667,-90.5133333333333,resolved
+Haughey,IRL,Ireland,,,,,,ambiguous
+Reynolds,IRL,Ireland,,,,,,not_found
+Bruton,IRL,Ireland,,,,,,not_found
+Ahern,IRL,Ireland,Q154550,,Q1761,53.3497222222222,-6.26027777777778,resolved
+B. Cowen,IRL,Ireland,,,,,,not_found
+E. Kenny,IRL,Ireland,,,,,,not_found
+Shamir,ISR,Israel,,,,,,ambiguous
+Rabin,ISR,Israel,Q34060,,Q1218,31.776679,35.234156,resolved
+Peres,ISR,Israel,,,,,,not_found
+Netanyahu,ISR,Israel,Q43723,,Q33935,32.08,34.78,resolved
+Barak,ISR,Israel,,,,,,not_found
+Ariel Sharon,ISR,Israel,Q60206,,Q1026838,32.1679,34.895097222222,resolved
+Olmert,ISR,Israel,Q93181,,Q6577224,32.5261149,34.9481832,resolved
+Manley,JAM,Jamaica,,,,,,not_found
+Patterson,JAM,Jamaica,,,,,,not_found
+Simpson-Miller,JAM,Jamaica,,,,,,not_found
+Golding,JAM,Jamaica,,,,,,not_found
+Holness,JAM,Jamaica,,,,,,not_found
+Jabir As-Sabah,KWT,Kuwait,,,,,,not_found
+Sheikh Saad Al Abdullah Al Salim Al Sabah,KWT,Kuwait,,,,,,not_found
+Sheikh Sabah Al Ahmad Al Jabir Al Sabah,KWT,Kuwait,,,,,,not_found
+Qaddafi,LBY,Libya,Q708296,,Q40816,32.116666666667,20.066666666667,resolved
+Mustafa Jalil,LBY,Libya,,,,,,not_found
+Mohammed Ali Salim,LBY,Libya,Q659147,,Q12232969,,,no_coords
+Mohammed Magariaf,LBY,Libya,Q57534,,Q40816,32.116666666667,20.066666666667,resolved
+Giuma Ahmed Atigha,LBY,Libya,Q13410170,,Q40816,32.116666666667,20.066666666667,resolved
+Nouri Abusahmain,LBY,Libya,Q13550478,,Q231167,32.933333333333,12.083333333333,resolved
+Ramaema,LSO,Lesotho,,,,,,not_found
+Mokhehle,LSO,Lesotho,,,,,,not_found
+Letsie III,LSO,Lesotho,Q57537,,Q1947814,-29.63111111,27.50583333,resolved
+Mosisili,LSO,Lesotho,Q57732,,Q850423,-30,28.75,resolved
+Thabane,LSO,Lesotho,Q983971,,Q3909,-29.31,27.48,resolved
+Snegur,MDA,Moldova,,,,,,not_found
+Lucinschi,MDA,Moldova,Q355874,,Q1984312,47.98333333,28.26666667,resolved
+Tarlev,MDA,Moldova,,,,,,not_found
+Greceanii,MDA,Moldova,,,,,,not_found
+Pirlog,MDA,Moldova,Q1371619,,Q2089107,47.081388888889,28.178333333333,resolved
+Vlad Filat,MDA,Moldova,Q57685,,Q1020448,46.884166666667,28.411944444444,resolved
+Iurie Leanca,MDA,Moldova,Q58087,,Q2019719,46.52,28.784166666667,resolved
+Maumoon Abdul Gayoom,MDV,Maldives,Q297957,,Q9347,4.175,73.508333333333,resolved
+Nasheed,MDV,Maldives,Q152381,,Q9347,4.175,73.508333333333,resolved
+Waheed Hassan,MDV,Maldives,,,,,,not_found
+Abdulla Yameen Abdul Gayoom,MDV,Maldives,Q4665896,,Q9347,4.175,73.508333333333,resolved
+Nikola Kljusev,MKD,North Macedonia,,,,,,not_found
+Crvenkovski,MKD,North Macedonia,,,,,,not_found
+Georgievski,MKD,North Macedonia,,,,,,not_found
+Radmila Sekerinska,MKD,North Macedonia,Q162983,,Q384,41.9961111111111,21.4316666666667,resolved
+Hari Kostov,MKD,North Macedonia,,,,,,not_found
+Vlado Buckovski,MKD,North Macedonia,,,,,,not_found
+Gruevski,MKD,North Macedonia,Q57766,,Q384,41.9961111111111,21.4316666666667,resolved
+Anerood Jugnauth,MUS,Mauritius,,,,,,not_found
+Ramgoolam N.,MUS,Mauritius,,,,,,not_found
+Paul Berenger,MUS,Mauritius,Q138970,,Q1002525,-20.316666666667,57.516666666667,resolved
+Navin Ramgoolam,MUS,Mauritius,Q57836,,Q3929,-20.161944444444,57.498888888889,resolved
+Krishna Prasad Bhatterai,NPL,Nepal,,,,,,not_found
+Khalifah Ath-Thani,QAT,Qatar,,,,,,not_found
+Hamad ibn Khalifah Al Thani,QAT,Qatar,Q57360,,Q3861,25.2861111111111,51.5294444444445,resolved
+Tamim ibn Hamad Al Thani,QAT,Qatar,Q1855372,,Q3861,25.2861111111111,51.5294444444445,resolved
+Fahd,SAU,Saudi Arabia,Q183187,,Q3692,24.65,46.71,resolved
+Abdullah ibn Abdilaziz,SAU,Saudi Arabia,Q57298,,Q3692,24.65,46.71,resolved
+Goh Chok Tong,SGP,Singapore,Q313300,,Q334,1.3,103.8,resolved
+Lee Hsien Loong,SGP,Singapore,Q57643,,Q4373718,1.3,103.85,resolved
+Svetozar Marovic,SRB,Serbia,,,,,,not_found
+Salva Kiir,SSD,South Sudan,Q57315,,Q803639,8,28,resolved
+Niyazov,TKM,Turkmenistan,Q82918,,Q60654,38,58.250555555556,resolved
+Berdymukhammedov,TKM,Turkmenistan,,,,,,not_found
+Manning,TTO,Trinidad & Tobago,,,,,,not_found
+Panday,TTO,Trinidad & Tobago,,,,,,not_found
+Kamla Persad-Bissessar,TTO,Trinidad & Tobago,,,,,,not_found
