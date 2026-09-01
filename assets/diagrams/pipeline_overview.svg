@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 520" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#64748b"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1440" height="520" fill="#0b0f14"/>
+
+  <text x="720" y="38" text-anchor="middle" fill="#e9eff5" font-size="19" font-weight="600">Regional Favoritism &#8212; Replication Pipeline</text>
+  <text x="720" y="60" text-anchor="middle" fill="#7c8a99" font-size="12.5" letter-spacing="0.5">RAW DATA &#8594; PREPROCESS &#8594; CORE + SUPPLEMENTARY &#8594; RENDER</text>
+
+  <!-- arrows -->
+  <line x1="130" y1="295" x2="158" y2="295" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="460" y1="295" x2="473" y2="295" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="547" y1="295" x2="588" y2="295" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M 590 240 C 640 200, 700 195, 730 195" fill="none" stroke="#64748b" stroke-width="2"/>
+  <path d="M 590 350 C 640 390, 700 395, 730 395" fill="none" stroke="#64748b" stroke-width="2"/>
+  <line x1="880" y1="195" x2="958" y2="230" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="880" y1="395" x2="958" y2="360" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="1240" y1="295" x2="1298" y2="295" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- raw data pill -->
+  <rect x="20" y="260" width="110" height="70" rx="16" fill="#1f2937" stroke="#64748b" stroke-width="1.5"/>
+  <text x="75" y="288" text-anchor="middle" fill="#e2e8f0" font-size="12" font-weight="600">RAW DATA</text>
+  <text x="75" y="304" text-anchor="middle" fill="#8998a8" font-size="9.5">GADM&#183;DMSP&#183;VIIRS</text>
+  <text x="75" y="316" text-anchor="middle" fill="#8998a8" font-size="9.5">G-Econ&#183;GPW</text>
+
+  <!-- preprocess card -->
+  <rect x="160" y="110" width="300" height="370" rx="14" fill="#16233a" stroke="#5aa9e6" stroke-width="1.5"/>
+  <text x="184" y="146" fill="#eaf4ff" font-size="16" font-weight="600">&#128752; PREPROCESS</text>
+  <text x="184" y="166" fill="#7fa9d4" font-size="11.5" letter-spacing="0.5">STAGES 01&#8211;21</text>
+  <line x1="184" y1="180" x2="436" y2="180" stroke="#2c3f5c" stroke-width="1"/>
+  <text x="184" y="212" fill="#cfe0f2" font-size="13">&#8211; Download GADM &#183; DMSP &#183; VIIRS</text>
+  <text x="184" y="244" fill="#cfe0f2" font-size="13">&#8211; Fill Wikidata birthplace gaps</text>
+  <text x="184" y="276" fill="#cfe0f2" font-size="13">&#8211; Build grid cells &amp; hole-punch</text>
+  <text x="184" y="276" dy="18" fill="#cfe0f2" font-size="13">&#160;&#160;ADM1 geometry</text>
+  <text x="184" y="326" fill="#cfe0f2" font-size="13">&#8211; Extract nighttime lights</text>
+  <text x="184" y="326" dy="18" fill="#cfe0f2" font-size="13">&#160;&#160;(DMSP / VIIRS zonal stats)</text>
+  <text x="184" y="376" fill="#cfe0f2" font-size="13">&#8211; Build GDP &amp; population</text>
+  <text x="184" y="376" dy="18" fill="#cfe0f2" font-size="13">&#160;&#160;covariates</text>
+  <text x="184" y="426" fill="#eaf4ff" font-size="13" font-weight="600">&#8211; Assemble the analysis panel</text>
+  <text x="184" y="450" fill="#7fa9d4" font-size="11.5" font-style="italic">&#8594; analysis_panel.csv</text>
+
+  <!-- panel cylinder -->
+  <path d="M 475 280 L 475 310 A 35 8 0 0 0 545 310 L 545 280 A 35 8 0 0 0 475 280 Z" fill="#0f766e" stroke="#2dd4bf" stroke-width="1.5"/>
+  <ellipse cx="510" cy="280" rx="35" ry="8" fill="#0f766e" stroke="#2dd4bf" stroke-width="1.5"/>
+  <text x="510" y="336" text-anchor="middle" fill="#8998a8" font-size="10.5">analysis_panel.csv</text>
+
+  <!-- core card -->
+  <rect x="590" y="110" width="290" height="170" rx="14" fill="#3d3113" stroke="#f2b544" stroke-width="1.5"/>
+  <text x="612" y="138" fill="#fff8e6" font-size="14.5" font-weight="600">&#128202; CORE</text>
+  <text x="612" y="155" fill="#d9ae55" font-size="10.5" letter-spacing="0.5">STAGES 22&#8211;32</text>
+  <line x1="612" y1="166" x2="858" y2="166" stroke="#5c4a1f" stroke-width="1"/>
+  <text x="612" y="188" fill="#f4e3b8" font-size="12">&#8211; Table I &#8212; descriptives</text>
+  <text x="612" y="210" fill="#f4e3b8" font-size="12">&#8211; Table II &#8212; replication</text>
+  <text x="612" y="232" fill="#f4e3b8" font-size="12">&#8211; Table IV &#8212; circles/grid</text>
+  <text x="612" y="254" fill="#f4e3b8" font-size="12">&#8211; Extension table 1992&#8211;2023</text>
+  <text x="612" y="270" fill="#f4e3b8" font-size="12">&#8211; Figures 1 &amp; 2</text>
+
+  <!-- supplementary card -->
+  <rect x="590" y="310" width="290" height="170" rx="14" fill="#0f3d3a" stroke="#4fd1c5" stroke-width="1.5"/>
+  <text x="612" y="338" fill="#ecfffe" font-size="14.5" font-weight="600">&#128193; SUPPLEMENTARY</text>
+  <text x="612" y="355" fill="#5fc3b8" font-size="10.5" letter-spacing="0.5">STAGES 33&#8211;39</text>
+  <line x1="612" y1="366" x2="858" y2="366" stroke="#1c5651" stroke-width="1"/>
+  <text x="612" y="388" fill="#c9f2ec" font-size="12">&#8211; FamilyTies index (WVS+EVS)</text>
+  <text x="612" y="410" fill="#c9f2ec" font-size="12">&#8211; Table III &#8212; dynamics</text>
+  <text x="612" y="432" fill="#c9f2ec" font-size="12">&#8211; Table V &#8212; determinants</text>
+  <text x="612" y="454" fill="#c9f2ec" font-size="12">&#8211; Table VI &#8212; continents</text>
+  <text x="612" y="470" fill="#c9f2ec" font-size="12">&#8211; Table VII &#8212; aid / oil</text>
+
+  <!-- render card -->
+  <rect x="960" y="165" width="280" height="260" rx="14" fill="#3d1729" stroke="#e0729a" stroke-width="1.5"/>
+  <text x="982" y="200" fill="#fff0f6" font-size="16" font-weight="600">&#128196; RENDER</text>
+  <text x="982" y="220" fill="#d97ba3" font-size="11.5" letter-spacing="0.5">STAGES 40&#8211;41</text>
+  <line x1="982" y1="232" x2="1216" y2="232" stroke="#5c2440" stroke-width="1"/>
+  <text x="982" y="264" fill="#f5cfe0" font-size="13">&#8211; paper.qmd +</text>
+  <text x="982" y="264" dy="18" fill="#f5cfe0" font-size="13">&#160;&#160;supplementary.qmd &#8594; PDF</text>
+  <text x="982" y="314" fill="#f5cfe0" font-size="13">&#8211; presentation/index.qmd</text>
+  <text x="982" y="314" dy="18" fill="#f5cfe0" font-size="13">&#160;&#160;&#8594; HTML slide deck</text>
+  <text x="982" y="380" fill="#d97ba3" font-size="10.5" font-style="italic">Waits on both core</text>
+  <text x="982" y="396" fill="#d97ba3" font-size="10.5" font-style="italic">and supplementary.</text>
+
+  <!-- output pill -->
+  <rect x="1300" y="260" width="120" height="70" rx="16" fill="#7c2d12" stroke="#fb923c" stroke-width="1.5"/>
+  <text x="1360" y="288" text-anchor="middle" fill="#fff7ed" font-size="12" font-weight="600">OUTPUTS</text>
+  <text x="1360" y="304" text-anchor="middle" fill="#f4b98a" font-size="9.5">paper.pdf +</text>
+  <text x="1360" y="316" text-anchor="middle" fill="#f4b98a" font-size="9.5">slides.html</text>
+</svg>
