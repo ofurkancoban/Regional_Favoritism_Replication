@@ -1,0 +1,1362 @@
+---
+title: "Replication & Extension of Regional Favoritism (Hodler & Raschky, 2014)"
+doc-type: "Supplementary Materials"
+course-info: "Applied Econometrics Using GIS Techniques · SoSe 2026"
+lecturer: "Prof. Dr. Erkan Gören"
+author:
+  - name: Ömer Furkan Çoban
+    email: oemer.furkan.coban@uni-oldenburg.de
+    affiliations:
+      - name: Carl von Ossietzky University of Oldenburg
+        department: Applied Economics and Data Science
+        city: Oldenburg
+        country: Germany
+date: "2026-09-15"
+date-format: "DD MMMM YYYY"
+abstract: |
+  This document reports the replication tables that accompany the main
+  paper. The main paper covers Table II (main results), Table IV
+  (geographic extent), and the 1992-2023 panel extension; the
+  remaining five of the authors' seven main-text tables, Table I,
+  Table III, Table V, Table VI, and Table VII, are reported here in
+  full.
+keywords:
+  - Regional favoritism
+  - Nighttime lights
+  - Replication
+  - Supplementary materials
+journal:
+  name: Applied Econometrics Using GIS Techniques, seminar paper
+bibliography: references.bib
+csl: ../presentation/apa.csl
+link-citations: true
+execute:
+  echo: false
+  warning: false
+  message: false
+format:
+  elsevier-pdf:
+    keep-tex: true
+    template-partials:
+      - before-body.tex
+    journal:
+      formatting: preprint
+      model: 3p
+      cite-style: authoryear
+  html:
+    title: "Replication & Extension of Regional Favoritism"
+    subtitle: "(Hodler & Raschky, 2014)"
+    embed-resources: true
+    theme: cosmo
+    toc: true
+    toc-depth: 2
+    number-sections: true
+    fig-width: 8
+    format-links: false
+    include-in-header:
+      # Identical to paper.qmd's own html include-in-header block, so
+      # the two documents render as one visual project rather than
+      # two unrelated pages -- see that file for the design rationale
+      # behind each rule.
+      text: |
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+        <style>
+        :root{
+          --paper:#fbf9f4; --paper-panel:#f3efe3; --ink:#24211c;
+          --ink-soft:#6b6459; --ink-faint:#a29a89; --navy:#1d2f52;
+          --navy-soft:#3a4d73; --gold:#a97e2f; --gold-soft:#e4d3a8;
+          --rule:#e3dac2;
+        }
+        body{
+          background:var(--paper); color:var(--ink);
+          font-family:"Source Serif 4",Georgia,"Times New Roman",serif;
+          font-size:17px; line-height:1.65;
+        }
+        h1,h2,h3,h4,h5,h6{
+          font-family:"Fraunces",Georgia,serif; color:var(--navy);
+          font-weight:600; letter-spacing:-0.01em;
+        }
+        h1.title{ font-weight:700; font-size:34px; }
+        .subtitle, p.subtitle{ font-family:"Fraunces",Georgia,serif; font-style:normal; color:var(--navy); font-weight:600; font-size:34px; }
+        .doc-type-label{
+          font-family:"Fraunces",Georgia,serif; font-style:italic; font-size:1.15rem;
+          letter-spacing:0.02em; color:var(--gold); font-weight:500; margin-top:0.5rem;
+        }
+        a{ color:var(--navy); }
+        a:hover{ color:var(--gold); }
+        code, pre, kbd, samp{ font-family:"IBM Plex Mono",ui-monospace,monospace; }
+        pre{ background:var(--paper-panel); border:1px solid var(--rule); border-radius:4px; }
+        blockquote{ border-left:3px solid var(--gold); background:var(--paper-panel); padding:0.6rem 1rem; color:var(--ink-soft); }
+        hr{ border-color:var(--rule); }
+        .quarto-title-block .quarto-title-meta-contents p{ font-family:"Source Serif 4",Georgia,"Times New Roman",serif; font-size:1rem; color:var(--ink); }
+        .abstract{ background:var(--paper-panel); border:1px solid var(--rule); border-radius:6px; padding:1rem 1.25rem; }
+        .abstract .block-title, div.abstract > .abstract-title{ font-family:"Fraunces",serif; color:var(--navy); font-weight:600; margin-top:0; }
+
+        @media (min-width: 992px) {
+          body .page-columns{
+            display:grid; gap:0;
+            grid-template-columns:
+              [screen-start] 1.5em [screen-start-inset] 3fr
+              [page-start page-start-inset] 35px [body-start-outset] 35px
+              [body-start] 1.5em
+              [body-content-start] minmax(500px, calc(1180px - 3em)) [body-content-end]
+              1.5em [body-end] 35px [body-end-outset] minmax(140px, 220px)
+              [page-end-inset] 35px [page-end] 3fr
+              [screen-end-inset] 1.5em [screen-end];
+          }
+        }
+
+        #TOC, nav[role="doc-toc"]{
+          font-family:"Source Serif 4",Georgia,"Times New Roman",serif; font-size:0.88em;
+          background:var(--paper-panel); border:1px solid var(--rule);
+          border-radius:6px; padding:0.9rem 1rem;
+        }
+        #TOC #toc-title, nav[role="doc-toc"] #toc-title{
+          font-family:"Fraunces",serif; font-weight:600; color:var(--navy);
+          font-size:1.05rem; margin-bottom:0.5rem;
+        }
+        #TOC ul, nav[role="doc-toc"] ul{ padding-left:0; }
+        #TOC a, #TOC a.nav-link, nav[role="doc-toc"] a{
+          color:var(--ink-soft) !important; border-left:2px solid transparent;
+          padding:0.15rem 0 0.15rem 0.6rem; display:block;
+          font-weight:400 !important;
+          transition:color .15s, border-color .15s;
+        }
+        #TOC a:hover, #TOC a.nav-link:hover, nav[role="doc-toc"] a:hover{
+          color:var(--navy) !important; border-left-color:var(--gold-soft);
+        }
+        #TOC a.active, #TOC a.nav-link.active, nav[role="doc-toc"] a.active{
+          color:var(--navy) !important; font-weight:600 !important; border-left-color:var(--gold);
+        }
+        #TOC .quarto-alternate-formats h2, #TOC .quarto-alternate-formats-title{
+          font-family:"Fraunces",serif !important; font-weight:600; color:var(--navy);
+          font-size:0.95rem; margin:1rem 0 0.4rem; text-transform:none;
+        }
+        #TOC .quarto-alternate-formats a{
+          color:var(--ink-soft) !important; font-weight:400 !important;
+          padding:0.15rem 0 0.15rem 0.6rem; border-left:2px solid transparent; display:block;
+        }
+        #TOC .quarto-alternate-formats a:hover{ color:var(--navy) !important; border-left-color:var(--gold-soft); }
+        figcaption, .figure-caption{ font-style:italic; color:var(--ink-soft); font-size:0.9em; }
+
+        table:not(.ptbl){ font-variant-numeric:tabular-nums; }
+        table:not(.ptbl) thead th{ font-family:"Fraunces",serif; font-weight:600; color:var(--navy); border-bottom:1.5px solid var(--ink) !important; }
+        table:not(.ptbl) td:first-child, table:not(.ptbl) th:first-child{ white-space:nowrap; }
+        /* Table 2 (S1) is all compact numeric/SD-triplet cells; nowrap
+           throughout keeps the SD column ("2.482, 2.425, 0.538") on one
+           line instead of breaking across two or three. */
+        #tbl-s1-descriptives table td, #tbl-s1-descriptives table th{ white-space:nowrap; }
+
+        .ptbl-wrap{ width:100%; overflow-x:auto; margin:1.25rem 0; }
+        table.ptbl{ width:100%; border-collapse:collapse; font-size:0.78rem; font-variant-numeric:tabular-nums; background:transparent; }
+        table.ptbl th, table.ptbl td{ padding:3px 5px; text-align:center; white-space:nowrap; }
+        table.ptbl td:first-child, table.ptbl th:first-child{ text-align:left; white-space:nowrap; }
+        table.ptbl thead tr:first-child th{ font-family:"Fraunces",serif; font-weight:600; color:var(--navy); border-bottom:none; padding-bottom:2px; }
+        table.ptbl thead tr:last-child th{ font-weight:500; color:var(--ink-soft); font-size:0.78em; border-bottom:1.5px solid var(--ink); padding-top:2px; padding-bottom:5px; }
+        table.ptbl tbody tr.ptbl-foot-first td{ border-top:1px solid var(--rule); padding-top:6px; }
+        table.ptbl tbody tr:last-child td{ border-bottom:1.5px solid var(--ink); }
+        table.ptbl .ptbl-shade{ background:var(--paper-panel); }
+        table.ptbl .ptbl-se{ color:var(--ink-soft); font-size:0.88em; }
+        table.ptbl .ptbl-sub{ color:var(--ink-soft); font-size:0.85em; padding-left:1.25em; }
+        .ptbl-notes{ font-size:0.8rem; color:var(--ink-soft); margin-top:0.5rem; line-height:1.5; }
+        </style>
+    include-after-body:
+      text: |
+        <script>
+        document.addEventListener("DOMContentLoaded", function () {
+          // Every link that isn't a same-page anchor opens in a new
+          // tab -- see paper.qmd's matching script for the rationale.
+          document.querySelectorAll("a[href]").forEach(function (a) {
+            if (a.getAttribute("href").charAt(0) !== "#") {
+              a.setAttribute("target", "_blank");
+              a.setAttribute("rel", "noopener");
+            }
+          });
+          var src = document.getElementById("extra-title-meta-source");
+          if (src) {
+            var groups = document.querySelectorAll(".quarto-title-meta");
+            var target = null;
+            groups.forEach(function (g) {
+              if (g.textContent.indexOf("Published") !== -1) target = g;
+            });
+            if (target) {
+              while (src.firstChild) target.appendChild(src.firstChild);
+            }
+            src.remove();
+          }
+          var linksSrc = document.getElementById("extra-toc-links-source");
+          if (linksSrc) {
+            var toc = document.getElementById("TOC");
+            var formats = toc ? toc.querySelector(".quarto-alternate-formats") : null;
+            if (formats && formats.parentNode) {
+              formats.parentNode.insertBefore(linksSrc.firstElementChild, formats.nextSibling);
+            } else if (toc) {
+              toc.appendChild(linksSrc.firstElementChild);
+            }
+            linksSrc.remove();
+          }
+          var typeSrc = document.getElementById("extra-doc-type-source");
+          if (typeSrc) {
+            var titleBlock = document.querySelector(".quarto-title");
+            if (titleBlock) {
+              titleBlock.appendChild(typeSrc.firstElementChild);
+            }
+            typeSrc.remove();
+          }
+        });
+        </script>
+---
+
+```{r}
+#| echo: false
+#| results: asis
+# Doc-type label ("Supplementary Material"); see paper.qmd's matching
+# chunk for the technique.
+if (knitr::is_html_output()) {
+    knitr::asis_output(paste0(
+        '<div id="extra-doc-type-source" style="display:none">',
+        '<p class="doc-type-label">Supplementary Material</p>',
+        '</div>'
+    ))
+}
+```
+
+```{r}
+#| echo: false
+#| results: asis
+if (knitr::is_html_output()) {
+    knitr::asis_output(paste0(
+        '<div id="extra-title-meta-source" style="display:none">',
+        '<div><div class="quarto-title-meta-heading">Course</div>',
+        '<div class="quarto-title-meta-contents"><p>Applied Econometrics Using GIS Techniques</p></div></div>',
+        '<div><div class="quarto-title-meta-heading">Semester</div>',
+        '<div class="quarto-title-meta-contents"><p>SoSe 2026</p></div></div>',
+        '<div><div class="quarto-title-meta-heading">Lecturer</div>',
+        '<div class="quarto-title-meta-contents"><p>Prof. Dr. Erkan Gören</p></div></div>',
+        '</div>'
+    ))
+}
+```
+
+```{r}
+#| echo: false
+#| results: asis
+if (knitr::is_html_output()) {
+    # "Supplementary (HTML)" is dropped below since it's the current
+    # page -- see paper.qmd's matching chunk for why. "Paper (HTML)" is
+    # added instead so this document links back to the other one.
+    links <- list(
+        list(href = "paper.html", icon = "bi-filetype-html", label = "Paper (HTML)"),
+        list(href = "paper.pdf", icon = "bi-file-pdf", label = "Paper (PDF)"),
+        list(href = "supplementary.html", icon = "bi-filetype-html", label = "Supplementary (HTML)"),
+        list(href = "supplementary.pdf", icon = "bi-file-pdf", label = "Supplementary (PDF)"),
+        list(href = "../presentation/index.html", icon = "bi-easel2", label = "Presentation (slides)"),
+        list(href = "../presentation/Coban_RegionalFavoritism.pdf", icon = "bi-file-pdf", label = "Presentation (PDF)"),
+        list(href = "https://github.com/ofurkancoban/Regional_Favoritism_Replication/tree/main/replication_package", icon = "bi-box-seam", label = "Replication Package")
+    )
+    links <- Filter(function(l) l$href != "supplementary.html", links)
+    items <- vapply(links, function(l) {
+        sprintf(
+            '<li><a href="%s"><i class="bi %s"></i>%s</a></li>',
+            l$href, l$icon, l$label
+        )
+    }, character(1))
+    knitr::asis_output(paste0(
+        '<div id="extra-toc-links-source" style="display:none">',
+        '<div class="quarto-alternate-formats"><p class="quarto-alternate-formats-title">Other Links</p><ul>',
+        paste(items, collapse = ""),
+        '</ul></div>',
+        '</div>'
+    ))
+}
+```
+
+# Introduction
+
+The main paper covers Table II (the main result), Table IV (the
+geographic-extent test), and the 1992-2023 panel extension.
+Hodler and Raschky (2014) [@hodler2014] report seven main-text tables
+in total; the five this replication also reconstructed but the main
+paper does not cover are reported here instead: Table I's full
+descriptive statistics (the main paper reproduces only the two
+variables common to every specification), Table III's dynamics
+specification, Table V's determinants of the effect, Table VI's
+continent split, and Table VII's aid/oil heterogeneity test. Every
+specification below builds on the same fixed-effects
+regression described in the main paper's Section 4 (Empirical
+Framework), region and country-by-year fixed effects, standard errors
+clustered by leader spell, estimated on the authors' exact 126-country,
+1992-2009 sample; that baseline is not restated per section. Data
+sources and construction deviations (G-Econ in place of Gennaioli et
+al., 2014; a reconstructed WVS-based FamilyTies measure; a more recent
+Penn World Table vintage for NationalGDP) follow the same conventions
+described in the main paper's Data section.
+
+# Data {#sec-data}
+
+This section lists every data source behind the tables in this
+document and in the main paper, in full, since the main paper's Data
+section only has room to describe the sources behind Table II and
+Table IV. Sources are grouped as they enter the pipeline: the outcome
+variable, political-leader identification, geography, population, then
+the seven country-level covariates behind Table V, Table VI, and the
+extension's determinants and spillover tracks.
+
+@tbl-s0-sources covers every data source behind this document and the
+main paper, from the outcome variable through the seven country-level
+covariates. DMSP-OLS nighttime lights [@noaa-dmsp] is the dependent
+variable throughout, `log(light + 0.01)`, a small constant added
+because a large share of region-year observations sit at or near the
+lower bound. Archigos [@goemans2009] supplies the base universe of
+leader-spells (919 spells, 172 countries) but carries no birthplace of
+its own; PLAD [@plad2024] is the primary birthplace source, matching
+86.9% of spells, and a Wikidata/Wikipedia scrape [@wikidata-supplement]
+fills a further 33 leaders where PLAD has zero coverage, bringing
+combined coverage to 90.5%. Geography and population are where this
+replication most directly diverges from the authors' own construction,
+discussed at length in the main paper's Data section (main paper
+Sections 3.3 and 3.4): the authors' CIESIN subnational boundaries
+[@ciesin-subadbnd] were never publicly released as underlying data, so
+this paper substitutes GADM 3.6 [@gadm36] throughout, and CIESIN's
+Gridded Population of the World, versions 3 and 4
+[@ciesin-gpwv3; @ciesin-gpwv4], is bridged into one annual series using
+their 2000 overlap year as a per-country scaling factor.
+
+The seven country-level covariates used across Table V, Table VI, and
+the extension follow. Two are institutional: Polity's
+executive-constraints score [@marshall2010] and Barro-Lee's average
+schooling [@barrolee2013]. Three are economic and cultural: the Penn
+World Table's GDP per capita [@pwt71], Alesina et al.'s linguistic
+fractionalization [@alesina2003], and Alesina and Giuliano's family-ties
+measure [@alesina2014]. Two are resource-flow controls used in Table
+VII's aid/oil heterogeneity test: net official development assistance
+[@oecd-ids] and oil rents from the World Bank's adjusted net savings
+series [@wb-ans]. The main paper's two documented construction
+deviations are both here: NationalGDP comes from a more recent Penn
+World Table vintage than the authors' own PWT 7.1, and FamilyTies is
+this project's own reconstruction from World Values Survey microdata
+(four of the authors' original six waves), since neither of Alesina and
+Giuliano's own papers publishes the underlying country lookup table.
+
+None of these sources arrives pre-combined; each table above is the
+last link in a chain of merges the main paper's Data section does not
+have room to walk through. Birthplace identification runs Archigos and
+PLAD through two separate joins before a single leader-spell has a
+region: first Archigos's own leader-spell list is matched to PLAD by
+leader name and country-year to inherit a birthplace, then PLAD's
+coordinate (or the Wikidata gap-fill's, resolved the same way) is
+point-in-polygon joined to the GADM 3.6 ADM2 layer, so a spell only
+becomes usable once it has cleared both joins; the 90.5% combined
+coverage figure in @tbl-s0-sources is the survival rate through that
+whole chain, not just the geocoding step. Building $Leader_{ict-1}$
+itself is a further merge: a country-year's sitting leader (from the
+Archigos/PLAD chain) has to be matched against every region in that
+country in that year before the dummy can be defined for regions that
+are not the birth region, since a birth-region indicator with no
+comparison regions is not a panel variable. The population bridge
+merges GPWv3 and GPWv4 on their one shared year, 2000, computing each
+country's own GPWv4-to-GPWv3 ratio in that year and using it to rescale
+GPWv4's 2005 and 2010 values onto GPWv3's level before the two series
+are stacked into one 1990-2010 panel; a small number of countries where
+that ratio falls outside [0.85, 1.15], an implausible five-year jump,
+have GPWv4 left unscaled rather than forced onto a bridge factor likely
+driven by a source break rather than real growth. The seven Table V/VI
+covariates and the two Table VII covariates are simpler merges by
+comparison, a left join of each country-year covariate value onto
+every region-year row for that country in that year, which is also why
+Table V/VI/VII's "Number of regions" in @tbl-s3-determinants,
+@tbl-s4-continents, and @tbl-s5-aidoil is smaller than the full panel's
+38,559: a region drops from a given column's regression only if that
+column's own covariate is missing for its country-year, so each
+column's own coverage gap, not a shared restriction, sets its region
+count.
+
+```{r}
+#| label: tbl-s0-sources
+#| tbl-cap: "Data sources: outcome variable, political leaders, geography, population, and country-level covariates."
+#| tbl-pos: "H"
+
+source("R/comparison_table_helpers.R")
+
+src <- data.frame(
+    Source = c(
+        "DMSP-OLS Nighttime Lights",
+        "Archigos, ext. w/ birthplaces",
+        "PLAD Birthplace Coordinates",
+        "Wikidata/Wikipedia Scrape",
+        "Subnat. Boundaries $\\to$ GADM 3.6",
+        "Gridded Population v3 \\& v4",
+        "Political Regime Characteristics",
+        "Educational Attainment Dataset",
+        "Penn World Table, GDP per Capita",
+        "Linguistic Fractionalization",
+        "Family Ties",
+        "Net Official Development Assistance",
+        "Adjusted Net Savings, Oil Rents"
+    ),
+    Coverage = c(
+        "Annual 1992-2014, 0-63 DN, all countries; 30 arc-sec ($\\sim$1km), WGS84, unprojected",
+        "Leader per country-year to 2004, hand-ext. by HR to 2010; 919 spells, 172 countries",
+        "799/919 spells (86.9\\%); zero coverage for 25 countries",
+        "108 missing leaders queried, 42 resolved, 33 confirmed in-country",
+        "126 countries, 38,427 ADM2 regions; excludes countries under 500k pop. and territory above $65^{\\circ}$N; vector polygons, WGS84, unprojected",
+        "Region-year; GPWv3 anchors 1990/95, GPWv4 rev.11 anchors 2000/05/10, bridged and interpolated; GPWv3 2.5 arc-min, GPWv4 5 arc-min, WGS84, unprojected",
+        "Country-year, 1800-2010; rescaled Polity2 score, 0 to 1",
+        "Country-year, 5-year intervals, 1950-2010",
+        "Country-year, US dollars",
+        "Country level, time-invariant",
+        "Country level, time-invariant",
+        "Country-year, current US dollars",
+        "Country-year, current US dollars per capita"
+    ),
+    `Used For` = c(
+        "Dependent variable throughout",
+        "Defines who led which country and when; builds Experience/TotalTenure; no birthplace itself",
+        "Primary birthplace source, point-in-polygon joined to GADM ADM2",
+        "Gap-fill only where PLAD has zero coverage; combined coverage 832/919 = 90.5\\%",
+        "Regional units of observation; authors' own CIESIN product never publicly released as data",
+        "Builds lnpop (log regional population) and per-capita light; 2000 overlap year sets the bridge factor",
+        "Executive constraints and political competition; interacted with Leader in Table V",
+        "Average years of schooling; second institutional-quality proxy interacted with Leader",
+        "Log GDP per capita, baseline economic control (this paper: a more recent PWT vintage than HR's own 7.1)",
+        "Probability two random citizens speak different languages; interacted with Leader",
+        "Strength of family bonds from World Values Survey; this paper reconstructs it from 4 of the authors' 6 waves",
+        "Log ODA per capita; interacted with Leader in Table VII to test whether aid inflows fuel favoritism",
+        "Log oil rents per capita; interacted with Leader alongside aid in the same heterogeneity test"
+    ),
+    check.names = FALSE
+)
+if (knitr::is_html_output()) {
+    src[] <- lapply(src, latex_to_html)
+}
+
+knitr::kable(
+    src,
+    format = if (knitr::is_html_output()) "html" else "latex",
+    align = c("l", "l", "l"),
+    escape = FALSE,
+    row.names = FALSE,
+    booktabs = TRUE
+) |>
+    kableExtra::column_spec(1, width = "3.6cm") |>
+    kableExtra::column_spec(2, width = "5.8cm") |>
+    kableExtra::column_spec(3, width = "4.6cm") |>
+    kableExtra::pack_rows("Outcome Variable", 1, 1) |>
+    kableExtra::pack_rows("Political Leaders", 2, 4) |>
+    kableExtra::pack_rows("Geography", 5, 5) |>
+    kableExtra::pack_rows("Population", 6, 6) |>
+    kableExtra::pack_rows("Institutions & Human Capital", 7, 8) |>
+    kableExtra::pack_rows("Economic & Cultural Covariates", 9, 11) |>
+    kableExtra::pack_rows("External Resource Flows", 12, 13) |>
+    kableExtra::kable_styling(font_size = 7, latex_options = "scale_down")
+```
+
+One further source, not in the table above because it substitutes
+for rather than supplements the authors' own data: Table II Column
+(8)'s regional GDP dependent variable. The authors use Gennaioli et al.
+(2014) [@gennaioli2014], a subnational regional GDP dataset that is not
+publicly released; this paper substitutes G-Econ 4.0 [@gecon2006], a
+1-degree grid ($\sim$ 111km, WGS84, unprojected) gridded output dataset
+(190 countries, benchmark years 1990/95/2000/05) aggregated to ADM2 by
+point-in-polygon join. The two sources are not interchangeable in
+construction, so Column (8) is reported as indicative rather than a
+like-for-like replication, the same caveat carried through the main
+paper's Data and Results sections. @tbl-s1-descriptives below reports
+the full observation,
+mean, and dispersion comparison between the authors' own panel and this
+paper's, for every variable in the table above.
+
+# S1. Table I: Descriptive Statistics (Full Sample) {#sec-s1-table1}
+
+@tbl-s1-descriptives extends the main paper's two-variable descriptive
+comparison (Light$_{ict}$, Leader$_{ict-1}$) to the full nine-variable
+comparison from the authors' own Table I (p. 1007), including the five
+determinants used in Table V and the two spending controls,
+Aid$_{ct-1}$ and Oil$_{ct-1}$, in the authors' own layout: the standard
+deviation decomposed into overall, between (across regions or
+countries), and within (over time) components, following the standard
+panel "xtsum" convention, and, for the seven country-level determinants
+(Polity$_{ct-1}$ through Oil$_{ct-1}$), a second row in parentheses
+giving the same statistics collapsed to one observation per
+country-year rather than repeated once per region. The authors do not
+report a country-year row for Light$_{ict}$ or Leader$_{ict-1}$ (both
+are inherently region-year concepts), so neither does this table.
+
+The two panels agree closely on Light$_{ict}$ and Leader$_{ict-1}$, as
+discussed in the main paper's Data section. Of the remaining seven
+variables, all seven means and standard deviations sit within a few
+percent of the authors' own, including NationalGDP$_{ct-1}$ and
+Oil$_{ct-1}$, despite NationalGDP coming from a different Penn World
+Table vintage than the authors used and no direct substitute being
+available for Oil's original construction; the level-of-development
+proxies these variables measure evidently do not depend heavily on
+which vintage or source constructs them. Observation counts are also
+close for six of the seven, but Aid$_{ct-1}$ is the exception: this
+paper's panel matches only 405,473 of the authors' 690,495
+region-years, a 41% shortfall, by far the largest gap of any variable
+in the table, against 5-11% gaps everywhere else, including
+FamilyTies$_c$'s own incomplete reconstruction (covering only four of
+the six World Values Survey waves the authors' original source drew
+on; see the main paper's Data section for the full account of that
+limitation). Aid$_{ct-1}$ does not enter any specification reported in
+this document or the main paper, so this gap does not affect any
+reported result, but it is the largest single data-coverage difference
+between the two panels.
+
+```{r}
+#| label: tbl-s1-descriptives
+#| tbl-cap: "Descriptive statistics, HR 2014's own layout (p. 1007): region-year panel, 126 countries, 1992-2009. SD is overall, between, within (xtsum decomposition). Rows in parentheses are the same statistics at the country-year level, for Polity$_{ct-1}$ through Oil$_{ct-1}$ only."
+#| tbl-pos: "H"
+
+own_ry <- read.csv("../01_datasets/processed/ntl/table1_descriptive_region_hrsample.csv")
+own_cy <- read.csv("../01_datasets/processed/ntl/table1_descriptive_countryyear_hrsample.csv")
+leader_fix <- read.csv("../01_datasets/processed/ntl/table1_leader_lag1991fix_hrsample.csv")
+hr_ry <- read.csv("../01_datasets/processed/ntl/hr2014_table1_reference.csv")
+
+own_ry[own_ry$variable == "Leaderict-1", names(leader_fix)] <- leader_fix[1, names(leader_fix)]
+
+fmt <- function(x, digits = 3) formatC(x, format = "f", digits = digits, big.mark = ",")
+fmt_obs <- function(x) formatC(x, format = "d", big.mark = ",")
+fmt_sd3 <- function(o, b, w) sprintf("%s, %s, %s", fmt(o), fmt(b), fmt(w))
+
+label_map <- if (knitr::is_html_output()) {
+    c(
+        Lightict = "Light\\(_{ict}\\)",
+        `Leaderict-1` = "Leader\\(_{ict-1}\\)",
+        `Polityct-1` = "Polity\\(_{ct-1}\\)",
+        `Schoolingct-1` = "Schooling\\(_{ct-1}\\)",
+        `NationalGDPct-1` = "NationalGDP\\(_{ct-1}\\)",
+        Languagec = "Language\\(_{c}\\)",
+        FamilyTiesc = "FamilyTies\\(_{c}\\)",
+        `Aidct-1` = "Aid\\(_{ct-1}\\)",
+        `Oilct-1` = "Oil\\(_{ct-1}\\)"
+    )
+} else {
+    c(
+        Lightict = "Light$_{ict}$",
+        `Leaderict-1` = "Leader$_{ict-1}$",
+        `Polityct-1` = "Polity$_{ct-1}$",
+        `Schoolingct-1` = "Schooling$_{ct-1}$",
+        `NationalGDPct-1` = "NationalGDP$_{ct-1}$",
+        Languagec = "Language$_c$",
+        FamilyTiesc = "FamilyTies$_c$",
+        `Aidct-1` = "Aid$_{ct-1}$",
+        `Oilct-1` = "Oil$_{ct-1}$"
+    )
+}
+cy_vars <- c("Polityct-1", "Schoolingct-1", "NationalGDPct-1", "Languagec", "FamilyTiesc", "Aidct-1", "Oilct-1")
+
+# HR 2014's own Table I (p. 1007), transcribed directly, region-year
+# level and (for the seven determinants) the country-year level too.
+hr_ry_extra <- data.frame(
+    variable = cy_vars,
+    obs = c(684213, 648240, 683669, 679119, 551004, 690495, 645396),
+    mean = c(0.789, 8.168, 8.868, 0.318, 0.096, 6.191, 9.357),
+    sd_overall = c(0.257, 2.783, 1.147, 0.281, 0.311, 4.743, 4.116),
+    sd_between = c(0.239, 2.724, 1.137, 0.281, 0.311, 4.069, 4.457),
+    sd_within = c(0.099, 0.570, 0.151, 0.000, 0.000, 2.440, 1.001),
+    min = c(0.000, 0.925, 5.080, 0.002, -0.851, -10.632, 0.000),
+    max = c(1.000, 13.022, 10.855, 0.923, 0.606, 13.712, 16.396)
+)
+hr_ry <- data.frame(
+    variable = c(hr_ry$variable, hr_ry_extra$variable),
+    obs = c(hr_ry$obs, hr_ry_extra$obs),
+    mean = c(hr_ry$mean, hr_ry_extra$mean),
+    sd_overall = c(hr_ry$sd_overall, hr_ry_extra$sd_overall),
+    sd_between = c(c(2.425, 0.045), hr_ry_extra$sd_between),
+    sd_within = c(c(0.538, 0.040), hr_ry_extra$sd_within),
+    min = c(hr_ry$min, hr_ry_extra$min),
+    max = c(hr_ry$max, hr_ry_extra$max)
+)
+hr_cy <- data.frame(
+    variable = cy_vars,
+    obs = c(2205, 1922, 2200, 2161, 1112, 2251, 1820),
+    mean = c(0.670, 6.968, 8.212, 0.438, 0.041, 7.794, 6.590),
+    sd_overall = c(0.312, 2.920, 1.347, 0.298, 0.368, 4.746, 5.262),
+    sd_between = c(0.288, 2.891, 1.337, 0.298, 0.371, 4.348, 5.312),
+    sd_within = c(0.123, 0.518, 0.180, 0.000, 0.000, 1.931, 1.191)
+)
+
+keep <- names(label_map)
+own_ry <- own_ry[match(keep, own_ry$variable), ]
+hr_ry <- hr_ry[match(keep, hr_ry$variable), ]
+own_cy <- own_cy[match(cy_vars, own_cy$variable), ]
+hr_cy <- hr_cy[match(cy_vars, hr_cy$variable), ]
+
+fmt_dash <- function(x, digits = 3) ifelse(is.na(x), "--", fmt(x, digits))
+
+ry_rows <- data.frame(
+    Variable = unname(label_map[keep]),
+    `Obs.` = fmt_obs(hr_ry$obs),
+    Mean = fmt(hr_ry$mean),
+    SD = fmt_sd3(hr_ry$sd_overall, hr_ry$sd_between, hr_ry$sd_within),
+    Min = fmt_dash(hr_ry$min),
+    Max = fmt_dash(hr_ry$max),
+    `Obs. ` = fmt_obs(own_ry$obs),
+    `Mean ` = fmt(own_ry$mean),
+    `SD ` = fmt_sd3(own_ry$sd_overall, own_ry$sd_between, own_ry$sd_within),
+    `Min ` = fmt_dash(own_ry$min),
+    `Max ` = fmt_dash(own_ry$max),
+    check.names = FALSE
+)
+cy_rows <- data.frame(
+    Variable = if (knitr::is_html_output()) "&nbsp;&nbsp;&nbsp;&nbsp;(country-year)" else paste0("\\quad (country-year)"),
+    `Obs.` = paste0("(", fmt_obs(hr_cy$obs), ")"),
+    Mean = paste0("(", fmt(hr_cy$mean), ")"),
+    SD = paste0("(", fmt_sd3(hr_cy$sd_overall, hr_cy$sd_between, hr_cy$sd_within), ")"),
+    Min = "",
+    Max = "",
+    `Obs. ` = paste0("(", fmt_obs(own_cy$obs), ")"),
+    `Mean ` = paste0("(", fmt(own_cy$mean), ")"),
+    `SD ` = paste0("(", fmt_sd3(own_cy$sd_overall, own_cy$sd_between, own_cy$sd_within), ")"),
+    `Min ` = "",
+    `Max ` = "",
+    check.names = FALSE
+)
+
+# Interleave: each of the 7 determinant rows gets its country-year row
+# directly below it; Light_ict and Leader_ict-1 (rows 1-2) get none.
+out <- ry_rows[1:2, ]
+for (i in seq_along(cy_vars)) {
+    out <- rbind(out, ry_rows[2 + i, ], cy_rows[i, ])
+}
+
+knitr::kable(
+    out,
+    format = if (knitr::is_html_output()) "html" else "latex",
+    linesep = "",
+    align = c("l", rep("r", 10)),
+    escape = FALSE,
+    row.names = FALSE,
+    booktabs = TRUE,
+    col.names = c(
+        "Variable",
+        "Obs.",
+        "Mean",
+        "SD (overall, between, within)",
+        "Min",
+        "Max",
+        "Obs.",
+        "Mean",
+        "SD (overall, between, within)",
+        "Min",
+        "Max"
+    )
+) |>
+    kableExtra::column_spec(7, border_left = TRUE) |>
+    kableExtra::add_header_above(c(
+        " " = 1,
+        "Authors (126 countries, 1992-2009)" = 5,
+        "This Paper (same 126 countries, 1992-2009)" = 5
+    )) |>
+    kableExtra::kable_styling(font_size = 7, latex_options = "scale_down")
+```
+
+# S2. Table III: Dynamics of Regional Favoritism {#sec-s2-table3}
+
+@tbl-s2-dynamics reports the authors' event-study-style specification
+(p. 1014-1015), testing whether the birth-region effect is genuinely
+tied to a leader's tenure rather than a pre-existing regional trend, in
+HR 2014's own row order and variable names. Column (1) adds a one-year
+placebo window (Future1$_{ict-1}$, Past1$_{ict-1}$: was this region about
+to become, or did it just stop being, the leader's birth region).
+Column (2) replaces that with a three-year window (Future3$_{ict-1}$,
+Past3$_{ict-1}$, plus the linear trends Pretrend$_{ict-1}$ and
+Posttrend$_{ict-1}$ over that window); these two columns test for a
+pre-existing or lingering regional trend, not a fixed-effects
+specification choice, so neither is a plain baseline the later columns
+build on. Columns (3)-(5) keep the three-year placebo window and add
+interactions of the birth-region dummy with Experience$_{ct-1}$ (years
+the leader has held office so far) and TotalTenure$_{ct-1}$ (the
+spell's eventual total length), testing whether the effect grows with
+time in office.
+
+An earlier version of this table (and the script generating it) had
+guessed this column layout from term counts alone, rather than reading
+it directly off HR 2014's own Table III: it put Leader$_{t-1}$ alone in
+Column (1) and all four placebo dummies together in Column (2). Checked
+directly against the authors' own PDF (p. 1015), that guess was wrong
+on both columns, and the sign on Leader $\times$ TotalTenure in Column
+(5) was transcribed as positive when the authors report it as negative
+(-0.002). Both are corrected here, and the model is re-estimated on the
+corrected specification.
+
+The replication's placebo terms stay statistically insignificant in
+both Columns (1) and (2), matching the authors' own finding that there
+is no detectable pre-trend. The baseline Leader$_{t-1}$ coefficient
+stays close to the authors' corresponding value in every column (all
+five of the authors' own Leader$_{t-1}$ estimates, 0.038 down to 0.003
+across Columns 1-5, are matched within one standard error by this
+replication's own; Column (1)'s own estimate, 0.038, now matches the
+authors' to three decimals under the corrected specification).
+
+The tenure-accumulation channel is where the two panels part ways. The
+authors report a positive, significant Leader $\times$ Experience
+effect in both Columns (3) and (5) (0.007 and 0.009, both p<0.01), and
+a positive, significant Leader $\times$ TotalTenure effect in Column
+(4) (0.005, p<0.01), but their own Column (5) TotalTenure interaction
+is small, negative, and not itself significant (-0.002, SE 0.003), so
+the authors' own evidence for a TotalTenure channel rests on Column (4)
+alone, not on both columns where it appears. This replication's
+corresponding interactions are smaller in every column and not
+statistically significant anywhere, though they carry the same sign as
+the authors' Column (4) throughout. The divergence is specific to this
+tenure-accumulation channel, not to the core favoritism effect.
+
+**Reading the columns economically.** Columns (1)-(2) are an
+identification check, not a substantive result in their own right: a
+region that lights up before its leader takes office, or stays bright
+after he leaves, would say the effect is driven by something already
+underway in that region rather than by the leader's own presence in
+power, undermining the causal story. Both placebo windows coming back
+at essentially zero, in both panels, is the paper's evidence that
+favoritism is switched on and off with tenure itself, not a proxy for
+some slower-moving regional trend. Columns (3)-(5) then ask an economic
+question about the mechanism: does favoritism behave like a stock a
+leader builds up, or a flow that starts immediately and stays flat?
+Experience is the leader's own political capital accumulated so far, a
+measure of how consolidated his hold on power is at any given point in
+his term; TotalTenure is that same spell's eventual length, known only
+in hindsight, so it proxies less for consolidation in real time than
+for whatever let this particular leader stay in office as long as he
+did (strong patronage networks, weak term limits, favorable political
+conditions). HR's own positive, significant coefficients on both
+suggest favoritism grows the longer and more securely a leader holds
+office, consistent with a patronage relationship that deepens with
+tenure rather than one struck once at the start; this replication's
+much weaker, insignificant version of the same interactions does not
+contradict that story so much as fail to detect it with the same
+confidence, given the same-sign point estimates throughout.
+
+```{r}
+#| label: tbl-s2-dynamics
+#| tbl-cap: "Table III replication, HR 2014's dynamics specification, in the main paper's Orig./Repl. layout and the authors' own row order (p. 1015). Dependent variable: Light$_{ict}$ throughout. Standard errors in parentheses, clustered by leader spell."
+#| tbl-pos: "H"
+
+source("R/comparison_table_helpers.R")
+
+m3 <- readRDS("../01_datasets/processed/ntl/table3_dynamics_models.rds")
+lb <- "fixest::l(is_birthregion)TRUE"
+
+# HR 2014's own per-column values, transcribed directly from Table III
+# (p. 1015); every cell the authors report is populated here, no term
+# in their own table is left unreported. Column layout: (1) Leader_t-1 +
+# Future1 + Past1; (2) Leader_t-1 + Future3 + Past3; (3) + Leader x
+# Experience; (4) + Leader x TotalTenure; (5) both interactions, (2)-(5)
+# all keep the three-year placebo window (Future3/Past3/Pretrend/Posttrend).
+hr_leader <- list(
+    c(0.038, 0.016, "**"), c(0.039, 0.021, "*"), c(0.006, 0.024, ""),
+    c(0.003, 0.028, ""), c(0.017, 0.028, "")
+)
+hr_experience <- list(NULL, NULL, c(0.007, 0.002, "***"), NULL, c(0.009, 0.003, "***"))
+hr_totaltenure <- list(NULL, NULL, NULL, c(0.005, 0.002, "***"), c(-0.002, 0.003, ""))
+hr_future1 <- list(c(-0.005, 0.029, ""), NULL, NULL, NULL, NULL)
+hr_future3 <- list(NULL, c(0.002, 0.025, ""), c(0.006, 0.031, ""), c(0.007, 0.031, ""), c(0.006, 0.031, ""))
+hr_pretrend <- list(NULL, NULL, c(-0.005, 0.018, ""), c(-0.005, 0.018, ""), c(-0.005, 0.018, ""))
+hr_past1 <- list(c(0.011, 0.024, ""), NULL, NULL, NULL, NULL)
+hr_past3 <- list(NULL, c(0.002, 0.020, ""), c(0.007, 0.027, ""), c(0.007, 0.027, ""), c(0.006, 0.027, ""))
+hr_posttrend <- list(NULL, NULL, c(-0.001, 0.012, ""), c(-0.001, 0.012, ""), c(-0.001, 0.012, ""))
+
+row_spec <- list(
+    list(label = "Leader$_{t-1}$", hr = hr_leader, own = list(m3$m1, m3$m2, m3$m3, m3$m4, m3$m5), term = lb),
+    list(label = "Leader $\\times$ Experience$_{ct-1}$", hr = hr_experience, own = list(NULL, NULL, m3$m3, NULL, m3$m5), term = paste0(lb, ":experience_lag")),
+    list(label = "Leader $\\times$ TotalTenure$_{ct-1}$", hr = hr_totaltenure, own = list(NULL, NULL, NULL, m3$m4, m3$m5), term = paste0(lb, ":totaltenure_lag")),
+    list(label = "Future1$_{ict-1}$", hr = hr_future1, own = list(m3$m1, NULL, NULL, NULL, NULL), term = "future1"),
+    list(label = "Future3$_{ict-1}$", hr = hr_future3, own = list(NULL, m3$m2, m3$m3, m3$m4, m3$m5), term = "future3"),
+    list(label = "Pretrend$_{ict-1}$", hr = hr_pretrend, own = list(NULL, NULL, m3$m3, m3$m4, m3$m5), term = "pretrend"),
+    list(label = "Past1$_{ict-1}$", hr = hr_past1, own = list(m3$m1, NULL, NULL, NULL, NULL), term = "past1"),
+    list(label = "Past3$_{ict-1}$", hr = hr_past3, own = list(NULL, m3$m2, m3$m3, m3$m4, m3$m5), term = "past3"),
+    list(label = "Posttrend$_{ict-1}$", hr = hr_posttrend, own = list(NULL, NULL, m3$m3, m3$m4, m3$m5), term = "posttrend")
+)
+
+n_cols <- 5
+body <- do.call(rbind, lapply(row_spec, function(r) {
+    vals <- character(0)
+    for (co in seq_len(n_cols)) {
+        vals <- c(vals, sstack_hr(r$hr[[co]]), sstack_own(r$own[[co]], r$term))
+    }
+    c(r$label, vals)
+}))
+
+# HR 2014's footer (p. 1015) is identical across all five columns, one
+# combined event-study sample, not a shrinking one column to column.
+s3sum <- read.csv("../01_datasets/processed/ntl/table3_dynamics_summary.csv")
+foot <- rbind(
+    c("Number of regions", as.vector(rbind("38,427", formatC(s3sum$n_regions, big.mark = ",")))),
+    c("Observations", as.vector(rbind("690,495", formatC(s3sum$n_obs, big.mark = ",")))),
+    c("$R^2$ / Within $R^2$", as.vector(rbind("0.319", formatC(s3sum$within_r2, format = "f", digits = 3)))),
+    c("Region FE", as.vector(rbind("Yes", rep("Yes", n_cols)))),
+    c("Country-Year FE", as.vector(rbind("Yes", rep("Yes", n_cols))))
+)
+
+out <- rbind(body, foot)
+colnames(out) <- c("", rep(c("Orig.", "Repl."), n_cols))
+
+# HR 2014's own Table III note (p. 1015, transcribed verbatim), followed by
+# this replication's own additions (column layout recap, R2 comparability
+# caveat) appended as a second paragraph rather than interleaved, so the
+# authors' own words are not altered by this project's own commentary.
+hr_note <- paste(
+    "Fixed effect regressions using annual data for subnational regions between 1992 and 2009.",
+    "Light$_{ict}$ is the log of average nighttime light intensity plus 0.01.",
+    "Leader$_{ict}$ is a dummy variable equal to 1 if region $i$ is the birth region of the political leader in country $c$ in year $t$, and 0 otherwise.",
+    "Experience$_{ct}$ is the number of years the political leader has been in power until year $t$.",
+    "TotalTenure$_{ct}$ is the total number of years the political leader was in power up to 2010.",
+    "Future1$_{ict}$ is a dummy variable equal to 1 if region $i$ is the birth region of the political leader in $t+1$, but not in $t$; and 0 otherwise.",
+    "Future3$_{ict}$ is a dummy variable equal to 1 if region $i$ is the birth region of the political leader in $t+1$, $t+2$, or $t+3$, but not in $t$; and 0 otherwise.",
+    "Pretrend$_{ict}$ is a time trend for the years in which Future3$_{ict}=1$.",
+    "Past1$_{ict}$ is a dummy variable equal to 1 if region $i$ is the birth region of the political leader in $t-1$, but not in $t$; and 0 otherwise.",
+    "Past3$_{ict}$ is a dummy variable equal to 1 if region $i$ is the birth region of the political leader in $t-1$, $t-2$, or $t-3$, but not in $t$; and 0 otherwise.",
+    "Posttrend$_{ict}$ is a time trend for the years in which Past3$_{ict}=1$.",
+    "Standard errors are adjusted for leader clustering.",
+    "$^{***}$, $^{**}$, $^{*}$ indicate significance at the 1\\%, 5\\%, and 10\\% levels, respectively. (HR 2014, Table III note, p. 1015.)"
+)
+own_note <- paste(
+    "This replication's own additions: Columns (1)-(5) all use this project's own boundary-lag-corrected Leader$_{ict-1}$ (Section 3.5 of the main paper) and its own construction of Experience/TotalTenure from PLAD/Archigos spells, not the authors' own underlying data.",
+    "Column (1) is Leader$_{t-1}$ + Future1 + Past1; (2) is Leader$_{t-1}$ + Future3 + Past3 + Pretrend + Posttrend; (3)-(5) add the Experience and/or TotalTenure interactions on top of Column (2)'s specification.",
+    "Orig. $R^2$ above is the authors' own reported $R^2$; Repl. reports this project's within-$R^2$ on the HR/Stata convention (a region-FE-only null model), which is not directly comparable to the authors' figure in level."
+)
+
+render_comparison_table(
+    out,
+    n_cols = n_cols,
+    col_headers = c("(1)", "(2)", "(3)", "(4)", "(5)"),
+    spanner_label = rep("Light$_{ict}$", n_cols),
+    hline_before_foot = nrow(body),
+    notes = paste(hr_note, own_note)
+)
+```
+
+# S3. Table V: Determinants of Regional Favoritism {#sec-s3-table5}
+
+@tbl-s3-determinants reports the authors' cross-sectional determinants
+specification (p. 1020-1022), interacting the birth-region dummy with
+five country characteristics one at a time (Columns 1-5) and jointly
+(Column 6): Polity (a democracy index), Schooling, NationalGDP,
+Language (linguistic fractionalization), and FamilyTies. A negative
+interaction means the favoritism effect is smaller in countries scoring
+higher on that characteristic.
+
+The replication's Column (1) reproduces the authors' central finding
+most clearly: the Leader $\times$ Polity interaction is negative and
+statistically significant in both panels, of a similar magnitude,
+consistent with favoritism being weaker in more democratic countries.
+The Leader $\times$ Schooling interaction (Column 2) keeps the authors'
+sign, both panels finding weaker favoritism where average schooling is
+higher, but loses significance in the replication (the authors' own
+estimate is significant at the 1% level, this paper's at neither
+level). NationalGDP's interaction (Column 3) also keeps the authors'
+sign but loses significance the same way. Language's interaction
+(Column 4) is the closest match of the five, both sign and
+significance holding up. FamilyTies (Column 5) is the one that
+reverses: the authors report a positive, significant interaction,
+while this replication's is indistinguishable from zero. These gaps
+follow from the same source-construction issues noted in
+@sec-s1-table1 (NationalGDP from a different PWT vintage, FamilyTies
+from an incomplete WVS reconstruction), though the reversal on
+FamilyTies specifically is larger than the Table I comparison alone
+would predict.
+
+Column (6)'s combined specification keeps the Polity interaction as
+the most stable finding across both panels; the other four covariates
+lose significance in the replication once they compete with Polity for
+the same underlying cross-country variation, a pattern the authors' own
+Column (6) shows to a lesser degree. The one term that changes
+qualitatively in Column (6) is the baseline Leader$_{t-1}$ coefficient
+itself: the authors' own Column (6) estimate is small, negative, and
+not significant (-0.036, SE 0.134), while this replication's is larger,
+also negative, and marginally significant (-0.295, SE 0.175), the same
+sign, but only the replication's crosses conventional significance.
+Because five interaction terms and their lower-order components enter
+the same specification, this sign reversal (relative to Columns 1-5,
+where Leader$_{t-1}$ stays positive in both panels) is best read as a
+symptom of collinearity among the five determinants rather than a
+substantive finding on its own.
+
+An earlier version of this table had transcribed the authors' own
+Column (6) Leader$_{t-1}$ value as positive (0.036); checked directly
+against HR 2014's own Table V (p. 1021), it is negative. This is
+corrected below, along with the row order (the authors' own table lists
+one row per determinant, Leader $\times$ Polity through Leader $\times$
+FamilyTies, each populated in its own column and again in Column (6),
+rather than a single generic "Leader $\times$ X" row) and the full
+per-column Number of regions, Observations, and $R^2$ footer, which the
+authors report varies column to column (684,213 down to 520,081) rather
+than staying fixed.
+
+**Reading the columns economically.** Each column asks whether a
+different feature of a country's political economy amplifies or damps
+the birth-region effect. Column (1)'s Polity interaction is the
+paper's institutional-constraints story: in a country with strong
+checks and balances, a leader who tried to funnel resources toward his
+own region would face opposition parties, an independent judiciary, or
+a free press able to expose and contest it, so the favoritism this
+paper measures should be smaller precisely where those constraints
+bind, which is what the negative interaction says in both panels.
+Column (2)'s Schooling interaction reads similarly but through a
+different channel, a more educated population being better able to
+monitor and punish patronage at the ballot box or through civil
+society, so more schooling predicting less favoritism is the same
+accountability story from the citizen side rather than the
+constitutional side. Column (3)'s NationalGDP interaction is more
+ambiguous by construction: a richer country could show less favoritism
+because it needs less (public goods are already broadly provided) or
+because it has stronger institutions that happen to correlate with
+income, or it could show more because a bigger fiscal pie gives a
+leader more to redirect. Column (4)'s Language interaction is a
+coalition-building story: in a linguistically fractionalized country,
+a leader plausibly relies more on visible, targeted transfers to hold
+together a coalition across groups, so favoritism being stronger where
+fractionalization is higher is consistent with regional patronage
+substituting for the national cohesion a shared language would
+otherwise provide. Column (5)'s FamilyTies interaction is a
+particularism story in the same spirit: where kinship and family
+obligation carry more weight than universalistic norms, a leader's own
+extended network is a more natural conduit for resources, so stronger
+family ties predicting more favoritism fits a clientelist mechanism
+operating through personal rather than institutional channels. Column
+(6) asks which of these five channels survives once they all compete
+for the same explanatory power, and in both panels it is the
+institutional one, Polity, that does, consistent with formal political
+constraints being a more fundamental brake on favoritism than any of
+the four cultural or economic proxies.
+
+```{r}
+#| label: tbl-s3-determinants
+#| tbl-cap: "Table V replication, HR 2014's determinants specification, in the main paper's Orig./Repl. layout and the authors' own row order (p. 1021). Standard errors in parentheses, clustered by leader spell."
+#| tbl-pos: "H"
+
+source("R/comparison_table_helpers.R")
+
+m5 <- readRDS("../01_datasets/processed/ntl/table5_determinants_models.rds")
+lb <- "fixest::l(is_birthregion)TRUE"
+own_models <- list(m5$m1, m5$m2, m5$m3, m5$m4, m5$m5, m5$m6)
+
+int_terms <- c(
+    "fixest::l(is_birthregion)TRUE:fixest::l(polity)",
+    "fixest::l(is_birthregion)TRUE:fixest::l(schooling)",
+    "fixest::l(is_birthregion)TRUE:fixest::l(national_gdp)",
+    "fixest::l(is_birthregion)TRUE:language",
+    "fixest::l(is_birthregion)TRUE:family_ties"
+)
+det_labels <- c(
+    "Leader $\\times$ Polity$_{ct-1}$", "Leader $\\times$ Schooling$_{ct-1}$",
+    "Leader $\\times$ NationalGDP$_{ct-1}$", "Leader $\\times$ Language$_c$",
+    "Leader $\\times$ FamilyTies$_c$"
+)
+
+# HR 2014's own Table V (p. 1021), transcribed directly.
+hr_leader <- list(
+    c(0.262, 0.056, "***"), c(0.119, 0.040, "***"), c(0.196, 0.082, "**"),
+    c(-0.008, 0.017, ""), c(0.008, 0.012, ""), c(-0.036, 0.134, "")
+)
+hr_inter <- list(
+    c(-0.298, 0.063, "***"), c(-0.012, 0.004, "***"), c(-0.019, 0.009, "**"),
+    c(0.120, 0.040, "***"), c(0.063, 0.032, "**")
+)
+hr_col6 <- list(
+    c(-0.240, 0.065, "***"), c(-0.024, 0.007, "***"), c(0.050, 0.018, "***"),
+    c(0.016, 0.052, ""), c(0.035, 0.034, "")
+)
+hr_n_regions <- c(38427, 36033, 38179, 37795, 30631, 29123)
+hr_n_obs <- c(684213, 648240, 683669, 679119, 551004, 520081)
+hr_r2 <- c(0.320, 0.330, 0.320, 0.318, 0.308, 0.313)
+
+n_cols <- 6
+row_leader <- c("Leader$_{t-1}$", as.vector(sapply(1:n_cols, function(i) {
+    c(sstack_hr(hr_leader[[i]]), sstack_own(own_models[[i]], lb))
+})))
+det_rows <- do.call(rbind, lapply(seq_along(det_labels), function(i) {
+    vals <- character(0)
+    for (co in 1:n_cols) {
+        if (co == i) {
+            vals <- c(vals, sstack_hr(hr_inter[[i]]), sstack_own(own_models[[i]], int_terms[i]))
+        } else if (co == n_cols) {
+            vals <- c(vals, sstack_hr(hr_col6[[i]]), sstack_own(m5$m6, int_terms[i]))
+        } else {
+            vals <- c(vals, "", "")
+        }
+    }
+    c(det_labels[i], vals)
+}))
+
+body <- rbind(row_leader, det_rows)
+foot <- rbind(
+    c("Number of regions", as.vector(rbind(formatC(hr_n_regions, format = "d", big.mark = ","), formatC(sapply(own_models, function(m) length(fixest::fixef(m)$gid_2)), format = "d", big.mark = ",")))),
+    c("Observations", as.vector(rbind(formatC(hr_n_obs, format = "d", big.mark = ","), formatC(sapply(own_models, stats::nobs), format = "d", big.mark = ",")))),
+    c("$R^2$", as.vector(rbind(formatC(hr_r2, format = "f", digits = 3), formatC(sapply(own_models, function(m) fixest::r2(m, "r2")), format = "f", digits = 3)))),
+    c("Region FE", as.vector(rbind("Yes", rep("Yes", n_cols)))),
+    c("Country-Year FE", as.vector(rbind("Yes", rep("Yes", n_cols))))
+)
+out <- rbind(body, foot)
+colnames(out) <- c("", rep(c("Orig.", "Repl."), n_cols))
+
+render_comparison_table(
+    out,
+    n_cols = n_cols,
+    col_headers = c("(1)", "(2)", "(3)", "(4)", "(5)", "(6)"),
+    spanner_label = rep("Light$_{ict}$", n_cols),
+    hline_before_foot = nrow(body),
+    font_size = 6.5,
+    notes = paste(
+        "Fixed effect regressions using annual data for subnational regions between 1992 and 2009.",
+        "Leader$_{ict-1}$ is a dummy variable equal to 1 if region $i$ is the birth region of the political leader in country $c$ in year $t-1$, and 0 otherwise.",
+        "Polity$_{ct-1}$ is the Polity2 score, rescaled 0 to 1.",
+        "Schooling$_{ct-1}$ is average years of schooling.",
+        "NationalGDP$_{ct-1}$ is the log of GDP per capita.",
+        "Language$_c$ is an index of linguistic fractionalization.",
+        "FamilyTies$_c$ is a measure of the strength of family ties.",
+        "Standard errors are adjusted for leader clustering.",
+        "$^{***}$, $^{**}$, $^{*}$ indicate significance at the 1\\%, 5\\%, and 10\\% levels, respectively. (HR 2014, Table V note, p. 1021, adapted.)",
+        "This replication's own additions: Column (6) interacts the birth-region dummy with all five determinants jointly, so each determinant's row is populated in its own single column and again in Column (6), not a generic \"Leader x X\" row.",
+        "NationalGDP and FamilyTies are built from different underlying sources than the authors' own (Section 2).",
+        "Orig. $R^2$ is the authors' own reported $R^2$; Repl. reports fixest's overall (not within-transformed) $R^2$, which nets out the region and country-year fixed effects and is mechanically much closer to 1, so the two are not directly comparable in level."
+    )
+)
+```
+
+# S4. Table VI: Favoritism by Continent {#sec-s4-table6}
+
+@tbl-s4-continents decomposes the pooled Leader$_{t-1}$ effect into five
+continent-specific terms (p. 1023): Africa, Americas, Asia, Europe, and
+Oceania, with no omitted reference category since region and
+country-year fixed effects already absorb any continent-level main
+effect. Column (1) is the plain decomposition; Column (2) adds the
+Polity interaction; Column (3) adds all five Table V determinants.
+
+Column (1) does not reproduce the authors' geographic pattern as
+closely as Columns (2)-(3) reproduce their covariate pattern. Asia,
+the authors' largest and most significant continent effect (0.121,
+p<0.01), loses its significance entirely in this replication (0.036,
+not significant), the largest single change in the table.
+Africa stays significant in both panels but at a lower confidence
+level here (authors' 0.071, p<0.01, against this paper's 0.089,
+p<0.05). Europe's sign matches, small and negative in both the
+authors' data (-0.019, p<0.1) and here (-0.017, p<0.1), both only
+weakly significant; an earlier version of this table had transcribed
+the authors' Column (1) Europe and Oceania values as positive, which,
+checked against HR 2014's own Table VI (p. 1023), is wrong for both;
+Oceania is -0.112 (not significant) in the authors' own data as well,
+also matching this replication's sign. Americas and Oceania are not
+significant in either panel. Once covariates enter in Columns (2)-(3),
+a second, systematic divergence appears: every one of the authors'
+five continent coefficients in Column (3) is positive, while every one
+of this paper's is negative, the same full sign reversal Column (6) of
+Table V shows for the pooled Leader$_{t-1}$ term once all five
+determinants enter together (@sec-s3-table5). Column (2), with only
+the Polity interaction added, does not show this reversal, so it is
+specific to the fully saturated Column (3) specification, consistent
+with collinearity among the five determinants rather than five
+independent continent-level findings. The Polity interaction itself
+stays the most stable term across both panels throughout Columns
+(2)-(3), negative and significant in every case though smaller in
+magnitude here. Among Column (3)'s other four determinants, the
+authors' own NationalGDP interaction is positive (0.047**) rather than
+negative; an earlier version of this table's footnote had it as
+negative, corrected below.
+
+**Reading the columns economically.** Column (1)'s five continent
+coefficients are a first, unconditional look at where in the world
+favoritism runs strongest, before any attempt to explain why. Asia and
+Africa carrying the largest, most significant effects in the authors'
+own data (and Africa still significant, if smaller, in this
+replication) is consistent with the countries in HR's sample that fall
+in those continents skewing toward weaker political institutions and
+more discretionary, personalist rule, exactly the conditions Column
+(1) of Table V already flags as predicting more favoritism; Europe's
+small, weakly significant coefficient (whichever sign either panel
+finds) fits the same story from the other side, since HR's
+European sample leans toward the stronger-institution countries Table
+V's Polity interaction associates with less favoritism. Column (2)
+tests whether that geographic pattern survives once Polity is held
+constant within each continent, and it does not: every continent's
+coefficient jumps to a similar, large, significant magnitude once
+Polity enters, which says the geographic pattern in Column (1) is not
+five independent regional cultures of favoritism so much as one
+institutional-quality gradient that happens to correlate with
+continent, the raw continent effects in Column (1) proxying for
+Polity rather than adding anything Polity does not already capture.
+Column (3) pushes this further by adding all five Table V determinants
+at once, and the continent coefficients lose their earlier sign and
+significance entirely, the same collinearity pattern Table V's own
+Column (6) shows for the pooled Leader$_{t-1}$ term: once schooling,
+income, language, and family ties compete with Polity for the same
+underlying cross-country variation, no single term, continent included,
+retains a clean, independent read on what actually drives favoritism.
+
+```{r}
+#| label: tbl-s4-continents
+#| tbl-cap: "Table VI replication, HR 2014's continent-split specification, in the main paper's Orig./Repl. layout and the authors' own row order (p. 1023). Standard errors in parentheses, clustered by leader spell."
+#| tbl-pos: "H"
+
+source("R/comparison_table_helpers.R")
+
+m6 <- readRDS("../01_datasets/processed/ntl/table6_continents_models.rds")
+lb2 <- "fixest::l(is_birthregion)"
+own_models <- list(m6$m1, m6$m2, m6$m3)
+
+continents <- c("africa", "americas", "asia", "europe", "oceania")
+cont_labels <- c(
+    "Leader $\\times$ Africa$_c$", "Leader $\\times$ Americas$_c$", "Leader $\\times$ Asia$_c$",
+    "Leader $\\times$ Europe$_c$", "Leader $\\times$ Oceania$_c$"
+)
+
+# HR 2014's own Table VI (p. 1023), transcribed directly.
+hr_col1 <- list(
+    c(0.071, 0.026, "***"), c(0.000, 0.025, ""), c(0.121, 0.042, "***"),
+    c(-0.019, 0.010, "*"), c(-0.112, 0.077, "")
+)
+hr_col2 <- list(
+    c(0.235, 0.047, "***"), c(0.243, 0.067, "***"), c(0.296, 0.073, "***"),
+    c(0.239, 0.067, "***"), c(0.106, 0.101, "")
+)
+hr_col3 <- list(
+    c(0.041, 0.167, ""), c(0.056, 0.179, ""), c(0.005, 0.147, ""),
+    c(0.035, 0.163, ""), c(0.167, 0.168, "")
+)
+hr_polity <- list(NULL, c(-0.278, 0.070, "***"), c(-0.252, 0.068, "***"))
+hr_schooling <- list(NULL, NULL, c(-0.027, 0.007, "***"))
+hr_national_gdp <- list(NULL, NULL, c(0.047, 0.020, "**"))
+hr_language <- list(NULL, NULL, c(0.024, 0.046, ""))
+hr_family_ties <- list(NULL, NULL, c(0.011, 0.037, ""))
+
+hr_n_regions <- c(38427, 38427, 29123)
+hr_n_obs <- c(690495, 684213, 520081)
+hr_r2 <- c(0.319, 0.320, 0.313)
+
+n_cols <- 3
+cont_rows <- do.call(rbind, lapply(seq_along(continents), function(i) {
+    term <- sprintf("%s:%s", lb2, continents[i])
+    vals <- as.vector(sapply(1:n_cols, function(j) {
+        hr_j <- switch(j, hr_col1[[i]], hr_col2[[i]], hr_col3[[i]])
+        c(sstack_hr(hr_j), sstack_own(own_models[[j]], term))
+    }))
+    c(cont_labels[i], vals)
+}))
+
+covariate_row <- function(label, hr_list, term) {
+    vals <- as.vector(sapply(1:n_cols, function(j) {
+        c(sstack_hr(hr_list[[j]]), sstack_own(own_models[[j]], term))
+    }))
+    c(label, vals)
+}
+row_polity <- covariate_row("Leader $\\times$ Polity$_{ct-1}$", hr_polity, sprintf("%s:%s", lb2, "fixest::l(polity)"))
+row_schooling <- covariate_row("Leader $\\times$ Schooling$_{ct-1}$", hr_schooling, sprintf("%s:%s", lb2, "fixest::l(schooling)"))
+row_national_gdp <- covariate_row("Leader $\\times$ NationalGDP$_{ct-1}$", hr_national_gdp, sprintf("%s:%s", lb2, "fixest::l(national_gdp)"))
+row_language <- covariate_row("Leader $\\times$ Language$_c$", hr_language, sprintf("%s:%s", lb2, "language"))
+row_family_ties <- covariate_row("Leader $\\times$ FamilyTies$_c$", hr_family_ties, sprintf("%s:%s", lb2, "family_ties"))
+
+body <- rbind(cont_rows, row_polity, row_schooling, row_national_gdp, row_language, row_family_ties)
+foot <- rbind(
+    c("Number of regions", as.vector(rbind(formatC(hr_n_regions, format = "d", big.mark = ","), formatC(sapply(own_models, function(m) length(fixest::fixef(m)[[1]])), format = "d", big.mark = ",")))),
+    c("Observations", as.vector(rbind(formatC(hr_n_obs, format = "d", big.mark = ","), formatC(sapply(own_models, stats::nobs), format = "d", big.mark = ",")))),
+    c("$R^2$", as.vector(rbind(formatC(hr_r2, format = "f", digits = 3), formatC(sapply(own_models, function(m) fixest::r2(m, "r2")), format = "f", digits = 3)))),
+    c("Region FE", as.vector(rbind("Yes", rep("Yes", n_cols)))),
+    c("Country-Year FE", as.vector(rbind("Yes", rep("Yes", n_cols))))
+)
+out <- rbind(body, foot)
+colnames(out) <- c("", rep(c("Orig.", "Repl."), n_cols))
+
+render_comparison_table(
+    out,
+    n_cols = n_cols,
+    col_headers = c("(1)", "(2)", "(3)"),
+    spanner_label = rep("Light$_{ict}$", n_cols),
+    hline_before_foot = nrow(body),
+    font_size = 7,
+    notes = paste(
+        "Fixed effect regressions using annual data for subnational regions between 1992 and 2009.",
+        "Leader$_{ict-1}$ is a dummy variable equal to 1 if region $i$ is the birth region of the political leader in country $c$ in year $t-1$, and 0 otherwise.",
+        "Africa$_c$, Americas$_c$, Asia$_c$, Europe$_c$, and Oceania$_c$ are dummy variables for the respective continents.",
+        "Polity$_{ct-1}$ is the Polity2 score, rescaled so that it ranges from 0 to 1, with higher values implying stronger political institutions.",
+        "Schooling$_{ct-1}$ is the average years of schooling attained.",
+        "NationalGDP$_{ct-1}$ is the log of GDP per capita.",
+        "Language$_c$ is the index of linguistic fractionalization.",
+        "FamilyTies$_c$ is a measure of the strength of family ties.",
+        "Standard errors are adjusted for leader clustering.",
+        "$^{***}$, $^{**}$, $^{*}$ indicate significance at the 1\\%, 5\\%, and 10\\% levels, respectively. (HR 2014, Table VI note, p. 1023, adapted.)",
+        "This replication's own additions: no continent is an omitted reference category, since region and country-year fixed effects already absorb any continent-level main effect; each continent's coefficient is a level effect in its own right, not a contrast against a baseline continent.",
+        "Orig. $R^2$ is the authors' own reported $R^2$; Repl. reports fixest's overall (not within-transformed) $R^2$, which nets out the region and country-year fixed effects and is mechanically much closer to 1, so the two are not directly comparable in level."
+    )
+)
+```
+
+# S5. Table VII: Aid, Oil, and Regional Favoritism {#sec-s5-table7}
+
+@tbl-s5-aidoil reports the authors' aid/oil heterogeneity test (p.
+1024), asking whether favoritism responds more to a leader's incentives
+when a country receives more foreign aid or earns more from oil, and
+whether that response depends on the strength of political
+institutions. Columns (1)-(2) interact the birth-region dummy with
+Aid$_{ct-1}$ and Oil$_{ct-1}$ separately; Columns (3)-(4) add a triple
+interaction with Polity$_{ct-1}$, testing whether the aid/oil channel
+itself is weaker where institutions are stronger. This table was
+already fully built by this project's own pipeline (script and fitted
+models) but had not yet been added to this document; it is included
+here for completeness against the authors' seven-table set.
+
+This table diverges from the authors' own more than any other in this
+document. The authors' central finding, a positive and significant
+Leader $\times$ Aid interaction in Column (1) (0.008, p<0.01), does not
+reproduce: this replication's Column (1) estimate is smaller and not
+itself significant (0.003, SE 0.004). Column (3), which keeps the same
+interaction alongside the Polity triple interaction, shows the same
+pattern: the authors' Aid interaction there is significant (0.019,
+p<0.05), this replication's is not (0.008, SE 0.016). Column (2)'s Oil
+interaction diverges in the other direction: the authors' own estimate
+is small and not significant (0.000, SE 0.002), while this
+replication's is negative and significant (-0.008, p<0.01), the only
+term in this table where the replication is significant and the
+authors' own is not. The baseline Leader$_{t-1}$ coefficient is not
+significant in either panel in Columns (1) and (3), but diverges more
+in Columns (2) and (4), where this replication's estimate turns
+significant (0.090, p<0.01, and 0.245, p<0.05) against the authors'
+own small, insignificant values. The two triple interactions, Aid
+$\times$ Polity and Oil $\times$ Polity, keep the authors' negative
+sign in three of the four relevant column entries but are not
+significant in this replication's version of either, where the
+authors report one of the two (Aid $\times$ Polity, Column 3) as
+significant. Given how much this table diverges, its result is best
+read as suggestive at most, not a robust confirmation of the aid/oil
+heterogeneity channel HR 2014 report.
+
+**Reading the columns economically.** This table asks whether external
+resource windfalls, over which a national government has discretion
+but which did not have to be raised from its own citizens, are
+disproportionately captured for political rather than developmental
+use. Column (1)'s Leader $\times$ Aid interaction is the paper's aid-
+fungibility result: foreign aid is meant to be spent on the purposes
+donors attach to it, but if a marginal dollar of aid frees up an equal
+dollar of the government's own revenue for other uses, aid becomes
+fungible with general-purpose funds, and the authors' positive
+interaction says that freed-up margin disproportionately reaches the
+leader's own region rather than being spread nationally. Column (2)'s
+Oil interaction is the natural comparison case, oil rents being a
+domestic windfall rather than a donor transfer, and the authors'
+near-zero, insignificant estimate there is consistent with oil revenue
+being harder to redirect at the margin, whether because it is already
+embedded in existing fiscal and budgetary institutions in a way project
+aid is not, or because this project's own Oil measure is a coarser,
+country-level proxy than the region-specific extraction data a cleaner
+test would need. Columns (3)-(4) ask whether either channel is itself
+conditional on institutional quality: a negative Aid $\times$ Polity
+interaction says the aid-capture channel is weaker where political
+constraints are stronger, the same institutional-brake story Table V's
+Polity interaction tells for favoritism generally, extended here to
+say that stronger institutions do not just reduce favoritism on
+average, they specifically blunt a leader's ability to convert an aid
+windfall into regional patronage.
+
+```{r}
+#| label: tbl-s5-aidoil
+#| tbl-cap: "Table VII replication, HR 2014's aid/oil heterogeneity specification, in the main paper's Orig./Repl. layout and the authors' own row order (p. 1024). Standard errors in parentheses, clustered by leader spell."
+#| tbl-pos: "H"
+
+source("R/comparison_table_helpers.R")
+
+m7 <- readRDS("../01_datasets/processed/ntl/table7_aid_oil_models.rds")
+lb <- "fixest::l(is_birthregion)TRUE"
+own_models <- list(m7$m1, m7$m2, m7$m3, m7$m4)
+
+# HR 2014's own Table VII (p. 1024), transcribed directly.
+hr_leader <- list(
+    c(-0.019, 0.015, ""), c(0.020, 0.022, ""), c(0.086, 0.073, ""), c(0.118, 0.084, "")
+)
+hr_aid <- list(c(0.008, 0.002, "***"), NULL, c(0.019, 0.009, "**"), NULL)
+hr_oil <- list(NULL, c(0.000, 0.002, ""), NULL, c(0.010, 0.008, ""))
+hr_polity <- list(NULL, NULL, c(-0.121, 0.074, ""), c(-0.109, 0.094, ""))
+hr_aid_polity <- list(NULL, NULL, c(-0.019, 0.010, "*"), NULL)
+hr_oil_polity <- list(NULL, NULL, NULL, c(-0.014, 0.010, ""))
+
+hr_n_regions <- c(38427, 38179, 38427, 37851)
+hr_n_obs <- c(690495, 645396, 684213, 641410)
+hr_r2 <- c(0.319, 0.335, 0.320, 0.335)
+
+n_cols <- 4
+row_leader <- c("Leader$_{t-1}$", as.vector(sapply(1:n_cols, function(i) {
+    c(sstack_hr(hr_leader[[i]]), sstack_own(own_models[[i]], lb))
+})))
+row_aid <- c("Leader $\\times$ Aid$_{ct-1}$", as.vector(sapply(1:n_cols, function(i) {
+    c(sstack_hr(hr_aid[[i]]), sstack_own(own_models[[i]], paste0(lb, ":fixest::l(aid)")))
+})))
+row_oil <- c("Leader $\\times$ Oil$_{ct-1}$", as.vector(sapply(1:n_cols, function(i) {
+    c(sstack_hr(hr_oil[[i]]), sstack_own(own_models[[i]], paste0(lb, ":fixest::l(oil)")))
+})))
+row_polity <- c("Leader $\\times$ Polity$_{ct-1}$", as.vector(sapply(1:n_cols, function(i) {
+    c(sstack_hr(hr_polity[[i]]), sstack_own(own_models[[i]], paste0(lb, ":fixest::l(polity)")))
+})))
+row_aid_polity <- c("Leader $\\times$ Aid$_{ct-1}$ $\\times$ Polity$_{ct-1}$", as.vector(sapply(1:n_cols, function(i) {
+    c(sstack_hr(hr_aid_polity[[i]]), sstack_own(own_models[[i]], paste0(lb, ":fixest::l(aid):fixest::l(polity)")))
+})))
+row_oil_polity <- c("Leader $\\times$ Oil$_{ct-1}$ $\\times$ Polity$_{ct-1}$", as.vector(sapply(1:n_cols, function(i) {
+    c(sstack_hr(hr_oil_polity[[i]]), sstack_own(own_models[[i]], paste0(lb, ":fixest::l(oil):fixest::l(polity)")))
+})))
+
+body <- rbind(row_leader, row_aid, row_oil, row_polity, row_aid_polity, row_oil_polity)
+s7sum <- read.csv("../01_datasets/processed/ntl/table7_aid_oil_summary.csv")
+foot <- rbind(
+    c("Number of regions", as.vector(rbind(formatC(hr_n_regions, format = "d", big.mark = ","), formatC(s7sum$n_regions, format = "d", big.mark = ",")))),
+    c("Observations", as.vector(rbind(formatC(hr_n_obs, format = "d", big.mark = ","), formatC(s7sum$n_obs, format = "d", big.mark = ",")))),
+    c("$R^2$", as.vector(rbind(formatC(hr_r2, format = "f", digits = 3), formatC(s7sum$r2, format = "f", digits = 3)))),
+    c("Region FE", as.vector(rbind("Yes", rep("Yes", n_cols)))),
+    c("Country-Year FE", as.vector(rbind("Yes", rep("Yes", n_cols))))
+)
+out <- rbind(body, foot)
+colnames(out) <- c("", rep(c("Orig.", "Repl."), n_cols))
+
+render_comparison_table(
+    out,
+    n_cols = n_cols,
+    col_headers = c("(1)", "(2)", "(3)", "(4)"),
+    spanner_label = rep("Light$_{ict}$", n_cols),
+    hline_before_foot = nrow(body),
+    font_size = 8,
+    notes = paste(
+        "Fixed effect regressions using annual data for subnational regions between 1992 and 2009.",
+        "Leader$_{ict-1}$ is a dummy variable equal to 1 if region $i$ is the birth region of the political leader in $t-1$, and 0 otherwise.",
+        "Polity$_{ct-1}$ is the Polity2 score, rescaled so that it ranges from 0 to 1, with higher values implying stronger political institutions.",
+        "Aid$_{ct-1}$ is the log of net overseas development assistance per capita plus 1.",
+        "Oil$_{ct-1}$ is the log of oil rents per capita plus 1.",
+        "Standard errors are adjusted for leader clustering.",
+        "$^{***}$, $^{**}$, $^{*}$ indicate significance at the 1\\%, 5\\%, and 10\\% levels, respectively. (HR 2014, Table VII note, p. 1024, adapted.)",
+        "This replication's own additions: Aid is built from QoG's OECD-DAC gross ODA series, IHS-transformed following Levy-Yeyati, Panizza and Stein (2007) as the authors specify; Oil is QoG's oil-rent series, log1p-transformed.",
+        "Orig. $R^2$ is the authors' own reported $R^2$; Repl. reports fixest's overall (not within-transformed) $R^2$, which nets out the region and country-year fixed effects and is mechanically much closer to 1, so the two are not directly comparable in level."
+    )
+)
+```
+
+# Data and Code Availability {.unnumbered}
+
+All data are drawn from open sources: subnational boundaries from GADM
+[@gadm36], nighttime lights from DMSP-OLS [@noaa-dmsp], leader
+identities and tenure from Archigos [@goemans2009], birthplaces from
+PLAD [@plad2024] supplemented by a Wikidata scrape
+[@wikidata-supplement], population from GPWv3 and GPWv4
+[@ciesin-gpwv3; @ciesin-gpwv4], and the Table V/VI/VII covariates from
+the Quality of Government dataset, the Penn World Table [@pwt71], the
+Polity IV project [@marshall2010], Barro and Lee's schooling series
+[@barrolee2013], Alesina et al.'s linguistic fractionalization
+[@alesina2003], Alesina and Giuliano's family-ties measure
+[@alesina2014], OECD development assistance statistics [@oecd-ids],
+and the World Bank's adjusted net savings series [@wb-ans]. The
+complete pipeline that builds every table in this document, and in the
+main paper, is openly available in the replication repository
+(<https://github.com/ofurkancoban/Regional_Favoritism_Replication>).
+Table I, III, V, VI, and VII replicate five of the authors' seven
+main-text tables that the main paper's page limit leaves no room for;
+they are reported here in full rather than in the paper, and none of
+them changes that paper's conclusions.
+
+# Declaration of AI Use {.unnumbered}
+
+During the preparation of this work, the author used Anthropic Claude
+Sonnet 5 for coding assistance in building the
+replication pipeline and for English-language improvement of the
+manuscript text. After using this tool, the author reviewed and edited
+the content as needed and takes full responsibility for the content of
+this publication.
+
+# References {.unnumbered}
+
+::: {#refs}
+:::

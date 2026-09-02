@@ -1,0 +1,2223 @@
+---
+title: "Replication & Extension of Regional Favoritism (Hodler & Raschky, 2014)"
+doc-type: "Seminar Paper"
+course-info: "Applied Econometrics Using GIS Techniques · SoSe 2026"
+lecturer: "Prof. Dr. Erkan Gören"
+author:
+  - name: Ömer Furkan Çoban
+    email: oemer.furkan.coban@uni-oldenburg.de
+    affiliations:
+      - name: Carl von Ossietzky University of Oldenburg
+        department: Applied Economics and Data Science
+        city: Oldenburg
+        country: Germany
+date: "2026-09-15"
+date-format: "DD MMMM YYYY"
+abstract: |
+  Hodler and Raschky (2014) find that a region grows brighter at night
+  while it is the birth region of the sitting political leader, evidence
+  of regional favoritism. This paper asks whether that finding survives
+  being rebuilt rather than re-run: boundaries come from GADM rather
+  than their CIESIN source, birthplaces from PLAD and a Wikidata
+  supplement rather than their own geocoding, and light is extracted
+  here from raw DMSP-OLS composites. On
+  their exact 1992-2009 sample, seven of the eight columns of their
+  Table II reproduce in sign and significance, with a birth-region
+  coefficient of 0.032 against their 0.038, implying roughly one percent
+  higher regional output per year of incumbency.
+  Table IV's spatial pattern reproduces as well, fading one grid step
+  sooner. Extending the panel to 2023 on a harmonized DMSP/VIIRS series
+  strengthens the result: all seven extended specifications are
+  significant and the coefficient rises to 0.048. It also recovers the
+  one column that fails on the original window, the extensive margin,
+  suggesting that null reflects the DMSP sensor's limits rather than a
+  missing effect. Two discrepancies do not resolve: the population
+  control enters with the opposite sign throughout, and the tightest
+  spatial unit reverses their directional conclusion.
+keywords:
+  - Regional favoritism
+  - Nighttime lights
+  - Replication
+  - Political economy
+  - Geographic information systems
+journal:
+  name: Applied Econometrics Using GIS Techniques, seminar paper
+bibliography: references.bib
+csl: ../presentation/apa.csl
+link-citations: true
+execute:
+  echo: false
+  warning: false
+  message: false
+format:
+  elsevier-pdf:
+    keep-tex: true
+    template-partials:
+      - before-body.tex
+    include-in-header:
+      # tabularx gives stretchable X columns, used by Table 4 to fill the
+      # text width without rescaling the font the way \resizebox would.
+      #
+      # The float parameters are relaxed so Figure 2 and Table 3, which
+      # together occupy about 90% of a text block, can share one page.
+      # LaTeX's defaults reserve at least 20% of every page for text
+      # (\textfraction) and cap a page at two top floats, which forces
+      # that pair apart no matter how they are ordered in the source.
+      text: |
+        \usepackage{tabularx}
+        \usepackage{float}
+        \renewcommand{\topfraction}{0.92}
+        \renewcommand{\bottomfraction}{0.7}
+        \renewcommand{\textfraction}{0.06}
+        \renewcommand{\floatpagefraction}{0.85}
+        \setcounter{topnumber}{3}
+        \setcounter{totalnumber}{4}
+    journal:
+      formatting: preprint
+      model: 3p
+      cite-style: authoryear
+  html:
+    title: "Replication & Extension of Regional Favoritism"
+    subtitle: "(Hodler & Raschky, 2014)"
+    embed-resources: true
+    theme: cosmo
+    toc: true
+    toc-depth: 2
+    number-sections: true
+    fig-width: 8
+    format-links: false
+    include-in-header:
+      # Reuses the presentation's own three-typeface system and paper/
+      # navy/gold palette (see ../presentation/theme.scss) so the HTML
+      # paper reads as the same project as the slide deck, rather than
+      # a generic Bootstrap document. The four result tables' own
+      # .ptbl-* markup (built inline in each table's HTML branch) is
+      # styled here to match the presentation's .cmp-table look.
+      text: |
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+        <style>
+        :root{
+          --paper:#fbf9f4; --paper-panel:#f3efe3; --ink:#24211c;
+          --ink-soft:#6b6459; --ink-faint:#a29a89; --navy:#1d2f52;
+          --navy-soft:#3a4d73; --gold:#a97e2f; --gold-soft:#e4d3a8;
+          --rule:#e3dac2;
+        }
+        body{
+          background:var(--paper); color:var(--ink);
+          font-family:"Source Serif 4",Georgia,"Times New Roman",serif;
+          font-size:17px; line-height:1.65;
+        }
+        h1,h2,h3,h4,h5,h6{
+          font-family:"Fraunces",Georgia,serif; color:var(--navy);
+          font-weight:600; letter-spacing:-0.01em;
+        }
+        h1.title{ font-weight:700; font-size:34px; }
+        .subtitle, p.subtitle{ font-family:"Fraunces",Georgia,serif; font-style:normal; color:var(--navy); font-weight:600; font-size:34px; }
+        .doc-type-label{
+          font-family:"Fraunces",Georgia,serif; font-style:italic; font-size:1.15rem;
+          letter-spacing:0.02em; color:var(--gold); font-weight:500; margin-top:0.5rem;
+        }
+        a{ color:var(--navy); }
+        a:hover{ color:var(--gold); }
+        code, pre, kbd, samp{ font-family:"IBM Plex Mono",ui-monospace,monospace; }
+        pre{ background:var(--paper-panel); border:1px solid var(--rule); border-radius:4px; }
+        blockquote{ border-left:3px solid var(--gold); background:var(--paper-panel); padding:0.6rem 1rem; color:var(--ink-soft); }
+        hr{ border-color:var(--rule); }
+        /* No color/font override on the container itself: it was
+           cascading into the heading labels (making Published/Course/
+           Semester/Lecturer a lighter grey than Author/Affiliation,
+           which get their color from a more specific quarto rule this
+           container-level one doesn't reach) and into the values.
+           Targeting .quarto-title-meta-contents p directly instead
+           matches Author/Affiliation's own value styling without
+           touching the heading labels' color at all. */
+        .quarto-title-block .quarto-title-meta-contents p{ font-family:"Source Serif 4",Georgia,"Times New Roman",serif; font-size:1rem; color:var(--ink); }
+        .abstract{ background:var(--paper-panel); border:1px solid var(--rule); border-radius:6px; padding:1rem 1.25rem; }
+        .abstract .block-title, div.abstract > .abstract-title{ font-family:"Fraunces",serif; color:var(--navy); font-weight:600; margin-top:0; }
+
+        /* Quarto caps the content column at calc(850px - 3em) and the
+           TOC track at minmax(75px,145px) no matter the viewport (see
+           its own .page-columns grid) -- the 17-column result tables
+           need more than that, so this widens both tracks for this
+           document specifically rather than shrinking table type
+           further. Redeclares the whole named-line grid (partial
+           overrides aren't possible) for the one breakpoint/class
+           combination this single-page document actually renders
+           (body.quarto-light, no floating/docked/toc-left). */
+        @media (min-width: 992px) {
+          body .page-columns{
+            display:grid; gap:0;
+            grid-template-columns:
+              [screen-start] 1.5em [screen-start-inset] 3fr
+              [page-start page-start-inset] 35px [body-start-outset] 35px
+              [body-start] 1.5em
+              [body-content-start] minmax(500px, calc(1180px - 3em)) [body-content-end]
+              1.5em [body-end] 35px [body-end-outset] minmax(140px, 220px)
+              [page-end-inset] 35px [page-end] 3fr
+              [screen-end-inset] 1.5em [screen-end];
+          }
+        }
+
+        #TOC, nav[role="doc-toc"]{
+          font-family:"Source Serif 4",Georgia,"Times New Roman",serif; font-size:0.88em;
+          background:var(--paper-panel); border:1px solid var(--rule);
+          border-radius:6px; padding:0.9rem 1rem;
+        }
+        #TOC #toc-title, nav[role="doc-toc"] #toc-title{
+          font-family:"Fraunces",serif; font-weight:600; color:var(--navy);
+          font-size:1.05rem; margin-bottom:0.5rem;
+        }
+        #TOC ul, nav[role="doc-toc"] ul{ padding-left:0; }
+        /* Bootstrap's own .nav-link rule (color: the theme's link blue,
+           font-weight 600) otherwise wins this: it's what every TOC
+           item and the "PDF (elsevier)" link actually carry as a
+           class, and it turned out more specific than the plain #TOC a
+           selector above -- !important settles it instead of chasing
+           specificity further. */
+        #TOC a, #TOC a.nav-link, nav[role="doc-toc"] a{
+          color:var(--ink-soft) !important; border-left:2px solid transparent;
+          padding:0.15rem 0 0.15rem 0.6rem; display:block;
+          font-weight:400 !important;
+          transition:color .15s, border-color .15s;
+        }
+        #TOC a:hover, #TOC a.nav-link:hover, nav[role="doc-toc"] a:hover{
+          color:var(--navy) !important; border-left-color:var(--gold-soft);
+        }
+        #TOC a.active, #TOC a.nav-link.active, nav[role="doc-toc"] a.active{
+          color:var(--navy) !important; font-weight:600 !important; border-left-color:var(--gold);
+        }
+        /* "Other Formats" / PDF link: a sidebar-scoped h2 rule beats
+           the page's general h1-h6 Fraunces rule, so this is restated
+           with matching specificity rather than relying on that one. */
+        #TOC .quarto-alternate-formats h2, #TOC .quarto-alternate-formats-title{
+          font-family:"Fraunces",serif !important; font-weight:600; color:var(--navy);
+          font-size:0.95rem; margin:1rem 0 0.4rem; text-transform:none;
+        }
+        #TOC .quarto-alternate-formats a{
+          color:var(--ink-soft) !important; font-weight:400 !important;
+          padding:0.15rem 0 0.15rem 0.6rem; border-left:2px solid transparent; display:block;
+        }
+        #TOC .quarto-alternate-formats a:hover{ color:var(--navy) !important; border-left-color:var(--gold-soft); }
+        figcaption, .figure-caption{ font-style:italic; color:var(--ink-soft); font-size:0.9em; }
+
+        /* Figures 1 and 2 are exported (SVG/PNG) on an opaque white
+           canvas; multiply blends that white against the page's own
+           near-white ground instead of showing a mismatched white box. */
+        #fig-goh img, #fig-erdogan-units img{ mix-blend-mode:multiply; }
+
+        /* Result tables (Table I/II/IV/Extension): Table I is a plain
+           kableExtra table (Bootstrap classes only, styled generically
+           below); the other three build their own .ptbl markup, styled
+           to match the presentation's .cmp-table look. */
+        table:not(.ptbl){ font-variant-numeric:tabular-nums; }
+        table:not(.ptbl) thead th{ font-family:"Fraunces",serif; font-weight:600; color:var(--navy); border-bottom:1.5px solid var(--ink) !important; }
+        /* Row labels (e.g. "NationalGDP_ct-1", "(country-year)") are
+           short and should stay on one line rather than wrapping
+           mid-word the way a narrow first column otherwise forces. */
+        table:not(.ptbl) td:first-child, table:not(.ptbl) th:first-child{ white-space:nowrap; }
+
+        /* Table II/IV/the extension table run to 14-17 columns; sized
+           tight enough (vs. the presentation's own .cmp-table, built for
+           a 1280px slide) to fit the content column's width without a
+           horizontal scrollbar on a normal desktop viewport. overflow-x
+           stays on as a fallback for narrower viewports rather than
+           something this is meant to rely on. */
+        .ptbl-wrap{ width:100%; overflow-x:auto; margin:1.25rem 0; }
+        table.ptbl{ width:100%; border-collapse:collapse; font-size:0.78rem; font-variant-numeric:tabular-nums; background:transparent; }
+        table.ptbl th, table.ptbl td{ padding:3px 5px; text-align:center; white-space:nowrap; }
+        table.ptbl td:first-child, table.ptbl th:first-child{ text-align:left; white-space:nowrap; }
+        table.ptbl thead tr:first-child th{ font-family:"Fraunces",serif; font-weight:600; color:var(--navy); border-bottom:none; padding-bottom:2px; }
+        table.ptbl thead tr:last-child th{ font-weight:500; color:var(--ink-soft); font-size:0.78em; border-bottom:1.5px solid var(--ink); padding-top:2px; padding-bottom:5px; }
+        table.ptbl tbody tr.ptbl-foot-first td{ border-top:1px solid var(--rule); padding-top:6px; }
+        table.ptbl tbody tr:last-child td{ border-bottom:1.5px solid var(--ink); }
+        table.ptbl .ptbl-shade{ background:var(--paper-panel); }
+        table.ptbl .ptbl-se{ color:var(--ink-soft); font-size:0.88em; }
+        table.ptbl .ptbl-sub{ color:var(--ink-soft); font-size:0.85em; padding-left:1.25em; }
+        .ptbl-notes{ font-size:0.8rem; color:var(--ink-soft); margin-top:0.5rem; line-height:1.5; }
+        </style>
+    include-after-body:
+      text: |
+        <script>
+        document.addEventListener("DOMContentLoaded", function () {
+          // Every link that isn't a same-page anchor (a TOC entry, a
+          // "Table 3"/"Section 5.1" cross-reference, a footnote) opens
+          // in a new tab instead of navigating away from this document
+          // -- citations, DOI/URL references, and the Other Links list.
+          document.querySelectorAll("a[href]").forEach(function (a) {
+            if (a.getAttribute("href").charAt(0) !== "#") {
+              a.setAttribute("target", "_blank");
+              a.setAttribute("rel", "noopener");
+            }
+          });
+          var src = document.getElementById("extra-title-meta-source");
+          if (src) {
+            var groups = document.querySelectorAll(".quarto-title-meta");
+            var target = null;
+            groups.forEach(function (g) {
+              if (g.textContent.indexOf("Published") !== -1) target = g;
+            });
+            if (target) {
+              while (src.firstChild) target.appendChild(src.firstChild);
+            }
+            src.remove();
+          }
+          // Same move for the "Other Links" block. format-links:false
+          // removes quarto's own "Other Formats" block entirely now, so
+          // there's nothing to anchor after -- append straight into TOC.
+          var linksSrc = document.getElementById("extra-toc-links-source");
+          if (linksSrc) {
+            var toc = document.getElementById("TOC");
+            // Scoped to #TOC: an unscoped query also matches the (not
+            // yet moved) .quarto-alternate-formats sitting inside this
+            // very hidden source div wherever it rendered in the body,
+            // which is a no-op move that then gets deleted below.
+            var formats = toc ? toc.querySelector(".quarto-alternate-formats") : null;
+            if (formats && formats.parentNode) {
+              formats.parentNode.insertBefore(linksSrc.firstElementChild, formats.nextSibling);
+            } else if (toc) {
+              toc.appendChild(linksSrc.firstElementChild);
+            }
+            linksSrc.remove();
+          }
+          // The doc-type label ("Seminar Paper"/"Supplementary
+          // Material") goes right after the title+subtitle, inside
+          // quarto's own .quarto-title block, which has no YAML hook
+          // for an extra line either.
+          var typeSrc = document.getElementById("extra-doc-type-source");
+          if (typeSrc) {
+            var titleBlock = document.querySelector(".quarto-title");
+            if (titleBlock) {
+              titleBlock.appendChild(typeSrc.firstElementChild);
+            }
+            typeSrc.remove();
+          }
+        });
+        </script>
+---
+
+```{r}
+#| echo: false
+#| results: asis
+# Doc-type label ("Seminar Paper"), moved next to the title/subtitle by
+# the include-after-body script -- same hidden-source + DOM-move
+# technique as the blocks below, since quarto's title block has no YAML
+# field for an extra line here either.
+if (knitr::is_html_output()) {
+    knitr::asis_output(paste0(
+        '<div id="extra-doc-type-source" style="display:none">',
+        '<p class="doc-type-label">Seminar Paper</p>',
+        '</div>'
+    ))
+}
+```
+
+```{r}
+#| echo: false
+#| results: asis
+# Hand-written raw HTML in plain markdown gets escaped by pandoc's
+# stricter raw-block detection; asis_output() bypasses that the same
+# way every result table in this document already does. This renders
+# hidden, in body order, and a script (include-after-body, below) moves
+# its three field-groups into the title block's own second
+# .quarto-title-meta div (the one already holding "Published") so they
+# sit in that same row rather than in a separate block of their own --
+# quarto builds that title block straight from YAML with no hook to add
+# fields to it directly, so this is a DOM move rather than a template
+# edit.
+if (knitr::is_html_output()) {
+    knitr::asis_output(paste0(
+        '<div id="extra-title-meta-source" style="display:none">',
+        '<div><div class="quarto-title-meta-heading">Course</div>',
+        '<div class="quarto-title-meta-contents"><p>Applied Econometrics Using GIS Techniques</p></div></div>',
+        '<div><div class="quarto-title-meta-heading">Semester</div>',
+        '<div class="quarto-title-meta-contents"><p>SoSe 2026</p></div></div>',
+        '<div><div class="quarto-title-meta-heading">Lecturer</div>',
+        '<div class="quarto-title-meta-contents"><p>Prof. Dr. Erkan Gören</p></div></div>',
+        '</div>'
+    ))
+}
+```
+
+```{r}
+#| echo: false
+#| results: asis
+# Same hidden-source + DOM-move technique as the title-meta block above,
+# targeting quarto's "Other Formats" sidebar block this time. Paths are
+# relative to paper.html's own location (paper/). "Paper (HTML)" is
+# dropped from the list below since it's the current page -- linking a
+# page to itself in its own "other links" list is a no-op that only
+# invites confusion; supplementary.qmd's own version of this chunk
+# drops "Supplementary (HTML)" for the same reason.
+if (knitr::is_html_output()) {
+    links <- list(
+        list(href = "paper.html", icon = "bi-filetype-html", label = "Paper (HTML)"),
+        list(href = "paper.pdf", icon = "bi-file-pdf", label = "Paper (PDF)"),
+        list(href = "supplementary.html", icon = "bi-filetype-html", label = "Supplementary (HTML)"),
+        list(href = "supplementary.pdf", icon = "bi-file-pdf", label = "Supplementary (PDF)"),
+        list(href = "../presentation/index.html", icon = "bi-easel2", label = "Presentation (slides)"),
+        list(href = "../presentation/Coban_RegionalFavoritism.pdf", icon = "bi-file-pdf", label = "Presentation (PDF)"),
+        list(href = "https://github.com/ofurkancoban/Regional_Favoritism_Replication/tree/main/replication_package", icon = "bi-box-seam", label = "Replication Package")
+    )
+    links <- Filter(function(l) l$href != "paper.html", links)
+    items <- vapply(links, function(l) {
+        sprintf(
+            '<li><a href="%s"><i class="bi %s"></i>%s</a></li>',
+            l$href, l$icon, l$label
+        )
+    }, character(1))
+    knitr::asis_output(paste0(
+        '<div id="extra-toc-links-source" style="display:none">',
+        # A real <h2> here gets picked up by quarto's anchorjs script,
+        # which scans the whole document for headings and injects an
+        # anchor-link icon into each one -- harmless on real section
+        # headings, but it visibly broke this sidebar label's spacing
+        # since anchorjs has no reason to expect a heading down here.
+        # A <p> styled to look identical avoids it being a heading at all.
+        '<div class="quarto-alternate-formats"><p class="quarto-alternate-formats-title">Other Links</p><ul>',
+        paste(items, collapse = ""),
+        '</ul></div>',
+        '</div>'
+    ))
+}
+```
+
+<!--
+Section budget (~12-13 pages body, 15-page hard cap excl. appendix):
+  1 Introduction              ~1-1.5p
+  2 Literature                ~0.5-1p
+  3 Data                      ~2p
+  4 Empirical Framework       ~1p
+  5 Results                   ~4-5p (Table II + Table IV)
+  6 Discussion/Limitations    ~1-1.5p
+  7 Conclusion                ~1p
+Everything not needed to support Table II/IV goes to supplementary.qmd instead.
+-->
+
+# Introduction {#sec-introduction}
+
+A political leader's home region gets measurably brighter at night, in
+satellite-recorded nighttime light data, while that leader holds power.
+This is the central empirical claim of @hodler2014, and it is a claim
+about a specific, testable channel of political favoritism: leaders
+steer public resources toward the region where they were born, not
+necessarily toward the region that needs them most.
+
+Testing this directly with government spending data is difficult, and
+not by coincidence. Fiscal records at the subnational level are missing
+or unreliable in exactly the settings where regional favoritism is most
+likely to occur, in weak-institution states with limited budget
+transparency, so the evidence would be censored precisely where the
+effect is largest. Nighttime light intensity, measured by satellite,
+offers a way around this. It is recorded by the same instrument and the
+same method everywhere, it exists for every populated region regardless
+of what any government chooses to publish, and no domestic authority can
+edit or suppress it. It is, in short, an outcome a government cannot
+manipulate even if it wanted to, which makes it a credible proxy for
+local economic activity and infrastructure investment [@henderson2012].
+
+@hodler2014 build on this logic with a global panel of 38,427
+subnational regions across 126 countries, observed annually from 1992 to
+2009, and estimate that a region becomes on average about four percent
+brighter while it is the birth region of the sitting political leader.
+The effect is strongest where institutions are weak and education is
+low, and it grows with the availability of foreign aid and oil rents,
+consistent with a story in which favoritism requires both a motive and
+the means to act on it.
+
+What that average effect looks like in a single case is shown in
+@fig-goh. Gôh, a region in central Ivory Coast, tracked the national
+average closely throughout the 1990s, then diverged sharply in 2000,
+the year Laurent Gbagbo, born in Gôh, took office as president: the
+region pulled away from the national trend and kept climbing over the
+following years, while the rest of the country stayed flat. The
+satellite images tell the same story spatially, with the lit area
+inside the region's boundary thickening between 1996 and 2009. One
+region is of course not evidence on its own, and Gôh was selected
+precisely because it is a clear case; the point of the figure is to
+make concrete what the estimates in the rest of the paper measure on
+average across thousands of regions.
+
+::: {.content-visible when-format="pdf"}
+![DMSP-OLS stable lights over Gôh, Ivory Coast, at four points in time,
+and the region's nighttime light trend against the national average,
+1992-2013. Laurent Gbagbo, born in Gôh, took office in
+2000.](img/goh_combined_paper.pdf){#fig-goh width=95%}
+:::
+
+::: {.content-visible when-format="html"}
+![DMSP-OLS stable lights over Gôh, Ivory Coast, at four points in time,
+and the region's nighttime light trend against the national average,
+1992-2013. Laurent Gbagbo, born in Gôh, took office in
+2000.](img/goh_combined_paper.svg){#fig-goh width=95%}
+:::
+
+This paper's contribution has three components: a replication of Table
+II, the main results and robustness battery; a replication of Table IV,
+the test of how the effect varies with the size of the geographic unit
+used to measure it; and an extension of the panel well beyond HR's
+original 1992-2009 window. The replication is
+built on an independently constructed pipeline: the region-leader
+crosswalk, the birthplace coordinates, and the grid-cell geometry used
+for the geographic-extent test were all built from raw sources rather
+than reused from any existing processed panel. The headline finding
+survives this independent reconstruction. Seven of the eight Leader
+coefficients in Table II replicate in sign and statistical
+significance, and Table IV's central pattern, that the effect shrinks
+steadily as the geographic unit of measurement grows larger and
+eventually becomes indistinguishable from zero, replicates as well,
+though the point at which it stops clearing conventional significance
+falls one grid step earlier here than in the authors' own data.
+@sec-results-table2 reports the one Table II column that does not
+replicate, and @sec-discussion collects that alongside the paper's
+other departures from the original. The extension, built on a
+harmonized DMSP/VIIRS nighttime-lights panel running through 2023 and
+an independently constructed population pipeline, asks whether the
+same effect holds over a substantially longer horizon than HR
+originally had available. It does, and it is larger rather than
+smaller: the birth-region coefficient rises from 0.032 on the
+replication window to 0.048 over 1992-2023, and the one specification
+that fails to replicate in the shorter window recovers once the more
+sensitive VIIRS sensor enters the series, which is reported in
+@sec-extension. Five
+additional HR tables the project replicated but that do not fit within
+this paper's scope are reported separately in the Supplementary
+Materials.
+
+# Literature {#sec-literature}
+
+Regional favoritism sits within a broader literature on distributive
+politics, the study of how governments allocate resources across
+constituencies for political rather than purely economic reasons. Prior
+to @hodler2014, this literature had relied almost entirely on
+single-country spending data [@golden2013], leaving systematic,
+cross-country evidence of favoritism largely absent, in part because
+subnational fiscal records are themselves missing or unreliable in the
+settings where favoritism is most likely. Within that literature, a
+specific strand asks whether leaders favor the group or place they come
+from. @franck2012 show that in Sub-Saharan Africa, districts sharing
+the president's ethnicity see better educational and health outcomes
+while that president is in power, evidence of ethnic rather than
+strictly regional favoritism. @hodler2014 ask the related but distinct
+question of whether favoritism attaches to a leader's birth *region*,
+defined administratively rather than ethnically, and whether it is
+visible in a measure of economic activity rather than in
+public-service outcomes.
+
+That measure is nighttime light intensity, whose use as a proxy for
+subnational economic activity is itself a distinct methodological
+contribution. @henderson2012 establish that satellite-recorded light is
+informative about output growth even where official statistics are
+weak or absent, precisely the setting in which government spending
+data cannot be trusted to reveal favoritism directly. @hodler2014's
+contribution is to combine this measurement tool with a global,
+leader-birthplace dataset [@goemans2009] and a within-country,
+within-year identification strategy, allowing regional favoritism to
+be tested at a scale and with a design no single-country study of
+distributive politics could match. More recently, @bora2025 extend this
+approach into the higher-frequency VIIRS era and find that the effect
+appears immediately upon a leader taking office rather than with a lag,
+with a further premium during the COVID-19 pandemic concentrated in
+weaker democracies, a modern-era pattern this paper's own extended
+window speaks to directly.
+
+Against this backdrop, what this paper adds is less a new claim than a
+stress test of an existing one. Building the crosswalk, birthplace
+coordinates, and geometry independently, rather than reusing HR's own
+processed panel, is what makes the result informative about how robust
+the finding is to reasonable implementation choices, not just about
+whether it replicates. Reporting where it does not fully hold up
+alongside where it does serves the same end: a literature's confidence
+in a finding should rest on a complete account of the evidence, not
+only the parts that confirm it.
+
+# Data {#sec-data}
+
+## Outcome: Nighttime Light Intensity {#sec-outcome}
+
+The dependent variable is DMSP-OLS stable lights [@noaa-dmsp], the
+same series the authors use. The raw signal comes from the Operational
+Linescan System carried on US Air Force Defense Meteorological
+Satellite Program satellites, a low-light sensor designed to image
+moonlit cloud cover at night that also happens to pick up artificial
+lighting on the ground. NOAA's National Geophysical Data Center turns
+the raw passes into annual composites at 30 arc-second resolution
+(about 1 km at the equator), reporting a digital number from 0 to 63
+for each grid cell. The stable-lights product used here is the
+cleaned version of that composite: cloud-contaminated observations are
+dropped, and ephemeral light sources, gas flares, fires, and other
+transient events, are filtered out by keeping only lights that appear
+consistently across the year, using NOAA's own noise-floor thresholds
+for areas expected to be free of detectable light [@baugh2010], the
+same cleaning step the authors rely on. This is what makes the series
+suitable for measuring persistent infrastructure like electrification
+rather than one-off events. In years covered by two DMSP satellites, most of
+the panel, this project pixel-averages the two composites before
+extraction, matching the authors' own convention of an annual
+composited mean across satellites; the country-year fixed effects
+described in @sec-empirical absorb any residual cross-satellite jump
+this leaves. Region-year values are the average digital number
+over each region's area. Following the authors, every specification uses the
+log of light intensity plus a small constant, $\ln(\text{Light}_{ict}
++ 0.01)$, rather than the raw level. The constant is necessary because
+a large share of region-years, mostly rural areas with little or no
+artificial lighting, record a light value of exactly zero, and the log
+of zero is undefined; adding 0.01 before taking logs keeps those unlit
+region-years in the estimation sample instead of dropping them, at the
+cost of a mechanical floor on the transformed variable that has no
+substantive interpretation of its own. The authors report an analogous
+concentration in their own panel, 10.27% of observations at the lower
+bound and a further 0.85% at the sensor's upper bound of 63, and cite
+the same log(+0.01) convention used here, following both @henderson2012
+and @michalopoulos2013 [see also @michalopoulos2014]. This paper's own
+panel concentrates somewhat less at both ends, 9.18% at zero and 0.36%
+at the ceiling, consistent with a different boundary source placing
+somewhat fewer regions in either extreme rather than any difference in
+method.
+
+## Leader Birthplace {#sec-leader-birthplace}
+
+Each leader's identity and tenure dates come from Archigos
+[@goemans2009], a cross-national dataset that records who ruled each
+country and over what dates; the authors use the same source for the
+same purpose. Archigos does not record every leader's birthplace, so
+this project supplements it with the Political Leaders' Affiliation
+Database [@plad2024] and, for leaders still missing after that merge,
+a manual Wikidata/Wikipedia scrape [@wikidata-supplement]. Following
+the authors, leaders recorded as born outside the country they led are
+excluded from the `Leader` regressor rather than assigned a foreign
+birth region; the authors report that the leaders their own approach
+drops for missing birthplace information were, without exception but
+one, in office under 50 days (p. 1006, fn. 11), which is why that kind
+of exclusion is unlikely to matter much in either panel. The authors'
+own birthplace-to-region match works differently from this
+replication's: they geocode via CIESIN's settlement-point shapefiles
+where a birth settlement can be identified, falling back to raw
+birthplace coordinates otherwise (p. 1006), whereas this project takes
+PLAD's own already-geocoded region assignment directly, supplemented
+by the Wikidata coordinates described above. Of the 919
+Archigos leader-spells overlapping this paper's full 1992-2013 panel
+window (wider than the authors' own 1992-2009 window, since this
+paper's underlying panel extends further, as @sec-extension uses),
+PLAD supplies a birthplace for 799 (86.9%); the Wikidata supplement
+resolves a further 33, bringing total coverage to 832 spells (90.5%).
+The remaining 87 spells (9.5%) stay uncovered, mostly leaders from 25
+countries PLAD has no entry for at all, and are excluded from the
+`Leader` regressor rather than imputed. The regressor itself, `Leader`, is entered with
+a one-year lag rather than contemporaneously. The lag serves two
+purposes. First, a leader can take office at any point within a
+calendar year, so the contemporaneous year's light reading is only
+partly observed under that leader; lagging one year guarantees the
+region was governed by the same leader for the entire period being
+measured. Second, favoritism plausibly operates through channels, such
+as infrastructure spending or electrification projects, that take time
+to build and are unlikely to be visible from space within the same
+year a leader takes office.
+
+## Geometry and Sample {#sec-geometry}
+
+The authors' subnational regions come from CIESIN [@ciesin-subadbnd]
+(the Center for International Earth Science Information Network at
+Columbia University) and its project partners, at the second
+administrative level, and are not publicly redistributed as a
+standalone boundary file. This replication uses GADM 3.6 [@gadm36]
+instead, at every level of aggregation: the ADM2-level regions used
+for the main results and the ADM1-level geometry used in the
+geographic-extent test, both the full region and the hole-punched
+version with the leader's home district cut out, are all built from
+the same GADM 3.6 vintage, so no crosswalk between geometry sources
+is needed anywhere in this replication. GADM 3.6 is not a
+reconstruction of the authors' own CIESIN boundaries, which is a
+source of divergence between the two panels discussed further in
+@sec-discussion. The estimation sample throughout the
+paper is restricted to the authors' exact set of 126 countries observed over
+1992-2009, applying the same two exclusion criteria they state (p.
+1001): countries with average population below 500,000, and any region
+whose entire area lies above 65°N latitude (their own footnote names
+Canada, Finland, Iceland, Norway, Russia, Sweden, and Alaska as the
+countries this affects), so that every
+comparison to the authors' own reported numbers is
+like for like rather than an artifact of a different underlying sample.
+The authors state a third criterion alongside these two, dropping "the
+few regions that are unpopulated" (p. 1001). Table I and Table II apply
+a proxy for it: a region is dropped if no population figure could be
+matched to it in any observed year, 85 of 38,559 regions (0.06% of
+region-years) in this sample. That proxy is not a verified match to the
+authors' own concept, since a missing population match reflects either
+genuine depopulation or a gap in this project's own population source
+reaching that region, and the two cannot be told apart from the data
+alone; it is applied anyway, for completeness against the authors'
+three-part criterion, because doing so changes essentially nothing:
+every coefficient in @tbl-table2 is unchanged to three decimals except
+Column (5), which moves by 0.001. Table IV's alternative units of
+observation (5km circles, SN1 regions, grid cells) each aggregate
+population differently and have no equivalent exclusion built for them,
+so this third criterion is not extended there.
+
+## Population and Regional GDP {#sec-pop-gdp}
+
+Two further datasets enter Table II's Columns 7 and 8, not used
+elsewhere in the paper. Regional population, needed to construct
+per-capita light in Column 7 and as a control in Column 8, comes from
+CIESIN's Gridded Population of the World, Version 4 [@ciesin-gpwv4],
+zonal-summed to the same ADM2 regions used for the outcome variable.
+Column 8's dependent variable, regional GDP, is where this replication
+departs most directly from the authors' own construction: the authors
+use a regional GDP dataset from @gennaioli2014, which is not publicly
+released. This paper substitutes G-Econ 4.0 [@gecon2006], a gridded
+regional output dataset aggregated to the same ADM2 regions, as the
+closest available public alternative. The two sources are not
+interchangeable in their construction, so Column 8's results are
+reported as indicative rather than as a like-for-like replication of
+the authors' own Column 8, a caveat carried through to @sec-results-table2.
+
+## Descriptive Statistics {#sec-descriptives}
+
+@tbl-descriptives reports summary statistics for the two variables
+common to every specification in this paper, nighttime light intensity
+and the lagged birth-region dummy, next to the authors' own reported
+numbers for the same variables, over the identical 126-country,
+1992-2009 sample. Population and regional GDP, the two further
+variables introduced in @sec-pop-gdp, are used only in Table II's
+Columns 7 and 8 and are not reported here, since the authors' own
+descriptive statistics table does not cover them either. The two panels agree closely: mean light intensity
+and its dispersion are nearly identical, and the leader dummy's mean,
+of order 0.004, matches almost exactly, consistent with only a small
+number of a country's many regions being a sitting leader's birth
+region in any given year. Leader birth regions are not a random draw
+from that pool: the authors report that, on average, they are 40%
+larger, five times more populous, and roughly twice as bright at night
+as other regions in their own sample (p. 1006), a pre-treatment
+imbalance the region and country-year fixed effects in @sec-empirical
+are what make the identification strategy hold up despite it. The same
+comparison on this paper's own panel agrees on population and light but
+not on area: leader birth regions are 5.7 times more populous and 2.2
+times as bright, both close to the authors' figures, but only 21% larger
+by land area (3,755 km² average against 3,095 km² for other regions),
+not 40%, computed over every region in this sample (38,474 of 38,474)
+using its GADM 3.6 geometry directly, the same source used throughout
+@sec-geometry. The obs. count differs by roughly 5% for
+light (655,234 vs. 690,495), which follows directly from using a
+different boundary source, as @sec-geometry describes: GADM's ADM2
+partition does not divide every country into exactly the same regions
+CIESIN's does, so the two panels are built over a similar but not
+identical number of region-years.
+
+Leader~ict-1~ is where the two panels initially looked further apart
+than that boundary-source gap alone would explain, and checking why
+surfaced something worth reporting rather than smoothing over. As a
+lagged variable, Leader~ict-1~ should in principle lose the panel's
+first year, 1992, since that year's value depends on who governed in
+1991, one year before the panel begins. The authors' own reported
+figures show no such loss: their Leader~ict-1~ obs. count is exactly
+690,495, identical to Light~ict~'s. This is not an error on their
+part; Archigos records leader identity for years before 1992 too, so
+the 1991 lag can be built from data outside the panel's own stated
+window without dropping any 1992 region-years. This paper's own
+pipeline did not follow that same convention: 1992's lag was left
+missing rather than filled from 1991 data, which by itself accounted
+for most of Leader~ict-1~'s shortfall against Light~ict~ (613,178 vs.
+655,234, a gap much wider than the boundary-source gap on Light~ict~
+alone). Rebuilding the 1992 lag from PLAD and the Wikidata
+supplement's pre-1992 leader-tenure records, the same convention the
+authors use, raises the observation count to 654,254, with the mean
+and standard deviation essentially unchanged. @tbl-descriptives reports
+this corrected figure, which matches @tbl-table2's Column (1) exactly,
+since both are built from the identical 126-country panel and the same
+lag-construction method; the small residual gap to Light~ict~ is the
+ordinary GADM-vs-CIESIN boundary-count difference, not a further lag
+artifact.
+
+```{r}
+#| label: tbl-descriptives
+#| tbl-cap: "Descriptive statistics, region-year panel, 126 countries, 1992-2009. Light$_{ict}$ is $\\ln(\\text{Light intensity} + 0.01)$; Leader$_{ict-1}$ is the lagged birth-region dummy. Authors' columns are the corresponding rows of their own reported descriptive statistics table."
+#| tbl-pos: "H"
+
+own <- read.csv("../01_datasets/processed/ntl/table1_descriptive_region_hrsample.csv")
+leader_fix <- read.csv(
+    "../01_datasets/processed/ntl/table1_leader_lag1991fix_hrsample.csv"
+)
+hr <- read.csv("../01_datasets/processed/ntl/hr2014_table1_reference.csv")
+
+keep <- c("Lightict", "Leaderict-1")
+own <- own[match(keep, own$variable), ]
+own[own$variable == "Leaderict-1", names(leader_fix)] <- leader_fix[
+    1,
+    names(leader_fix)
+]
+hr <- hr[match(keep, hr$variable), ]
+
+fmt <- function(x, digits = 3) {
+    formatC(x, format = "f", digits = digits, big.mark = ",")
+}
+fmt_obs <- function(x) formatC(x, format = "d", big.mark = ",")
+
+label_map <- if (knitr::is_html_output()) {
+    c(Lightict = "Light\\(_{ict}\\)", `Leaderict-1` = "Leader\\(_{ict-1}\\)")
+} else {
+    c(Lightict = "Light$_{ict}$", `Leaderict-1` = "Leader$_{ict-1}$")
+}
+
+out <- data.frame(
+    Variable = unname(label_map[keep]),
+    `Obs.` = fmt_obs(hr$obs),
+    Mean = fmt(hr$mean),
+    SD = fmt(hr$sd_overall),
+    Min = fmt(hr$min),
+    Max = fmt(hr$max),
+    `Obs. ` = fmt_obs(own$obs),
+    `Mean ` = fmt(own$mean),
+    `SD ` = fmt(own$sd_overall),
+    `Min ` = fmt(own$min),
+    `Max ` = fmt(own$max),
+    check.names = FALSE
+)
+
+knitr::kable(
+    out,
+    format = if (knitr::is_html_output()) "html" else "latex",
+    align = c("l", rep("r", 10)),
+    escape = FALSE,
+    row.names = FALSE,
+    booktabs = TRUE,
+    col.names = c(
+        "Variable",
+        "Obs.",
+        "Mean",
+        "SD",
+        "Min",
+        "Max",
+        "Obs.",
+        "Mean",
+        "SD",
+        "Min",
+        "Max"
+    )
+) |>
+    kableExtra::column_spec(7, border_left = TRUE) |>
+    kableExtra::add_header_above(c(
+        " " = 1,
+        "Authors (126 countries, 1992-2009)" = 5,
+        "This Paper (same 126 countries, 1992-2009)" = 5
+    )) |>
+    kableExtra::kable_styling(font_size = 9)
+```
+
+# Empirical Framework {#sec-empirical}
+
+The main specification is a fixed-effects regression at the
+region-year level, the same one the authors use:
+
+$$
+\text{Light}_{ict} = \alpha_i + \beta_{ct} + \gamma\,\text{Leader}_{ict-1} + \varepsilon_{ict}
+$$
+
+$\text{Light}_{ict}$ is log nighttime light intensity for region $i$
+in country $c$ in year $t$, and $\text{Leader}_{ict-1}$ is the lagged
+birth-region dummy described in @sec-leader-birthplace. $\alpha_i$ is a region
+fixed effect: it absorbs everything time-invariant about a region,
+geography, permanent infrastructure, its baseline level of
+development, so that $\gamma$ is not picking up the fact that some
+regions are simply always brighter than others regardless of who
+governs. $\beta_{ct}$ is a country-by-year fixed effect: it absorbs
+every shock common to all of a country's regions in a given year, a
+national election, a currency crisis, a change in the electrification
+budget, so that $\gamma$ is not picking up nationwide light growth or
+decline that happens to coincide with a leadership change. It also
+absorbs a source of variation specific to satellite-recorded light:
+DMSP-OLS composites are built from different satellites in different
+years, each with its own sensor calibration, and any resulting jump or
+drift in recorded brightness is common to every region observed in
+that year and is absorbed by $\beta_{ct}$ along with everything else
+nationwide. What
+survives after both sets of fixed effects are partialed out is
+variation within a region, within a country-year: whether a given
+region gets brighter relative to the rest of its own country in the
+same year, right when it becomes the leader's birth region. This is
+also why the specification does not need a set of country or year
+fixed effects on their own; the country-by-year interaction subsumes
+both.
+
+$\gamma$ is the coefficient of interest. A positive, statistically
+significant $\gamma$ is read as evidence of regional favoritism: the
+birth region becomes disproportionately brighter than the rest of its
+own country, in the same year, precisely while it is a sitting
+leader's home region. The authors expect and find $\gamma > 0$; this
+paper's replication asks whether that same sign and significance
+survive an independently rebuilt version of every input the equation
+depends on.
+
+Standard errors are clustered by leader spell, using Archigos
+[@goemans2009] to group all region-year observations under the same
+leader's tenure together, following the authors' own convention.
+Because $\text{Leader}_{ict-1}$ only changes value when a country's
+leader changes, region-year observations within a single leader's
+spell are not independent draws, and clustering at the country or
+region level alone would understate the true correlation in
+$\varepsilon_{ict}$ across the years any one leader stays in power.
+The cluster definition itself is lagged by one period, the same way
+$\text{Leader}_{ict-1}$ is, so that a country-year is grouped with the
+spell of the leader who was actually in power the year the regressor
+refers to, not the leader in power in the year being clustered.
+
+# Results {#sec-results}
+
+## Main Results and Robustness (Table II) {#sec-results-table2}
+
+@tbl-table2 reports this paper's own estimate of every column of Table
+II next to the authors' published numbers, both estimated on the
+identical 126-country, 1992-2009 sample described in @sec-geometry, so
+region and observation counts are directly comparable column by
+column rather than only in sign and significance. Every lagged column
+here also carries the same boundary-lag fix documented in
+@sec-descriptives for Leader~ict-1~ itself: 1992's lag is filled from
+PLAD and the Wikidata supplement's pre-1992 leader-tenure records
+rather than left missing, recovering 1992 as an estimation year in
+every column that uses the one-year lag. This raises Column (1)'s
+observation count to 654,254, close to the authors' own 690,495 and
+well above the 613,178 the same specification would show without the
+fix, but it also shifts every affected coefficient, and not uniformly
+toward the authors' own numbers.
+
+Column (1), the headline specification, the equation of
+@sec-empirical estimated exactly as written, gives a birth-region
+coefficient of 0.032, significant at the 5% level, against the
+authors' own 0.038 at the 1% level: the boundary-lag fix moved this
+coefficient down from 0.037 (obtained without the fix) rather than up,
+a weaker match to the authors' own number despite being the more
+methodologically correct specification.
+
+What that coefficient means in economic terms follows the authors' own
+translation. Because the dependent variable is in logs and
+Leader~ict-1~ is a dummy, the implied effect on light is
+$100(\exp(\gamma) - 1)$ percent: a region is that much brighter while
+it is the sitting leader's birth region than the same region would be
+if the leader had been born elsewhere. The authors' $\gamma = 0.038$
+gives 3.9%; the 0.032 estimated here gives **3.2%**. To get from light
+to output the authors use the light-GDP elasticity of roughly 0.3 that
+@henderson2012 estimate at the country level and that the authors
+confirm at the regional level, which turns their 3.9% into a **1.2%**
+increase in regional GDP and this paper's 3.2% into **1.0%**. So the
+two panels disagree about the size of the favoritism premium by
+roughly a fifth, and agree that it is on the order of one percent of
+regional GDP per year of incumbency, concentrated in a single
+subnational region. That is small enough to be invisible in national
+accounts and large enough to matter locally, and, as the authors note,
+it is a lower bound on favoritism itself: leaders who direct resources
+somewhere other than their own birth region, or to areas larger or
+smaller than one administrative unit, register in this design as
+nothing at all.
+
+Columns (2) and (3) exist, in the authors' words, to ensure the main
+result "is not an artifact of the lag structure," replacing the
+one-year lag with the contemporaneous dummy and a two-year lag
+respectively. That robustness holds here too, though unevenly: Column
+(3) replicates closely (0.040 against the authors' 0.041, both
+significant at the 5% level or better), while Column (2) is the
+weaker of the pair at 0.029, significant only at the 10% level against
+the authors' own 0.039 at the 1% level.
+
+Columns (4) and (5) are a matched pair, and the authors are explicit
+about why. Adding the lagged dependent variable in Column (4) makes
+the specification vulnerable to Nickell bias, so, following
+@angrist2009, they estimate one specification with fixed effects but
+no lagged dependent variable (Column 1) and one with the lagged
+dependent variable but no region fixed effects (Column 5), and appeal
+to the bracketing property: the true effect should lie between the
+two. Their own estimates satisfy it, 0.019 in Column (4) and 0.061 in
+Column (5) around a main estimate of 0.038, which is what licenses
+their claim that the headline coefficient is "rather conservative and
+may even underestimate the true effect." The same bracket holds in
+this replication, and independently: 0.026 in Column (4) and 0.050 in
+Column (5), with the main estimate of 0.032 sitting inside them. This
+is arguably the single strongest form of agreement between the two
+panels, because it reproduces not a number but a structural property
+of the estimates, and it means the conservative reading the authors
+put on their headline coefficient survives here as well.
+
+Column (6), the extensive margin, restricts the outcome to
+$\ln(\text{Light}_{ict})$ without the additive constant, dropping
+region-years with zero recorded light entirely. The authors report
+that the coefficient "becomes somewhat smaller but remains
+statistically significant." Here it does not: it falls to 0.008 and
+loses significance altogether, against their 0.029 at the 1% level.
+This is the clearest genuine non-replication in Table II, and also the
+column most affected by the boundary-lag fix. Substantively, it says
+the effect found here is carried by regions that were already lit and
+became brighter, rather than by dark regions crossing into visibility;
+the authors' data supports both channels, this panel's supports only
+the first. @sec-discussion returns to it.
+
+Columns (7) and (8) change the dependent variable rather than the
+specification, and both replicate in sign and significance. Column (7)
+uses light per capita, controlling for regional population, which
+distinguishes a region getting brighter because more was built in it
+from a region getting brighter because more people moved into it. The
+estimate here is 0.025, against the authors' 0.062. The gap is not
+only one of magnitude but of direction relative to the baseline: in
+the authors' data the per-capita coefficient comes out *larger* than
+their main estimate of 0.038, which is what lets them argue the
+headline effect is not a population artifact, whereas here it is
+*smaller* than the corresponding 0.032. The population denominator
+differs between the two panels, GPWv4 here against the authors' own
+CIESIN vintage (@sec-pop-gdp), and @sec-discussion returns to the sign
+flip on Pop~ict~ itself that accompanies this.
+
+Column (8) replaces light with regional GDP per capita directly, and
+is the one column that is not a like-for-like replication by
+construction: the authors use @gennaioli2014, which was never
+publicly released, so G-Econ 4.0 stands in for it here
+(@sec-pop-gdp). The estimate is 0.013 against their 0.021, both
+significant. What makes this column valuable despite the substitution
+is that it does not rely on the light-GDP elasticity at all. Where
+Column (1) reaches output indirectly, 3.2% more light times an assumed
+elasticity of 0.3, giving about 1.0%, Column (8) measures it directly
+and returns 1.3% on GDP per capita. The two are not the same quantity,
+one is regional output and the other output per person, so they need
+not coincide exactly; what matters is that two routes resting on
+entirely different data and assumptions both land near one percent
+rather than near ten or near zero. The same holds in the authors'
+data, where the indirect route gives 1.2% and the direct route 2.1%.
+
+Taken as a whole, seven of Table II's eight columns replicate the
+authors' finding in both sign and statistical significance on the
+identical sample; Column (2) does so only at the 10% level against
+their 1%, and Column (6) does not replicate at conventional
+significance levels at all. The
+qualitative conclusions the authors draw from this table survive: the
+effect is not an artifact of lag choice, it is bracketed from both
+sides in the Angrist-Pischke sense and therefore plausibly
+conservative, and it holds when output is measured directly rather
+than inferred from light. What does not survive is the extensive
+margin, and the per-capita result holds in a weaker form than in the
+authors' own data.
+
+```{r}
+#| label: tbl-table2
+#| tbl-cap: "Table II replication, all eight columns, in HR 2014's own layout. Both the Orig. and Repl. columns are estimated on the authors' exact 126-country, 1992-2009 sample."
+#| tbl-pos: "t"
+
+coefs <- read.csv("../01_datasets/processed/ntl/table2_full_coefs_hrsample.csv")
+summ <- read.csv("../01_datasets/processed/ntl/table2_full_summary_hrsample.csv")
+
+row_order <- c("Leader_t-1", "Leader_t", "Leader_t-2", "Light_t-1", "Pop")
+row_labels <- c(
+    "Leader_t-1" = "Leader$_{ict-1}$",
+    "Leader_t" = "Leader$_{ict}$",
+    "Leader_t-2" = "Leader$_{ict-2}$",
+    "Light_t-1" = "Light$_{ict-1}$",
+    "Pop" = "Pop$_{ict}$"
+)
+
+cell <- function(source, row, col) {
+    r <- coefs[coefs$source == source & coefs$row == row & coefs$col == col, ]
+    if (nrow(r) == 0) {
+        return("")
+    }
+    # kableExtra::linebreak() emits \makecell for a two-line cell; \makecell
+    # builds its own internal box whose width calculation leaves a hairline
+    # sliver at its edges that a colortbl \columncolor background does not
+    # reach, showing as a faint vertical seam between the Orig. and Repl.
+    # cells of a shaded pair -- but only on \makecell rows, not on the
+    # plain-text summary rows below, which is what gave this away.
+    # \shortstack (base LaTeX, no box padding of its own) has no such gap.
+    sprintf("\\shortstack{%.3f%s\\\\(%.3f)}", r$b, r$sig, r$se)
+}
+
+body <- do.call(
+    rbind,
+    lapply(row_order, function(rn) {
+        vals <- character(0)
+        for (co in 1:8) {
+            vals <- c(vals, cell("hr", rn, co), cell("own", rn, co))
+        }
+        c(row_labels[[rn]], vals)
+    })
+)
+
+foot <- rbind(
+    c(
+        "Number of regions",
+        as.vector(rbind(
+            as.character(NA),
+            formatC(summ$n_regions, big.mark = ",")
+        ))
+    ),
+    c(
+        "Observations",
+        as.vector(rbind(as.character(NA), formatC(summ$n_obs, big.mark = ",")))
+    ),
+    c(
+        if (knitr::is_html_output()) "Within R\\(^{2}\\)" else "Within $R^2$",
+        as.vector(rbind(
+            as.character(NA),
+            formatC(summ$within_r2, format = "f", digits = 3)
+        ))
+    ),
+    c("Region FE", as.vector(rbind(as.character(NA), summ$region_fe))),
+    c("Country-Year FE", as.vector(rbind(as.character(NA), rep("Yes", 8))))
+)
+foot[1, seq(2, 16, 2)] <- c(
+    "38,427",
+    "38,427",
+    "38,427",
+    "38,427",
+    "38,427",
+    "36,591",
+    "37,475",
+    "1,207"
+)
+foot[2, seq(2, 16, 2)] <- c(
+    "690,495",
+    "690,495",
+    "689,870",
+    "652,362",
+    "652,362",
+    "619,594",
+    "673,382",
+    "14,995"
+)
+foot[3, seq(2, 16, 2)] <- c(
+    "0.319",
+    "0.319",
+    "0.318",
+    "0.412",
+    "0.964",
+    "0.393",
+    "0.197",
+    "0.653"
+)
+foot[4, seq(2, 16, 2)] <- c(
+    "Yes",
+    "Yes",
+    "Yes",
+    "Yes",
+    "No",
+    "Yes",
+    "Yes",
+    "Yes"
+)
+foot[5, seq(2, 16, 2)] <- rep("Yes", 8)
+
+out <- rbind(body, foot)
+colnames(out) <- c("", rep(c("Orig.", "Repl."), 8))
+
+notes_text <- paste(
+    "Fixed-effect regressions, except Column (5), which is standard OLS,",
+    "using annual data for subnational regions between 1992 and 2009.",
+    "Light$_{ict}$ is the log of average nighttime light intensity plus 0.01.",
+    "Light0$_{ict}$ is the log of average nighttime light intensity, without",
+    "adding a constant. Lightpc$_{ict}$ is the log of nighttime light",
+    "intensity per capita plus 0.01. RegionalGDP$_{ict}$ is the log of",
+    "regional GDP per capita, G-Econ 4.0 in the Repl. columns, substituting",
+    "for the authors' unreleased Gennaioli et al. (2014) source (Section 3.4).",
+    "Leader$_{ict}$ is a dummy variable equal to 1 if region $i$ is the birth",
+    "region of the political leader in country $c$ in year $t$, and 0",
+    "otherwise; the Repl. columns' Leader$_{ict-1}$ additionally carries the",
+    "boundary-lag fix documented in Section 3.5, filling 1992 from pre-1992",
+    "leader-tenure records rather than dropping it. Pop$_{ict}$ is the log of",
+    "regional population. Standard errors, in parentheses, are clustered by",
+    "leader spell, lagged one period.",
+    "$^{***}$, $^{**}$, $^{*}$ indicate significance at the 1\\%, 5\\%, and",
+    "10\\% levels, respectively."
+)
+
+# column_spec(background=...) emits \cellcolor per cell, which never bleeds
+# into the surrounding \tabcolsep gap, leaving a visible seam between the
+# Orig. and Repl. cells of the same shaded pair (same bug as Table IV, fixed
+# there with \columncolor at the column-TYPE level instead). Replicated here:
+# align must be a genuine per-column VECTOR, not one pre-concatenated string
+# -- passing a single string previously made kable silently repeat it across
+# every column and corrupt the tabular preamble (found by inspecting the
+# generated .tex directly; this looked identical to "no change" on screen).
+shaded2 <- c(3, 4, 7, 8, 11, 12, 15, 16) # data-column index (1-16)
+col_type2 <- vapply(
+    seq_len(16),
+    function(i) {
+        if (i %in% shaded2) ">{\\columncolor{gray!10}}c" else "c"
+    },
+    character(1)
+)
+align2 <- c("l", col_type2)
+
+if (knitr::is_html_output()) {
+    # The LaTeX branch below (\shortstack, \columncolor, a manual
+    # \resizebox/tabularx rewrite) has no HTML equivalent, so this branch
+    # rebuilds the same table directly as an HTML string instead of trying
+    # to route it through kableExtra's LaTeX-oriented helpers.
+    row_labels_html <- c(
+        "Leader_t-1" = "Leader\\(_{ict-1}\\)",
+        "Leader_t" = "Leader\\(_{ict}\\)",
+        "Leader_t-2" = "Leader\\(_{ict-2}\\)",
+        "Light_t-1" = "Light\\(_{ict-1}\\)",
+        "Pop" = "Pop\\(_{ict}\\)"
+    )
+    cell_html <- function(source, row, col) {
+        r <- coefs[coefs$source == source & coefs$row == row & coefs$col == col, ]
+        if (nrow(r) == 0) {
+            return("")
+        }
+        sprintf(
+            '%.3f%s<br><span class="ptbl-se">(%.3f)</span>',
+            r$b, r$sig, r$se
+        )
+    }
+    spec_labels <- c(
+        "(1) Light\\(_{ict}\\)", "(2) Light\\(_{ict}\\)",
+        "(3) Light\\(_{ict}\\)", "(4) Light\\(_{ict}\\)",
+        "(5) Light\\(_{ict}\\)", "(6) Light0\\(_{ict}\\)",
+        "(7) Lightpc\\(_{ict}\\)", "(8) RegionalGDP\\(_{ict}\\)"
+    )
+
+    thead <- paste0(
+        "<tr><th></th>",
+        paste0(sprintf('<th colspan="2">%s</th>', spec_labels), collapse = ""),
+        "</tr><tr><th></th>",
+        paste0(rep("<th>Orig.</th><th>Repl.</th>", 8), collapse = ""),
+        "</tr>"
+    )
+
+    body_rows_html <- vapply(row_order, function(rn) {
+        cells <- vapply(1:8, function(co) {
+            shade <- if (co %in% c(2, 4, 6, 8)) ' class="ptbl-shade"' else ""
+            sprintf(
+                "<td%s>%s</td><td%s>%s</td>",
+                shade, cell_html("hr", rn, co), shade, cell_html("own", rn, co)
+            )
+        }, character(1))
+        sprintf(
+            "<tr><td>%s</td>%s</tr>",
+            row_labels_html[[rn]], paste(cells, collapse = "")
+        )
+    }, character(1))
+
+    foot_rows_html <- vapply(seq_len(nrow(foot)), function(i) {
+        cells <- vapply(2:17, function(j) {
+            spec_idx <- ((j - 2) %/% 2) + 1
+            shade <- if (spec_idx %in% c(2, 4, 6, 8)) ' class="ptbl-shade"' else ""
+            sprintf("<td%s>%s</td>", shade, foot[i, j])
+        }, character(1))
+        cls <- if (i == 1) ' class="ptbl-foot-first"' else ""
+        sprintf("<tr%s><td>%s</td>%s</tr>", cls, foot[i, 1], paste(cells, collapse = ""))
+    }, character(1))
+
+    notes_html <- gsub("\\$([^$]*)\\$", "\\1", paste(notes_text, collapse = " "))
+    notes_html <- gsub("_\\{([^}]*)\\}", "\\\\(_{\\1}\\\\)", notes_html)
+    notes_html <- gsub("\\\\%", "%", notes_html)
+    notes_html <- gsub("\\^\\{([^}]*)\\}", "\\\\(^{\\1}\\\\)", notes_html)
+
+    knitr::asis_output(paste0(
+        '<div class="ptbl-wrap"><table class="ptbl"><thead>', thead, "</thead><tbody>",
+        paste(body_rows_html, collapse = ""),
+        paste(foot_rows_html, collapse = ""),
+        "</tbody></table></div>",
+        '<p class="ptbl-notes"><em>Notes.</em> ', notes_html, "</p>"
+    ))
+} else {
+    tbl <- knitr::kable(
+        out,
+        format = "latex",
+        linesep = "",
+        align = align2,
+        escape = FALSE,
+        row.names = FALSE,
+        booktabs = TRUE
+    ) |>
+        kableExtra::add_header_above(
+            c(
+                " " = 1,
+                "Light$_{ict}$" = 2,
+                "Light$_{ict}$" = 2,
+                "Light$_{ict}$" = 2,
+                "Light$_{ict}$" = 2,
+                "Light$_{ict}$" = 2,
+                "Light0$_{ict}$" = 2,
+                "Lightpc$_{ict}$" = 2,
+                "RegionalGDP$_{ict}$" = 2
+            ),
+            escape = FALSE
+        ) |>
+        kableExtra::add_header_above(c(
+            " " = 1,
+            "(1)" = 2,
+            "(2)" = 2,
+            "(3)" = 2,
+            "(4)" = 2,
+            "(5)" = 2,
+            "(6)" = 2,
+            "(7)" = 2,
+            "(8)" = 2
+        )) |>
+        kableExtra::row_spec(5, extra_latex_after = "\\midrule") |>
+        kableExtra::kable_styling(font_size = 9)
+
+    tbl_attrs <- attributes(tbl)
+    tbl <- sub(
+        "\\begin{tabular}",
+        paste0(
+            "\\resizebox{\\ifdim\\width>\\linewidth\\linewidth\\else\\width\\fi}{!}{",
+            "\\begingroup\\setlength{\\tabcolsep}{2.5pt}\\begin{tabular}"
+        ),
+        tbl,
+        fixed = TRUE
+    )
+    tbl <- sub("\\end{tabular}", "\\end{tabular}\\endgroup}", tbl, fixed = TRUE)
+    attributes(tbl) <- tbl_attrs
+
+    # kableExtra::footnote(threeparttable = TRUE) nests threeparttable INSIDE
+    # kable_styling's resizebox, which silently clips the note text past the
+    # box resizebox measured before scaling. Appending the note as plain LaTeX
+    # text after the resizebox's closing brace avoids that: the note renders at
+    # its own (unscaled) size, directly under the table, in the same float.
+    notes_latex <- paste0(
+        "\n\n\\vspace{2mm}\n\n\\begingroup\\footnotesize\\textit{Notes.} ",
+        paste(notes_text, collapse = " "),
+        "\\endgroup\n"
+    )
+    tbl_final <- paste0(tbl, notes_latex)
+    attributes(tbl_final) <- attributes(tbl)
+    tbl_final
+}
+```
+
+
+## Geographic Extent (Table IV) {#sec-results-table4}
+
+Table IV asks a different question than Table II: not whether the
+birth-region effect exists, but how far it extends. Each of the seven
+columns keeps the same specification and re-runs it on a different
+definition of "region," shrinking or coarsening the spatial unit
+without changing anything else. @fig-erdogan-units shows what those
+units actually look like on the ground, drawn on one real birthplace,
+Recep Tayyip Erdoğan's, in Kasımpaşa on Istanbul's Golden Horn, rather
+than described in the abstract. Panel A is Column (1): a 5 km circle
+around the birth coordinate, clipped to the coastline, the tightest
+unit in the table, 58 km² here once the Golden Horn is cut out of it.
+Panel B is Column (2): the whole SN1 region, here Istanbul province at
+4,757 km², about eighty times the circle. Panel C is Column (3): the
+same SN1 region with the birth district, Beyoğlu, cut out of the light
+average, 10 km² against the province's 4,757, a hole small enough that
+the panel carries an inset to make it visible. In estimation the same
+cut is applied to every district that was ever a birthplace, not only
+the one drawn here. Panel D is Columns
+(4)-(7): the four grid cells containing the same point, at 50, 100,
+200, and 400 km, drawn together so the jump in unit size across those
+four columns is visible at once. These are equal-area rather than
+equal-sided cells, so the nominal 50 km cell covers exactly 2,500 km²
+but measures 38 by 66 km at this latitude; the panel draws them uncut,
+whereas the estimation averages light only over the part of each cell
+that falls on land, which this close to the Bosphorus discards most of
+it. Because the four units
+differ in area by about four orders of magnitude, each panel is zoomed
+to its own unit and carries its own scale bar. All four are built from
+this project's own geometry pipeline, using the same GADM 3.6
+boundaries, hole-punch procedure, and grid construction that produce
+the estimates in @tbl-table4, not schematic illustrations.
+
+::: {.content-visible when-format="pdf"}
+![The four units of observation behind Table IV, drawn on Recep Tayyip
+Erdoğan's birthplace (28.968°E, 41.032°N). Panels are zoomed
+independently and each carries its own scale bar; the inset in Panel C
+magnifies the removed birth district. Geometry comes from this
+project's own pipeline, except Panel A's circle, redrawn as a smooth
+5 km buffer on the same coastline because the stored geodesic buffer's
+boundary approximation shows at this magnification.](img/erdogan_gis_units_paper.pdf){#fig-erdogan-units width=95% fig-pos="p"}
+:::
+
+::: {.content-visible when-format="html"}
+![The four units of observation behind Table IV, drawn on Recep Tayyip
+Erdoğan's birthplace (28.968°E, 41.032°N). Panels are zoomed
+independently and each carries its own scale bar; the inset in Panel C
+magnifies the removed birth district. Geometry comes from this
+project's own pipeline, except Panel A's circle, redrawn as a smooth
+5 km buffer on the same coastline because the stored geodesic buffer's
+boundary approximation shows at this magnification.](img/erdogan_gis_units_paper.png){#fig-erdogan-units width=95%}
+:::
+
+```{r}
+#| label: tbl-table4
+#| tbl-cap: "Table IV replication, all seven columns, both panels on the authors' exact 126-country, 1992-2009 sample. Dependent variable: Light$_{ict}$ throughout. Standard errors in parentheses, clustered by leader spell lagged one period. Units of observation: Col. 1, 5 km circles around the leader's birthplace; Col. 2, SN1 (ADM1) region; Col. 3, SN1 with the birth SN2 (ADM2) district excluded; Cols. 4-7, an equal-area world grid at 50/100/200/400 km resolution."
+#| tbl-pos: "p"
+
+t4 <- read.csv("../01_datasets/processed/ntl/table4_full_hrsample.csv")
+
+fmt_cell <- function(source, col) {
+    r <- t4[t4$source == source & t4$col == col, ]
+    # \shortstack instead of kableExtra::linebreak()'s \makecell -- see the
+    # matching comment in Table II's cell() function for why.
+    sprintf("\\shortstack{%.3f%s\\\\(%.3f)}", r$b, r$sig, r$se)
+}
+fmt_cell_html <- function(source, col) {
+    r <- t4[t4$source == source & t4$col == col, ]
+    sprintf('%.3f%s<br><span class="ptbl-se">(%.3f)</span>', r$b, r$sig, r$se)
+}
+fmt_int <- function(source, col, var) {
+    r <- t4[t4$source == source & t4$col == col, ]
+    v <- r[[var]]
+    if (is.na(v)) {
+        return("")
+    }
+    formatC(v, format = "d", big.mark = ",")
+}
+
+leader_row <- c("Leader$_{ict-1}$")
+units_row <- c("Units of observation")
+regions_row <- c("Number of regions")
+obs_row <- c("Observations")
+wr2_row <- c(if (knitr::is_html_output()) "Within R\\(^{2}\\)" else "Within $R^2$")
+
+unit_labels <- c(
+    "5 km circle",
+    "SN1 region",
+    "SN1, excl. birth SN2",
+    "50 km grid",
+    "100 km grid",
+    "200 km grid",
+    "400 km grid"
+)
+
+for (co in 1:7) {
+    leader_row <- c(leader_row, fmt_cell("hr", co), fmt_cell("own", co))
+    units_row <- c(units_row, "", "")
+    regions_row <- c(
+        regions_row,
+        fmt_int("hr", co, "n_regions"),
+        fmt_int("own", co, "n_regions")
+    )
+    obs_row <- c(
+        obs_row,
+        fmt_int("hr", co, "n_obs"),
+        fmt_int("own", co, "n_obs")
+    )
+    wr2_row <- c(
+        wr2_row,
+        sprintf("%.3f", t4[t4$source == "hr" & t4$col == co, "within_r2"]),
+        sprintf("%.3f", t4[t4$source == "own" & t4$col == co, "within_r2"])
+    )
+}
+region_fe_row <- c("Region FE", rep("Yes", 14))
+cy_fe_row <- c("Country-Year FE", rep("Yes", 14))
+
+# "Units of observation" describes the sample rather than a regressor, so it
+# belongs in the lower panel with the other specification rows, not in the
+# coefficient block above the midrule.
+out4 <- rbind(
+    leader_row,
+    units_row,
+    regions_row,
+    obs_row,
+    wr2_row,
+    region_fe_row,
+    cy_fe_row
+)
+colnames(out4) <- c("", rep(c("Orig.", "Repl."), 7))
+
+# Columns (2), (4), (6) are shaded. kableExtra::column_spec(background=...)
+# emits \cellcolor per cell, which paints only the cell's own content box --
+# never the \tabcolsep gap on either side of it -- so even with \tabcolsep
+# shrunk to 2.5pt a visible white hairline survives between the Orig. and
+# Repl. cells of the same shaded pair. \columncolor (also colortbl), applied
+# at the column-TYPE level in the tabular preamble instead of per cell,
+# extends across the full column including both of its tabcolsep gaps and
+# closes the seam completely. kableExtra's own "scale_down" latex_option
+# cannot be used with it: kable_styling() re-parses the tabular preamble with
+# a sub() that cannot handle column types containing braces, and errors. So
+# scale_down is dropped from kable_styling() below, and \resizebox is added
+# back by hand afterward, wrapping the exact same tabular kableExtra would
+# have.
+shaded <- c(3, 4, 7, 8, 11, 12) # data-column index (1-14), excludes the label
+col_type <- vapply(
+    seq_len(14),
+    function(i) {
+        if (i %in% shaded) ">{\\columncolor{gray!10}}c" else "c"
+    },
+    character(1)
+)
+# knitr::kable's align must be a vector with one token PER COLUMN -- passing
+# a single already-concatenated string instead makes kable treat that whole
+# string as one column's spec and recycle/repeat it to fill all 15 columns,
+# corrupting the tabular preamble (found by inspecting paper.tex: the align
+# text appeared duplicated end to end, once per column).
+align4 <- c("l", col_type)
+
+# Merge each column's Orig./Repl. unit-of-observation cells into one centered
+# \multicolumn spanning both, since the label is the same for both. Shaded
+# columns (2), (4), (6) need \cellcolor placed INSIDE the \multicolumn's
+# content -- shading applied via column_spec() only covers the ordinary
+# (non-multicolumn) cells further down, so this row would otherwise be the
+# one unshaded gap in an already-shaded column.
+shaded_pair <- c(2, 4, 6) # which of the 7 column-pairs are shaded
+units_cell <- function(i) {
+    fill <- if (i %in% shaded_pair) "\\cellcolor{gray!10}" else ""
+    sprintf("\\multicolumn{2}{c}{%s%s}", fill, unit_labels[i])
+}
+units_line_new <- paste0(
+    "Units of observation & ",
+    paste(
+        vapply(seq_along(unit_labels), units_cell, character(1)),
+        collapse = " & "
+    ),
+    " \\\\"
+)
+
+notes4_text <- paste(
+    "Fixed-effect regressions using annual data for subnational regions",
+    "between 1992 and 2009. Light$_{ict}$ is the log of average nighttime",
+    "light intensity plus 0.01. Leader$_{ict}$ is a dummy variable equal to",
+    "1 if region $i$ is the birth region of the political leader in country",
+    "$c$ in year $t$, and 0 otherwise. Standard errors, in parentheses, are",
+    "clustered by leader spell, lagged one period. Units of observation",
+    "differ across columns as labeled in the table.",
+    "$^{***}$, $^{**}$, $^{*}$ indicate significance at the 1\\%, 5\\%, and",
+    "10\\% levels, respectively."
+)
+
+if (knitr::is_html_output()) {
+    unit_labels_short <- c(
+        "5 km circle", "SN1 region", "SN1, excl. birth SN2",
+        "50 km grid", "100 km grid", "200 km grid", "400 km grid"
+    )
+    thead4 <- paste0(
+        "<tr><th></th>",
+        paste0(sprintf('<th colspan="2">(%d) Light\\(_{ict}\\)</th>', 1:7), collapse = ""),
+        "</tr><tr><th></th>",
+        paste0(rep("<th>Orig.</th><th>Repl.</th>", 7), collapse = ""),
+        "</tr>"
+    )
+    leader_cells <- vapply(1:7, function(co) {
+        shade <- if (co %in% shaded_pair) ' class="ptbl-shade"' else ""
+        sprintf(
+            "<td%s>%s</td><td%s>%s</td>", shade, fmt_cell_html("hr", co),
+            shade, fmt_cell_html("own", co)
+        )
+    }, character(1))
+    units_cells_html <- vapply(seq_along(unit_labels_short), function(i) {
+        shade <- if (i %in% shaded_pair) ' class="ptbl-shade"' else ""
+        sprintf('<td colspan="2"%s>%s</td>', shade, unit_labels_short[i])
+    }, character(1))
+    foot4_rows <- list(regions_row, obs_row, wr2_row, region_fe_row, cy_fe_row)
+    foot4_html <- vapply(seq_along(foot4_rows), function(i) {
+        r <- foot4_rows[[i]]
+        cells <- vapply(2:15, function(j) {
+            spec_idx <- ((j - 2) %/% 2) + 1
+            shade <- if (spec_idx %in% shaded_pair) ' class="ptbl-shade"' else ""
+            sprintf("<td%s>%s</td>", shade, r[j])
+        }, character(1))
+        cls <- if (i == 1) ' class="ptbl-foot-first"' else ""
+        sprintf("<tr%s><td>%s</td>%s</tr>", cls, r[1], paste(cells, collapse = ""))
+    }, character(1))
+    notes4_html <- gsub("\\$([^$]*)\\$", "\\1", paste(notes4_text, collapse = " "))
+    notes4_html <- gsub("_\\{([^}]*)\\}", "\\\\(_{\\1}\\\\)", notes4_html)
+    notes4_html <- gsub("\\\\%", "%", notes4_html)
+    notes4_html <- gsub("\\^\\{([^}]*)\\}", "\\\\(^{\\1}\\\\)", notes4_html)
+
+    knitr::asis_output(paste0(
+        '<div class="ptbl-wrap"><table class="ptbl"><thead>', thead4, "</thead><tbody>",
+        "<tr><td>Leader\\(_{ict-1}\\)</td>", paste(leader_cells, collapse = ""), "</tr>",
+        '<tr class="ptbl-foot-first"><td>Units of observation</td>',
+        paste(units_cells_html, collapse = ""), "</tr>",
+        paste(foot4_html[-1], collapse = ""),
+        "</tbody></table></div>",
+        '<p class="ptbl-notes"><em>Notes.</em> ', notes4_html, "</p>"
+    ))
+} else {
+    tbl4 <- knitr::kable(
+        out4,
+        format = "latex",
+        align = align4,
+        escape = FALSE,
+        linesep = "",
+        row.names = FALSE,
+        booktabs = TRUE
+    ) |>
+        kableExtra::add_header_above(c(
+            " " = 1,
+            "(1)" = 2,
+            "(2)" = 2,
+            "(3)" = 2,
+            "(4)" = 2,
+            "(5)" = 2,
+            "(6)" = 2,
+            "(7)" = 2
+        )) |>
+        # Every column of Table IV shares one dependent variable, so it spans the
+        # whole width rather than repeating above each pair as in Table 4.
+        kableExtra::add_header_above(
+            c(" " = 1, "Light$_{ict}$" = 14),
+            escape = FALSE
+        ) |>
+        kableExtra::row_spec(1, extra_latex_after = "\\midrule") |>
+        kableExtra::kable_styling(font_size = 9)
+
+    tbl4_attrs <- attributes(tbl4)
+    # sub()'s replacement argument treats "\\" as backreference syntax, which
+    # silently eats literal backslashes out of a LaTeX replacement string (this
+    # broke the row's trailing "\\" line terminator on the first attempt, in turn
+    # misplacing the next \midrule). regmatches<- assigns replacement text
+    # verbatim, with no backslash reinterpretation, so it is used for the one
+    # substitution whose pattern needs to be a regex; the other two substitutions
+    # use fixed = TRUE (literal pattern AND literal replacement) instead.
+    m <- regexpr("Units of observation & [^\n]*\\\\\\\\", tbl4)
+    regmatches(tbl4, m) <- units_line_new
+    # scale_down was dropped from kable_styling() (see note above), so its
+    # \resizebox wrapping is added back by hand, identical to what it would have
+    # generated, together with the same \tabcolsep tightening as before.
+    tbl4 <- sub(
+        "\\begin{tabular}",
+        paste0(
+            "\\resizebox{\\ifdim\\width>\\linewidth\\linewidth\\else\\width\\fi}{!}{",
+            "\\begingroup\\setlength{\\tabcolsep}{2.5pt}\\begin{tabular}"
+        ),
+        tbl4,
+        fixed = TRUE
+    )
+    tbl4 <- sub("\\end{tabular}", "\\end{tabular}\\endgroup}", tbl4, fixed = TRUE)
+    # row_spec(2, extra_latex_after = "\\midrule") appends "\midrule" right after
+    # the units row's own line terminator, but leaves that terminator's trailing
+    # "\\" dangling on its own -- LaTeX reads "\midrule\\" as \midrule followed by
+    # an empty row, which is the extra blank line above "Number of regions".
+    tbl4 <- sub("\\midrule\\\\", "\\midrule", tbl4, fixed = TRUE)
+    # Placement is set by the chunk's tbl-pos option rather than here: this
+    # table and Figure 2 together fill a page, so both are given float-page
+    # placement and Quarto, not kableExtra, writes the table environment.
+    attributes(tbl4) <- tbl4_attrs
+
+    notes4_latex <- paste0(
+        "\n\n\\vspace{2mm}\n\n\\begingroup\\footnotesize\\textit{Notes.} ",
+        paste(notes4_text, collapse = " "),
+        "\\endgroup\n"
+    )
+    tbl4_final <- paste0(tbl4, notes4_latex)
+    attributes(tbl4_final) <- attributes(tbl4)
+    tbl4_final
+}
+```
+
+The economic question behind this table is stated plainly by the
+authors: are the beneficiaries of favoritism "the political leaders'
+family and clan members living in rather narrow geographical areas
+around the political leaders' birthplace, or many people in relatively
+large geographical areas?" A narrow, clan-sized effect and a broad,
+province-sized one look identical in Table II, which fixes the unit at
+ADM2 and cannot distinguish them. Varying the unit separates them, and
+the answer matters for what regional favoritism is: patronage
+delivered to a leader's immediate circle, or public investment whose
+incidence, whatever its motive, reaches a substantial population.
+
+@tbl-table4 reports all seven columns next to the authors' own
+published numbers, all estimated on the authors' 126-country,
+1992-2009 sample. Column (1), the tightest unit, a 5 km circle around
+the leader's own birthplace, is where the two panels disagree most
+sharply, and the disagreement is not merely about significance. The
+authors find 0.049, larger than their own ADM2 baseline of 0.038,
+and read this as evidence that "regional favoritism strongly benefits
+people living close to the political leaders' birthplaces." Here the
+circle gives 0.025, statistically indistinguishable from zero and
+*smaller* than the corresponding baseline of 0.032. The sign of the
+comparison is reversed: their data says the effect intensifies as the
+unit tightens onto the birthplace, this panel's says it does not.
+@sec-discussion returns to why, since the circles are also the unit
+whose construction differs most between the two panels.
+
+Columns (2) and (3) move in the opposite direction, to units larger
+than ADM2, and carry the authors' spillover argument. Column (2)
+widens to the SN1 region, on the authors' account about 17 times
+larger than an SN2 district, a ratio their own region counts confirm
+and this panel's reproduce closely at 16 times; their coefficient
+"drops by around one third" relative to the ADM2 baseline, from 0.038
+to 0.026, and stays significant. The same widening here costs more, a 45% drop from 0.032
+to 0.018, and significance is lost. Column (3) is the sharper test:
+it keeps the SN1 region but removes every ever-birth SN2 district
+from the light average, so whatever remains is favoritism accruing to
+neighbours of the birth district rather than to the birth district
+itself. The authors' coefficient falls only slightly, to 0.023, which
+leaves 61% of their baseline effect intact *outside* the birth
+district, and this is what licenses their conclusion that leaders
+favor "not only the SN2 region in which they were born but also other
+SN2 regions belonging to the same SN1 region," so that favoritism
+"tends to benefit rather large geographical areas and, presumably,
+many people." In this panel the same operation leaves 0.010, only 32%
+of the baseline, and not significant. The spillover is directionally
+present but roughly half as large, and too imprecise to support the
+authors' inference on its own.
+
+Columns (4) through (7) replace administrative units with a
+same-sized rectangular grid. The authors are explicit that this serves
+two purposes: tracing how far the effect reaches, and showing that
+"our previous results are not an artifact of the different sizes and
+shapes of subnational administrative regions across the world," a
+modifiable-areal-unit check. That check passes cleanly in both panels,
+and is the strongest agreement in this table: at 50 km, the resolution
+closest in scale to an ADM2 district, the grid returns 0.036 here
+against an ADM2 baseline of 0.032, and 0.043 against 0.038 for the
+authors. Two entirely different partitions of the same territory,
+one drawn by governments and one drawn by an arbitrary lattice,
+recover the same effect to within a few thousandths.
+
+Where the panels part company is how far out the effect persists. The
+authors report it significant at 50, 100, and 200 km and only fading
+at 400 km. Here it is significant at 50 km (0.036) and 100 km (0.019)
+and gone by 200 km. A more informative way to read the decline than
+significance alone is to ask how fast it falls. Each step up the grid
+quadruples cell area, so a purely local effect, a fixed absolute
+increment of light confined to one spot, would be diluted across four
+times the area and its coefficient should fall by a factor of four.
+Anything slower means the effect genuinely occupies the larger cell.
+By that benchmark the authors' effect keeps extending through 200 km
+(their 100 km coefficient of 0.028 far exceeds the 0.011 that pure
+dilution predicts, and 200 km's 0.020 exceeds 0.007), and only at the
+200-to-400 km step does it decay at exactly the dilution rate, 0.005
+predicted against 0.005 observed, marking the outer edge of the
+footprint. This panel's effect also extends past 50 km (0.019 against
+a predicted 0.009) but then decays *faster* than dilution from 100 km
+onward, placing its outer edge somewhere between 100 and 200 km.
+
+In economic terms the two panels agree on the shape and disagree on
+the reach. Converting as in @sec-results-table2, the authors' 50 km
+estimate is 4.4% more light, or about 1.3% more regional output;
+this paper's is 3.6% and 1.1%. At 100 km both fall to roughly 2-3%
+light and 0.6-0.9% output. So the per-area intensity of favoritism
+declines steadily outward in both, which is what one expects if
+resources are concentrated near the leader's home and thin out with
+distance rather than being spread evenly across a province. The
+substantive difference is the size of the area over which that
+premium is detectable at all: on the authors' data, a footprint
+extending to a few hundred kilometres and therefore plausibly
+covering millions of people; on this data, a tighter footprint of
+roughly 100 km. Both readings are inconsistent with favoritism as
+pure clan-level transfer, since a 50 km cell already covers 2,500
+km², far more than a family or a village. Where the authors' evidence
+supports the stronger claim that a substantial share of the benefit
+reaches large populations well beyond the birth district, this
+replication supports it only in weakened form.
+
+
+## Extension to the 1992-2023 Window {#sec-extension}
+
+The authors' window closes in 2009 because that is where their data
+ends, not because anything about the question does. DMSP-OLS runs
+through 2013 and VIIRS begins in 2012, so a harmonized series
+[@li2020] that splices the two roughly doubles the usable span to
+1992-2023. This section re-estimates Columns (1) through (7) of Table
+II on that longer panel. Column (8) is not extended, since it depends
+on G-Econ regional GDP, which does not run past the replication
+window.
+
+Three things change besides the years: the light series, the
+population source, and the clustering. Two of the three carry directly
+into how the results should be read, so they are set out first.
+
+### Data behind the extension {#sec-extension-data}
+
+**Nighttime lights.** The outcome is the harmonized DMSP/VIIRS series
+of @li2020, which applies the stepwise inter-satellite calibration of
+@li2017 to produce one continuous global panel from 1992 onward. Its
+two halves have different origins: 1992-2013 is inter-calibrated
+DMSP-OLS, and 2014 onward is VIIRS converted onto DMSP's own 0-63
+digital-number scale, so that the two are directly comparable in
+levels. Both halves share 30 arc-second resolution and WGS84, matching
+the raw DMSP composites used in @sec-outcome. This project extracted
+region-year zonal means from the rasters itself, over the same GADM 3.6
+geometry used for the ADM2 replication geometry in @sec-geometry,
+giving 1.51 million region-years across 45,913 regions in 174
+countries; 99.1% of those rows are ADM2, with ADM1 used only for
+countries GADM 3.6 gives no ADM2 breakdown for. The source authors suggest treating digital
+numbers at or below 7 as a noise floor; this paper does not apply that
+filter, keeping the raw zonal mean and following the same convention
+as the replication panel, where thresholds are an analysis choice
+rather than something baked into extraction.
+
+The conversion direction matters for reading Column (6). Because
+VIIRS is mapped *onto* DMSP's scale rather than the reverse, the
+harmonized series does not inherit VIIRS's full dynamic range, and
+one might expect the extensive margin to behave the same in both
+halves. It does not: the VIIRS half records zero light in 4.1% of
+region-years against 9.4% in the DMSP half. Even after compression
+onto a 0-63 scale, in other words, the later sensor still resolves
+faint light that the earlier one recorded as darkness, which is what
+makes the extensive-margin recovery interpretable as a sensor effect
+rather than a change in the phenomenon.
+
+**Population.** Column (7) needs annual regional population over the
+full window, which no source provides directly. GHS-POP
+[@schiavina2023] publishes benchmarks every five years, and this
+project computed zonal population sums for 1990, 1995, 2000, 2005,
+2010, 2015 and 2020 over the same ADM2 geometry, then interpolated
+linearly between consecutive benchmarks in levels rather than logs,
+after aggregation to the region rather than on the raster. The result
+covers 45,962 regions in 166 countries.
+
+One limitation is worth stating rather than burying. The last
+benchmark used here is 2020, so values for 2021-2023 are not
+interpolated between two observed anchors; they are held flat at the
+2020 level. Those three years are the weakest part of the population
+series, and Column (7) is the only column that depends on it. Because
+that is a real weakness, it was tested rather than assumed harmless:
+re-estimating Column (7) on 1992-2020, which drops the flat tail
+entirely, and again on 1992-2015, where every year lies between two
+observed benchmarks, moves the birth-region coefficient by less than
+0.002 and changes no conclusion. Three flat years at the end of a
+32-year panel are not what identifies this specification.
+
+A second point about units belongs here, since it materially affected
+an earlier version of these results. Population enters twice, once as
+the denominator of per capita light and once as a control, and HR
+define it in thousands. The interpolated GHS-POP file stores its
+`lnpop` column on that scale but its raw count column in persons, and
+an early version of the extension code took the denominator from the
+latter. Dividing light by population in persons makes the ratio of
+order $10^{-4}$, small enough that the additive constant of 0.01 in
+$\ln(\text{Light}/\text{Pop} + 0.01)$ dominates it: the dependent
+variable's standard deviation fell from 1.81 to 0.26 and Column (7)
+was driven to 0.001 and insignificance. The results reported here use
+population in thousands throughout, consistent with the replication
+panel and with the authors' own definition.
+
+**Leaders and clustering.** Birthplaces come from the same PLAD and
+Wikidata sources as the replication (@sec-leader-birthplace), expanded
+across the longer window. Clustering, however, cannot follow the
+replication's convention: Archigos 4.1 stops recording leader spells
+in 2015, so leader-spell clusters are undefined for roughly a third of
+the extension window. Standard errors are therefore clustered at the
+country level throughout the extension. This is the more conservative
+choice of the two available, since country clusters are strictly
+coarser than leader-spell clusters, and it is applied to all seven
+columns rather than only the later years, so that the columns remain
+comparable to each other.
+
+### Results over the extended window {#sec-extension-results}
+
+@tbl-extension reports the results. The headline finding is that the
+effect does not fade over the longer horizon; it grows. Column (1)
+rises from 0.032 on the replication window to 0.048 over 1992-2023,
+significant at the 1% level on roughly 1.3 million region-years across
+45,463 regions. In the terms of @sec-results-table2 that is 4.9% more
+light, or about 1.5% more regional output, against 3.2% and 1.0% on
+the shorter window, and it also exceeds the authors' own 1992-2009
+estimate of 3.9% and 1.2%. The lag-robustness columns move with it,
+0.043 contemporaneous and 0.046 at two years, and the
+Angrist-Pischke bracket that held in @sec-results-table2 holds here
+too, with Column (4) at 0.025 and Column (5) at 0.074 straddling the
+main estimate.
+
+```{r}
+#| label: tbl-extension
+#| tbl-cap: "Extension: HR 2014 Table II, Columns (1)-(7), re-estimated on the harmonized DMSP/VIIRS panel over 1992-2023. Column (8) is not extended, since G-Econ regional GDP does not cover the later window."
+
+# Laid out like Tables 2 and 3 (HR 2014's own format): specifications run
+# across the top as numbered columns, coefficient over standard error in
+# each cell, summary rows underneath. Unlike those tables this one has a
+# single panel, since the extension has no published counterpart to sit
+# beside.
+exs <- read.csv("../01_datasets/processed/ntl/extension_table2_summary.csv")
+exc <- read.csv("../01_datasets/processed/ntl/extension_table2_coefs.csv")
+
+cell_e <- function(row, col) {
+    r <- exc[exc$row == row & exc$col == col, ]
+    if (nrow(r) == 0) {
+        return("")
+    }
+    sprintf("\\shortstack{%.3f%s\\\\(%.3f)}", r$b, r$sig, r$se)
+}
+
+row_order_e <- c("Leader_t-1", "Leader_t", "Leader_t-2", "Light_t-1", "Pop")
+row_lab_e <- c(
+    "Leader_t-1" = "Leader$_{ict-1}$",
+    "Leader_t" = "Leader$_{ict}$",
+    "Leader_t-2" = "Leader$_{ict-2}$",
+    "Light_t-1" = "Light$_{ict-1}$",
+    "Pop" = "Pop$_{ict}$"
+)
+
+# Coefficient cells are two lines tall (\shortstack), so a plain label sits
+# on the baseline of the second line and reads as belonging to the row below.
+# \shortstack on the label too gives it the same height and centres it.
+body_e <- do.call(
+    rbind,
+    lapply(row_order_e, function(rn) {
+        c(
+            sprintf("\\shortstack[l]{%s\\\\~}", row_lab_e[[rn]]),
+            vapply(1:7, function(co) cell_e(rn, co), character(1))
+        )
+    })
+)
+
+foot_e <- rbind(
+    c(
+        "Number of regions",
+        formatC(exs$n_regions, format = "d", big.mark = ",")
+    ),
+    c("Observations", formatC(exs$n_obs, format = "d", big.mark = ",")),
+    c(if (knitr::is_html_output()) "Within R\\(^{2}\\)" else "Within $R^2$", sprintf("%.3f", exs$within_r2)),
+    c("Region FE", c("Yes", "Yes", "Yes", "Yes", "No", "Yes", "Yes")),
+    c("Country-Year FE", rep("Yes", 7))
+)
+
+oute <- rbind(body_e, foot_e)
+colnames(oute) <- c("", sprintf("(%d)", 1:7))
+
+# Centred, stretchable X column: the seven specification columns share
+# whatever width is left over after the row-label column, so the table
+# always spans exactly \linewidth.
+CX <- ">{\\centering\\arraybackslash}X"
+shaded_e <- c(2, 4, 6) # shade alternate specification columns
+col_type_e <- vapply(
+    seq_len(7),
+    function(i) {
+        if (i %in% shaded_e) paste0(">{\\columncolor{gray!10}}", CX) else CX
+    },
+    character(1)
+)
+
+notes_e <- paste(
+    "Fixed-effect regressions, except Column (5), which is standard OLS,",
+    "using annual data for subnational regions between 1992 and 2023 on the",
+    "harmonized DMSP/VIIRS series of Li et al. (2020). The dependent variable",
+    "is given in the column header: Light$_{ict}$ is the log of average",
+    "nighttime light intensity plus 0.01, Light0$_{ict}$ omits the additive",
+    "constant, and Lightpc$_{ict}$ is per capita. Leader$_{ict}$ is a dummy",
+    "equal to 1 if region $i$ is the birth region of the political leader in",
+    "country $c$ in year $t$, entered contemporaneously in Column (2), at a",
+    "two-year lag in Column (3), and at a one-year lag elsewhere.",
+    "Light$_{ict-1}$ is lagged light and Pop$_{ict}$ is the log of regional",
+    "population from this project's own GHS-POP series. Standard errors, in",
+    "parentheses, are clustered at the country level, since Archigos 4.1 does",
+    "not define leader spells past 2015. Within $R^2$ follows the same",
+    "region-demeaned convention as Tables 2 and 3; Column (5) reports full",
+    "$R^2$, having no region fixed effects to demean by.",
+    "$^{***}$, $^{**}$, $^{*}$ indicate significance at the 1\\%, 5\\%,",
+    "and 10\\% levels, respectively."
+)
+
+if (knitr::is_html_output()) {
+    cell_e_html <- function(row, col) {
+        r <- exc[exc$row == row & exc$col == col, ]
+        if (nrow(r) == 0) {
+            return("")
+        }
+        sprintf('%.3f%s<br><span class="ptbl-se">(%.3f)</span>', r$b, r$sig, r$se)
+    }
+    dep_labels_e <- c(rep("Light\\(_{ict}\\)", 5), "Light0\\(_{ict}\\)", "Lightpc\\(_{ict}\\)")
+    # Two header rows, matching Table II/IV's own thead structure exactly
+    # (DV label row styled via thead tr:first-child, spec-number row via
+    # thead tr:last-child) -- a single combined row here would get BOTH
+    # rules at once (it is simultaneously first- and last-child), which
+    # muddles the two styles together rather than applying either cleanly.
+    thead_e <- paste0(
+        "<tr><th></th>",
+        paste0(sprintf("<th>%s</th>", dep_labels_e), collapse = ""),
+        "</tr><tr><th></th>",
+        paste0(sprintf("<th>(%d)</th>", 1:7), collapse = ""),
+        "</tr>"
+    )
+    body_e_html <- vapply(row_order_e, function(rn) {
+        cells <- vapply(1:7, function(co) {
+            shade <- if (co %in% shaded_e) ' class="ptbl-shade"' else ""
+            sprintf("<td%s>%s</td>", shade, cell_e_html(rn, co))
+        }, character(1))
+        sprintf("<tr><td>%s</td>%s</tr>", row_lab_e[[rn]], paste(cells, collapse = ""))
+    }, character(1))
+    body_e_html <- gsub("\\$([^$]*)\\$", "\\1", body_e_html)
+    body_e_html <- gsub("_\\{([^}]*)\\}", "\\\\(_{\\1}\\\\)", body_e_html)
+    foot_e_html <- vapply(seq_len(nrow(foot_e)), function(i) {
+        cells <- vapply(2:8, function(j) {
+            shade <- if ((j - 1) %in% shaded_e) ' class="ptbl-shade"' else ""
+            sprintf("<td%s>%s</td>", shade, foot_e[i, j])
+        }, character(1))
+        cls <- if (i == 1) ' class="ptbl-foot-first"' else ""
+        sprintf("<tr%s><td>%s</td>%s</tr>", cls, foot_e[i, 1], paste(cells, collapse = ""))
+    }, character(1))
+    foot_e_html <- gsub("\\$([^$]*)\\$", "\\1", foot_e_html)
+    foot_e_html <- gsub("\\^\\{([^}]*)\\}", "\\\\(^{\\1}\\\\)", foot_e_html)
+
+    notes_e_html <- gsub("\\$([^$]*)\\$", "\\1", paste(notes_e, collapse = " "))
+    notes_e_html <- gsub("_\\{([^}]*)\\}", "\\\\(_{\\1}\\\\)", notes_e_html)
+    notes_e_html <- gsub("\\\\%", "%", notes_e_html)
+    notes_e_html <- gsub("\\^\\{([^}]*)\\}", "\\\\(^{\\1}\\\\)", notes_e_html)
+
+    knitr::asis_output(paste0(
+        '<div class="ptbl-wrap"><table class="ptbl"><thead>', thead_e, "</thead><tbody>",
+        paste(body_e_html, collapse = ""),
+        paste(foot_e_html, collapse = ""),
+        "</tbody></table></div>",
+        '<p class="ptbl-notes"><em>Notes.</em> ', notes_e_html, "</p>"
+    ))
+} else {
+    tble <- knitr::kable(
+        oute,
+        format = "latex",
+        escape = FALSE,
+        linesep = "",
+        row.names = FALSE,
+        booktabs = TRUE,
+        align = c("l", col_type_e)
+    ) |>
+        kableExtra::add_header_above(
+            c(
+                " " = 1,
+                "Light$_{ict}$" = 5,
+                "Light0$_{ict}$" = 1,
+                "Lightpc$_{ict}$" = 1
+            ),
+            escape = FALSE
+        ) |>
+        kableExtra::row_spec(5, extra_latex_after = "\\midrule") |>
+        kableExtra::kable_styling(latex_options = c("hold_position"), font_size = 9)
+
+    # Swap tabular -> tabularx{\linewidth}. kable has no native tabularx mode,
+    # so the environment is rewritten here; the column spec it emitted already
+    # contains the X columns defined above.
+    tble_a <- attributes(tble)
+    tble <- sub(
+        "\\begin{tabular}{",
+        "\\begingroup\\setlength{\\tabcolsep}{3pt}\\begin{tabularx}{\\linewidth}{",
+        tble,
+        fixed = TRUE
+    )
+    tble <- sub("\\end{tabular}", "\\end{tabularx}\\endgroup", tble, fixed = TRUE)
+    tble <- sub("\\midrule\\\\", "\\midrule", tble, fixed = TRUE)
+    attributes(tble) <- tble_a
+
+    notes_e_tex <- paste0(
+        "\n\n\\vspace{2mm}\n\n\\begingroup\\footnotesize\\textit{Notes.} ",
+        paste(notes_e, collapse = " "),
+        "\\endgroup\n"
+    )
+    tble_attrs <- attributes(tble)
+    tble_final <- paste0(tble, notes_e_tex)
+    attributes(tble_final) <- tble_attrs
+    tble_final
+}
+```
+
+Two columns deserve separate comment: the one that changes most
+between the windows, and the one that changes least.
+
+Column (6), the extensive margin, is the specification that failed to
+replicate on the authors' own window, where it fell to 0.008 and lost
+significance. Over the extended panel it recovers: 0.035, significant
+at the 5% level. This is worth stating plainly because it revises what
+@sec-results-table2 could conclude on its own. There the failure
+looked like a fragility in the finding; here it looks more like a
+limitation of the instrument. DMSP-OLS is comparatively insensitive at
+low luminance, so genuinely faint regions are recorded as exact zeros
+and drop out of a specification that logs light without an additive
+constant. The zero rate in the harmonized series bears this out: 9.4%
+of region-years in its DMSP half against 4.1% in its VIIRS half
+(@sec-extension-data). The extensive margin reappearing once VIIRS
+enters the series is therefore consistent with many of the DMSP-era
+zeros having been a sensor floor rather than true darkness. The window
+and the sensor do change together here, so this panel cannot fully
+separate them, but the zero counts point at the sensor.
+
+Column (7), per capita light, gives 0.026 over the extended window
+against 0.025 on the replication window, which is about as close an
+agreement as any column in this paper produces. That is worth
+underlining because the two estimates share almost nothing on the
+input side: different light series, different population source
+(GPWv4 against GHS-POP), different window, different clustering. The
+per-capita result is the one @sec-results-table2 flagged as weaker
+than the authors' own, and it is also the one whose population control
+carries a sign this paper cannot match to theirs (@sec-discussion).
+Both of those remain true; what the extension adds is that the
+birth-region coefficient itself is stable across two largely
+independent constructions of the same specification.
+
+In economic terms, converting as in @sec-results-table2, the
+favoritism premium is roughly half again as large over the longer
+window as over the replication window. Column (1)'s 0.048 is 4.9% more
+light, or about 1.5% more regional output per year of incumbency,
+against 3.2% and 1.0% on 1992-2009, and above the authors' own 3.9%
+and 1.2%. The other columns bracket that figure the way one would
+expect rather than scattering: the demanding dynamic specification in
+Column (4) puts the floor at 2.5% light and 0.75% output, the
+no-region-fixed-effects specification in Column (5) puts the ceiling
+at 7.7% and 2.3%, and the ratio between ceiling and floor is 3.0 here
+against 1.9 on the replication window (Column (4)'s 0.026 and Column
+(5)'s 0.050 there), so the bracket has widened somewhat as the panel
+has doubled in length, driven by Column (5)'s larger coefficient
+rather than any change at the floor. Column (7), which
+measures the same thing per person rather than per region, gives 2.7%
+against 2.5% on the shorter window. Read together, the estimates say
+that a region gains on the order of one to one and a half percent of
+output in each year its native son or daughter holds office, and that
+this figure is if anything a little larger in the 2010s and 2020s than
+it was in the 1990s.
+
+Whether that increase reflects more favoritism or better measurement
+is not settled by this panel. The rise is concentrated in exactly the
+columns where the sensor change should matter most, and Column (4),
+the one column whose identification leans on within-region dynamics
+rather than levels, is also the one column that does not rise at all,
+holding at 0.025 against 0.026 on the replication window. That pattern
+is at least as consistent with VIIRS resolving light that DMSP missed
+as with leaders having become more generous to their birthplaces.
+What the extension does establish is the negative claim, and it is the
+one that matters for the paper's purpose: the effect is not an
+artifact of the window the authors happened to have data for.
+
+Taken together, the extension says the birth-region effect is not an
+artifact of the 1992-2009 window. All seven extended columns are
+significant, the effect is larger rather than smaller over the longer
+period, and the one column that failed in the replication recovers
+once a more sensitive sensor is in the series.
+
+
+
+# Discussion and Limitations {#sec-discussion}
+
+Four results in this paper depart from the authors', and each is
+reported where it arises. This section does not restate them. It asks
+what each departure should do to a reader's confidence in the
+underlying finding, which is a different question and, for a
+replication, the more important one.
+
+**A null that belongs to the instrument.** The extensive margin is the
+one Table II column that fails outright on the replication window, and
+taken alone it would be the paper's most damaging result. The
+extension changes what it can mean. Recovering the same specification
+on a series with a more sensitive sensor, alongside a halving of the
+region-years recorded as perfectly dark, points to the DMSP-era zeros
+being a detection floor rather than genuine darkness
+(@sec-extension-data). The caution is that window and sensor move
+together in the extension, so this is an interpretation the data
+permit rather than one it forces. Read conservatively, the column
+should be treated as uninformative on 1992-2009 rather than as
+evidence against favoritism.
+
+**A discrepancy this paper cannot explain.** The population control
+enters with the opposite sign to the authors' in every specification
+that includes it, across two population products and both windows.
+Stability across independent sources makes a coding error on this side
+unlikely, but nothing here identifies the cause, and it would be
+dishonest to present a guess as a finding. What limits the damage is
+that Pop is a control rather than the estimand, and that the
+birth-region coefficients in the columns carrying it agree closely
+with each other. The appropriate response is not to discount the
+paper's estimates but to treat Columns (7) and (8) as its least
+settled, and the population question as open.
+
+**A substitution, not a replication.** Column (8) uses G-Econ in place
+of the authors' unreleased regional GDP source, over a sample several
+times larger. That the two land at a similar output magnitude is
+corroboration from an independent direction; it is not evidence that
+the two series measure the same quantity at the region level, and the
+column should not be counted as a replicated result.
+
+**A disagreement that is probably about measurement.** The 5 km circle
+is the only place where this paper reverses a directional claim rather
+than a magnitude. It is also the unit built directly from birthplace
+coordinates, which differ in source between the two panels, and the
+unit small enough for a few kilometres of coordinate error to change
+which pixels are counted. That the coarser units in the same table
+agree well is what one would expect if the disagreement is about
+birthplace precision rather than about how favoritism is distributed
+in space. The claim it undermines is the authors' sharpest local one,
+not their central one.
+
+**A difference that cannot be removed.** The authors' regions come
+from CIESIN and this paper's from GADM, so the two panels never
+partition countries identically. This is the most likely source of the
+small, uniform differences running through the replication columns,
+and it means no result here is a strict recomputation. Every
+comparison in this paper is between two constructions of the same
+design, which is the point of the exercise but also its ceiling: a
+gap of a few thousandths is not attributable to anything in
+particular.
+
+Taken together, one failure has a plausible instrumental explanation,
+one is genuine and unexplained but confined to a control, one rests on
+a substituted source, and one is confounded with measurement
+precision. Against them stands a birth-region coefficient that is
+positive and significant across two light series, two population
+sources, two boundary vintages, seven spatial units, and a panel twice
+the original length. The finding survives; the qualifications are
+about how much weight individual columns can bear, not about whether
+the effect is there.
+
+# Conclusion {#sec-conclusion}
+
+This paper set out to test whether @hodler2014's finding survives being
+rebuilt rather than re-run. Nothing was inherited from their processed
+panel: the boundaries come from GADM rather than CIESIN, the
+birthplaces from PLAD and a Wikidata supplement rather than their own
+geocoding, and the light values from raw satellite composites
+extracted here. On that independently assembled data, a region is
+about 3% brighter while it is the sitting leader's birth region,
+against their 4%, which on the standard light-output elasticity is
+roughly one percent of regional output for each year of incumbency.
+Seven of Table II's eight columns reproduce the result, and Table IV's
+spatial pattern, an effect concentrated near the birthplace and
+decaying as the unit of observation widens, reproduces as well.
+
+Extending the panel to 2023 on a harmonized DMSP/VIIRS series
+strengthens rather than weakens the case. Every specification is
+significant over the longer window and the coefficient rises to 0.048,
+about 1.5% of regional output per year in office. It also resolves the
+one column that failed on the original window: the extensive margin,
+insignificant on DMSP-only data, returns at conventional levels once
+VIIRS enters the series, alongside a halving of the share of
+region-years recorded as perfectly dark. That is a useful reminder
+that a null in this literature can belong to the instrument rather
+than to the world.
+
+Two things did not come out clean, and they are worth carrying
+forward rather than filing away. The population control enters with
+the opposite sign to the authors' in every specification that includes
+it, across two population products and both windows, and this paper
+cannot explain why. The 5 km circle, the tightest unit in Table IV,
+reverses their directional conclusion, though it is also the unit most
+exposed to birthplace-coordinate precision and so the least
+diagnostic. Neither disturbs the central estimate, but both mark
+places where a reader should not treat the replication as settled.
+
+Five further tables from the original, Tables I, III, V, VI, and VII,
+were replicated in the course of this project but fall outside the
+scope of the argument here; they are reported in the Supplementary
+Materials.
+
+The broader point is about what a replication of this kind can
+establish that a re-estimation cannot. Running an author's code on an
+author's data tests arithmetic. Rebuilding the measurement chain, and
+finding the same answer through different boundaries, different
+birthplace records, different sensors and a panel twice as long, tests
+whether the finding was ever about the particular way the data
+happened to be assembled. On the evidence here, it was not.
+
+# Data and Code Availability {.unnumbered}
+
+All data are drawn from open sources: subnational boundaries from
+GADM [@gadm36], nighttime lights from DMSP-OLS [@noaa-dmsp] and the
+harmonized DMSP/VIIRS series used in the extension [@li2017; @li2020],
+leader identities and tenure from Archigos [@goemans2009], birthplaces
+from PLAD [@plad2024] supplemented by a Wikidata scrape, and population
+from GPWv4 [@ciesin-gpwv4] and this project's own GHS-POP pipeline
+[@schiavina2023]. The complete pipeline that builds the panel and
+produces every table and figure in this paper is openly available in
+the replication repository
+(<https://github.com/ofurkancoban/Regional_Favoritism_Replication>).
+For space, five further replicated tables discussed in the text,
+Table I's full descriptive statistics, Table III's dynamics
+specification, Table V's determinants, Table VI's continent split, and
+Table VII's aid/oil heterogeneity test, are reported in the
+Supplementary Materials rather than here, and leave the conclusions
+above unchanged.
+
+# Declaration of AI Use {.unnumbered}
+
+During the preparation of this work, the author used Anthropic Claude
+Sonnet 5 for coding assistance in building the
+replication pipeline and for English-language improvement of the
+manuscript text. After using this tool, the author reviewed and edited
+the content as needed and takes full responsibility for the content of
+this publication.
+
+# References {.unnumbered}
+
+::: {#refs}
+:::
+
+<!--
+APPENDIX (does not count toward the 15-page limit): variable
+definitions table, additional robustness notes that are still essential
+to reading Table II/IV (not the full supplementary set).
+-->
