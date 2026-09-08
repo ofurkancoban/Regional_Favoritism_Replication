@@ -13,9 +13,11 @@
 # Category:      Setup
 #
 # Description:   Master orchestrator for the 41-stage research pipeline, in
-#                three phases after preprocessing: Stages 22-32 (core
-#                analysis, the tables and figures in the main paper),
-#                Stages 33-39 (supplementary analysis, the additional
+#                three phases after preprocessing: Stages 22-30 (core
+#                analysis, the tables in the main paper; Stages 31-32,
+#                Figures 1-2, ship pre-built and are not wired in here --
+#                see README.md, "Scope"), Stages 33-39 (supplementary
+#                analysis, the additional
 #                tables in supplementary.qmd -- Table III, V, VI, VII),
 #                and Stages 40-41 (rendering both documents and the
 #                presentation). Establishes the central directory
@@ -84,7 +86,7 @@ s20 <- pp_dir("20_ghspop_interpolate.R")
 s21 <- pp_dir("21_build_analysis_panel.R")
 s21b <- pp_dir("21b_hr_unpopulated_regions.R")
 
-# --- Define Script Paths (22-32 Core Analysis: main paper tables & figures) ---
+# --- Define Script Paths (22-30 Core Analysis: main paper tables) ---
 core_dir <- function(f) here::here("02_scripts", "03a_analysis_core", f)
 s22 <- core_dir("22_table1_hr2014_reference.R")
 s23 <- core_dir("23_table1_descriptive_stats.R")
@@ -95,8 +97,13 @@ s27 <- core_dir("27_table4_col23_holepunch.R")
 s28 <- core_dir("28_table4_col4_7_grid.R")
 s29 <- core_dir("29_table4_assemble.R")
 s30 <- core_dir("30_extension_table2.R")
-s31 <- core_dir("31_figure1_goh.R")
-s32 <- core_dir("32_figure2_erdogan_units.R")
+# Stages 31-32 (Figure 1, Figure 2) are NOT wired into any --stage target.
+# They need raw inputs make preprocess doesn't fetch (GADM 3.6, and DMSP
+# rasters kept beyond their preprocess-stage lifetime), so a normal
+# make preprocess + make core run cannot reach them. Their outputs
+# (04_paper/img/goh_combined_paper.{pdf,svg}, erdogan_gis_units_paper.pdf)
+# ship pre-built in the repository; run these two scripts directly and
+# manually if you need to regenerate a figure from source.
 
 # --- Define Script Paths (33-39 Supplementary Analysis: supplementary.qmd
 # tables -- Table I full/country-year detail already covered by Stage 23
@@ -200,20 +207,19 @@ if (run_stage %in% c("all", "preprocess")) {
   }
 }
 
-# --- STAGE 22-32: Core Analysis (main paper tables & figures) ---
+# --- STAGE 22-30: Core Analysis (main paper tables) ---
 if (run_stage %in% c("all", "core", "analysis")) {
-  message("--- [22-32] CORE ANALYSIS: MAIN PAPER TABLES & FIGURES ---")
+  message("--- [22-30] CORE ANALYSIS: MAIN PAPER TABLES ---")
   scripts_ana <- list(
     "22" = "Table 1: HR 2014 Reference Numbers", "23" = "Table 1: Descriptive Statistics",
     "24" = "Table 1: Leader Lag 1991 Fix", "25" = "Table 2: Full Replication",
     "26" = "Table 4 Col(1): Birthplace Circles", "27" = "Table 4 Col(2)-(3): SN1 Full/Hole-Punched",
     "28" = "Table 4 Col(4)-(7): Grid Cells", "29" = "Table 4: Assemble All Columns",
-    "30" = "Extension: Table 2 over 1992-2023", "31" = "Figure 1: G-Econ vs. Own Regional GDP",
-    "32" = "Figure 2: Table IV Units of Observation"
+    "30" = "Extension: Table 2 over 1992-2023"
   )
   scripts_paths <- list(
     "22" = s22, "23" = s23, "24" = s24, "25" = s25, "26" = s26, "27" = s27,
-    "28" = s28, "29" = s29, "30" = s30, "31" = s31, "32" = s32
+    "28" = s28, "29" = s29, "30" = s30
   )
 
   for (stage in names(scripts_ana)) {

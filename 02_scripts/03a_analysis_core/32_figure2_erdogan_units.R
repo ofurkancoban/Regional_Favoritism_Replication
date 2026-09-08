@@ -16,6 +16,13 @@
 #
 # Inputs:        01_datasets/raw/gadm_3.6/, 01_datasets/processed/grid_cells_<res>km.gpkg (package root)
 # Outputs:       04_paper/img/erdogan_gis_units_paper.pdf (package root); copied to 03_results/figures/
+#
+# NOTE: Not wired into `make core` or any --stage target (see
+# setup_environment.R and README.md, "Scope") -- GADM 3.6 is a manual,
+# registration-gated download (see README.md, "Raw data that cannot be
+# downloaded automatically") that `make preprocess` does not fetch for
+# you. Its output ships pre-built; run this script directly, with GADM
+# 3.6 in place, only to regenerate the figure from source.
 # ==============================================================================
 
 source(here::here("02_scripts", "02_data_preprocessing", "00_import.R"))

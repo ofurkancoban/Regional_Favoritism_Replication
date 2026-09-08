@@ -16,6 +16,13 @@
 #
 # Inputs:        01_datasets/raw/gadm_4.1/, 01_datasets/raw/dmsp_raster_eog_manual/, 01_datasets/processed/analysis_panel.csv (package root)
 # Outputs:       04_paper/img/goh_combined_paper.pdf (package root); copied to 03_results/figures/
+#
+# NOTE: Not wired into `make core` or any --stage target (see
+# setup_environment.R and README.md, "Scope") -- the DMSP raster this
+# figure reads is only present locally after Stage 03 (`make preprocess`)
+# has actually run, which `make core` alone does not do. Its output
+# ships pre-built; run this script directly, with that raster in place,
+# only to regenerate the figure from source.
 # ==============================================================================
 
 source(here::here("02_scripts", "02_data_preprocessing", "00_import.R"))

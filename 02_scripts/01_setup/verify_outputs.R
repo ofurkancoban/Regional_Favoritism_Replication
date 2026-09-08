@@ -16,7 +16,7 @@
 #                package produces against the values reported in the paper
 #                (paper.pdf, rendered 2026-09-04), to answer "did this run
 #                actually reproduce the paper" in one command instead of by
-#                eye. Run after `make analysis` (Stages 22-32). Exits with a
+#                eye. Run after `make analysis` (Stages 22-30). Exits with a
 #                non-zero status if any check fails, so it composes with CI.
 #
 # Inputs:        01_datasets/processed/ntl/table1_leader_lag1991fix_hrsample.csv,

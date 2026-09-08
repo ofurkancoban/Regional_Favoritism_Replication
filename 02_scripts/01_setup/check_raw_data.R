@@ -31,7 +31,7 @@
 
 # Each entry: path (here::here()-relative), human name, URL, registration
 # note, optional extra instructions, and which run_stage phase(s) need it.
-# "preprocess" gates Stages 01-21, "core" Stages 22-32, "supplementary"
+# "preprocess" gates Stages 01-21, "core" Stages 22-30, "supplementary"
 # Stages 33-39. A file needed by more than one phase lists all of them.
 raw_data_manifest <- list(
   list(

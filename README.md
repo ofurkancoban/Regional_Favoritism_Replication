@@ -2,9 +2,10 @@
 
 ## A Replication and Extension of Hodler & Raschky (2014)
 
-This package reproduces every table and figure reported in the paper and
-its supplementary materials, from raw data through the final PDF and
-presentation, following a 41-stage numbered pipeline.
+This package reproduces every table reported in the paper and its
+supplementary materials, from raw data through the final PDF and
+presentation, following a 41-stage numbered pipeline. Figures 1 and 2
+ship pre-built rather than regenerating on every run (see "Scope" below).
 
 Hodler and Raschky (2014, *QJE*) find that a region grows brighter at
 night while it is the birth region of the sitting political leader,
@@ -21,10 +22,10 @@ both, and the `05_presentation/` slide deck, ship inside this package (see
 
 The package is organized in two analysis phases:
 
-- **Core** (`03a_analysis_core/`, Stages 22-32): what the main paper
+- **Core** (`03a_analysis_core/`, Stages 22-30): what the main paper
   reads — Table 1 (descriptive statistics), Table 2 (HR 2014 Table II
   replication), Table 3/Figure 2 (HR 2014 Table IV replication, all seven
-  columns), the 1992-2023 extension table, and Figure 1.
+  columns), and the 1992-2023 extension table.
 - **Supplementary** (`03b_analysis_supplementary/`, Stages 33-39): what
   `supplementary.qmd` additionally reads — the FamilyTies WVS/EVS index,
   the Table V/VII covariates, and HR 2014 Table III (dynamics), Table V
@@ -35,13 +36,24 @@ extension, the Turkey earthquake case study, non-exact-sample regression
 variants) and HR 2014's own Online Appendix are out of scope for this
 package.
 
+Figures 1 and 2 (`02_scripts/03a_analysis_core/31_figure1_goh.R` and
+`32_figure2_erdogan_units.R`) are not wired into `make core` or any
+`--stage` target: they need raw inputs `make preprocess` doesn't provide
+(GADM 3.6, and DMSP rasters kept past their preprocess-stage lifetime).
+Their outputs ship pre-built at `04_paper/img/goh_combined_paper.{pdf,svg}`
+and `04_paper/img/erdogan_gis_units_paper.pdf` -- already embedded in
+`paper.pdf`/`paper.html` -- so a normal run of this package never needs
+to touch them. Run either script directly, with that raw data in place,
+only if you want to regenerate a figure from source.
+
 ---
 
 ## Quickstart
 
 The large files this pipeline produces are tracked with Git LFS and
 shipped in this repository, so a fresh clone can reproduce every table
-without downloading or processing any raw data:
+(Figures 1 and 2 ship pre-built, see "Scope" above) without downloading
+or processing any raw data:
 
 ```bash
 git lfs install                                  # once per machine
@@ -75,7 +87,7 @@ pipeline orchestration.
 ```bash
 make init          # install exact package versions from renv.lock
 make preprocess     # stages 01-21
-make core           # stages 22-32: main paper's tables, extension, figures
+make core           # stages 22-30: main paper's tables, extension
 make supplementary  # stages 33-39: supplementary.qmd's Table III, V, VI, VII
 make render         # stages 40-41: paper + supplementary + presentation
 ```
@@ -102,7 +114,7 @@ Pass `--stage=preprocess`, `--stage=core`, `--stage=supplementary`, or
 | ------------------------------------------------ | ------ | ------------------------------------------------------------------------------------------------- |
 | `make init`                                    | —     | Install package versions pinned in`renv.lock`                                                   |
 | `make preprocess`                              | 01-21b | Geometry, nighttime-lights extraction, covariates, panel assembly                                 |
-| `make core`                                    | 22-32  | Main paper's regression tables, extension, figures                                                |
+| `make core`                                    | 22-30  | Main paper's regression tables, extension                                                         |
 | `make supplementary`                           | 33-39  | supplementary.qmd's Table III, V, VI, VII                                                         |
 | `make paper`                                   | 40     | Render the paper and supplementary materials (PDF)                                                |
 | `make presentation`                            | 41     | Render the Reveal.js presentation (HTML)                                                          |
@@ -129,14 +141,15 @@ flowchart LR
 
     PANEL[("analysis_panel.csv")]
 
-    subgraph CORE["📊 CORE — Stages 22–32"]
+    subgraph CORE["📊 CORE — Stages 22–30"]
         direction TB
         C1["Table I — descriptives"]
         C2["Table II — replication"]
         C3["Table IV — circles/grid"]
         C4["Extension table 1992–2023"]
-        C5["Figures 1 & 2"]
     end
+
+    FIGS["🖼️ Figures 1 &amp; 2<br/><i>pre-built, shipped</i><br/>Stages 31–32, manual only"]
 
     subgraph SUPP["📁 SUPPLEMENTARY — Stages 33–39"]
         direction TB
@@ -158,10 +171,12 @@ flowchart LR
     RAW --> PRE --> PANEL
     PANEL --> CORE --> REND
     PANEL --> SUPP --> REND
+    FIGS -.-> REND
     REND --> OUT
 
     style RAW fill:#1f2937,stroke:#64748b,color:#e2e8f0
     style PANEL fill:#0f766e,stroke:#2dd4bf,color:#e6fffb
+    style FIGS fill:#1e1b2e,stroke:#8b7fd6,color:#e8e4ff,stroke-dasharray: 4 3
     style PRE fill:#16233a,stroke:#5aa9e6,color:#eaf4ff
     style CORE fill:#3d3113,stroke:#f2b544,color:#fff8e6
     style SUPP fill:#0f3d3a,stroke:#4fd1c5,color:#ecfffe
