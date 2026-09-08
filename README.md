@@ -112,7 +112,62 @@ Pass `--stage=preprocess`, `--stage=core`, `--stage=supplementary`, or
 
 ## Pipeline Overview
 
-<img src="assets/diagrams/pipeline_overview.svg" alt="Pipeline overview: raw data through preprocess, core and supplementary analysis, to render" width="100%">
+```mermaid
+flowchart LR
+    RAW["<b>RAW DATA</b><br/>GADM · DMSP · VIIRS<br/>G-Econ · GPW"]
+
+    subgraph PRE["📥 PREPROCESS — Stages 01–21"]
+        direction TB
+        PRE1["Download GADM · DMSP · VIIRS"]
+        PRE2["Fill Wikidata birthplace gaps"]
+        PRE3["Build grid cells &amp; hole-punch<br/>ADM1 geometry"]
+        PRE4["Extract nighttime lights<br/>(DMSP / VIIRS zonal stats)"]
+        PRE5["Build GDP &amp; population covariates"]
+        PRE6["<b>Assemble the analysis panel</b>"]
+        PRE1 --> PRE2 --> PRE3 --> PRE4 --> PRE5 --> PRE6
+    end
+
+    PANEL[("analysis_panel.csv")]
+
+    subgraph CORE["📊 CORE — Stages 22–32"]
+        direction TB
+        C1["Table I — descriptives"]
+        C2["Table II — replication"]
+        C3["Table IV — circles/grid"]
+        C4["Extension table 1992–2023"]
+        C5["Figures 1 &amp; 2"]
+    end
+
+    subgraph SUPP["📁 SUPPLEMENTARY — Stages 33–39"]
+        direction TB
+        S1["FamilyTies index (WVS+EVS)"]
+        S2["Table III — dynamics"]
+        S3["Table V — determinants"]
+        S4["Table VI — continents"]
+        S5["Table VII — aid / oil"]
+    end
+
+    subgraph REND["📄 RENDER — Stages 40–41"]
+        direction TB
+        R1["paper.qmd + supplementary.qmd → PDF"]
+        R2["05_presentation/index.qmd → HTML slide deck"]
+    end
+
+    OUT["<b>OUTPUTS</b><br/>paper.pdf + slides.html"]
+
+    RAW --> PRE --> PANEL
+    PANEL --> CORE --> REND
+    PANEL --> SUPP --> REND
+    REND --> OUT
+
+    style RAW fill:#1f2937,stroke:#64748b,color:#e2e8f0
+    style PANEL fill:#0f766e,stroke:#2dd4bf,color:#e6fffb
+    style PRE fill:#16233a,stroke:#5aa9e6,color:#eaf4ff
+    style CORE fill:#3d3113,stroke:#f2b544,color:#fff8e6
+    style SUPP fill:#0f3d3a,stroke:#4fd1c5,color:#ecfffe
+    style REND fill:#3d1729,stroke:#e0729a,color:#fff0f6
+    style OUT fill:#7c2d12,stroke:#fb923c,color:#fff7ed
+```
 
 `make preprocess` produces `analysis_panel.csv`, the single shared input
 for both `make core` and `make supplementary`. The two analysis phases
