@@ -120,9 +120,9 @@ flowchart LR
         direction TB
         PRE1["Download GADM · DMSP · VIIRS"]
         PRE2["Fill Wikidata birthplace gaps"]
-        PRE3["Build grid cells &amp; hole-punch<br/>ADM1 geometry"]
+        PRE3["Build grid cells & hole-punch<br/>ADM1 geometry"]
         PRE4["Extract nighttime lights<br/>(DMSP / VIIRS zonal stats)"]
-        PRE5["Build GDP &amp; population covariates"]
+        PRE5["Build GDP & population covariates"]
         PRE6["<b>Assemble the analysis panel</b>"]
         PRE1 --> PRE2 --> PRE3 --> PRE4 --> PRE5 --> PRE6
     end
@@ -135,7 +135,7 @@ flowchart LR
         C2["Table II — replication"]
         C3["Table IV — circles/grid"]
         C4["Extension table 1992–2023"]
-        C5["Figures 1 &amp; 2"]
+        C5["Figures 1 & 2"]
     end
 
     subgraph SUPP["📁 SUPPLEMENTARY — Stages 33–39"]
@@ -262,13 +262,13 @@ requested `--stage` before running anything, and reports any missing
 file with its download link, registration requirement, and destination
 path, rather than failing later with an opaque error.
 
-| Dataset                                | Link                                                                                                                | Registration                                                                       | Used by                                                            | Destination                                                 |
-| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ------------------------------------------------------------------ | ----------------------------------------------------------- |
-| GADM 3.6 (levels 0-2)                  | [https://geodata.ucdavis.edu/gadm/gadm3.6/](https://geodata.ucdavis.edu/gadm/gadm3.6/)                               | Free                                                                               | Hole-punched geometry, Table IV Cols 2-3, Figure 2                 | `01_datasets/raw/gadm_3.6/gadm36_levels.gpkg`             |
-| G-Econ 4.0 (Nordhaus et al.)           | [https://gecon.yale.edu](https://gecon.yale.edu)                                                                     | Free                                                                               | Gridded regional GDP, Table II Column 8                            | `01_datasets/raw/gecon/`                                  |
-| GPWv3 population count, 1990/1995      | [https://sedac.ciesin.columbia.edu/data/collection/gpw-v3](https://sedac.ciesin.columbia.edu/data/collection/gpw-v3) | Free, NASA Earthdata login                                                         | Population covariates                                              | `01_datasets/raw/GPWv3_pcount/`                           |
-| GPWv4 population count, 2000/2005/2010 | [https://sedac.ciesin.columbia.edu/data/collection/gpw-v4](https://sedac.ciesin.columbia.edu/data/collection/gpw-v4) | Free, NASA Earthdata login                                                         | Population covariates                                              | `01_datasets/raw/gpw/population/pop/`                     |
-| GHS-POP (Global Human Settlement)      | Google Earth Engine catalog                                                                                         | Free, Google account +[Earth Engine signup](https://earthengine.google.com/signup/) | Population interpolation                                           | Accessed live via GEE; run`earthengine authenticate` once |
+| Dataset                                | Link                                                                                                                | Registration                                                                       | Used by                                            | Destination                                                 |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | -------------------------------------------------- | ----------------------------------------------------------- |
+| GADM 3.6 (levels 0-2)                  | [https://geodata.ucdavis.edu/gadm/gadm3.6/](https://geodata.ucdavis.edu/gadm/gadm3.6/)                               | Free                                                                               | Hole-punched geometry, Table IV Cols 2-3, Figure 2 | `01_datasets/raw/gadm_3.6/gadm36_levels.gpkg`             |
+| G-Econ 4.0 (Nordhaus et al.)           | [https://gecon.yale.edu](https://gecon.yale.edu)                                                                     | Free                                                                               | Gridded regional GDP, Table II Column 8            | `01_datasets/raw/gecon/`                                  |
+| GPWv3 population count, 1990/1995      | [https://sedac.ciesin.columbia.edu/data/collection/gpw-v3](https://sedac.ciesin.columbia.edu/data/collection/gpw-v3) | Free, NASA Earthdata login                                                         | Population covariates                              | `01_datasets/raw/GPWv3_pcount/`                           |
+| GPWv4 population count, 2000/2005/2010 | [https://sedac.ciesin.columbia.edu/data/collection/gpw-v4](https://sedac.ciesin.columbia.edu/data/collection/gpw-v4) | Free, NASA Earthdata login                                                         | Population covariates                              | `01_datasets/raw/gpw/population/pop/`                     |
+| GHS-POP (Global Human Settlement)      | Google Earth Engine catalog                                                                                         | Free, Google account +[Earth Engine signup](https://earthengine.google.com/signup/) | Population interpolation                           | Accessed live via GEE; run`earthengine authenticate` once |
 
 GADM 4.1, DMSP, and VIIRS download automatically (Stages 01-04) and need
 no manual step.
@@ -291,7 +291,7 @@ no manual step.
 
 | Variable                           | Default                                     | Used by                          |
 | ---------------------------------- | ------------------------------------------- | -------------------------------- |
-| `REGIONAL_FAVORITISM_ROOT`       | `here::here()`                        | `03a_analysis_core/31`, `32` |
+| `REGIONAL_FAVORITISM_ROOT`       | `here::here()`                            | `03a_analysis_core/31`, `32` |
 | `REGIONAL_FAVORITISM_LM_DIR`     | autodetected via`tinytex::tinytex_root()` | `03a_analysis_core/31`, `32` |
 | `REGIONAL_FAVORITISM_CHROME_BIN` | autodetected                                | `03a_analysis_core/31`, `32` |
 
