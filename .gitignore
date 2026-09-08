@@ -69,7 +69,7 @@ renv/staging/
 # (Stage 28's grid models) is a completely dead output nothing
 # downstream ever reads; the other four ARE read directly by
 # supplementary.qmd's tables, but only when you re-render from source
-# after running the pipeline yourself -- since paper/ ships its PDF and
+# after running the pipeline yourself -- since 04_paper/ ships its PDF and
 # HTML already built, a normal read of the paper needs none of these.
 # All five are 75MB-3GB and were found sitting in an earlier, unrelated
 # repository's history without ever having been added to Git LFS.

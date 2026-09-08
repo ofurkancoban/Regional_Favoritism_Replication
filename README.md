@@ -12,9 +12,9 @@ evidence of regional favoritism. This package rebuilds that finding on an
 independently constructed pipeline (GADM boundaries instead of the
 authors' CIESIN source, PLAD plus a Wikidata supplement for birthplaces,
 DMSP-OLS composites extracted locally), then extends it to a harmonized
-DMSP/VIIRS panel running through 2023. See `paper/paper.qmd` for the
-full text and `paper/supplementary.qmd` for the supplementary tables --
-both, and the `presentation/` slide deck, ship inside this package (see
+DMSP/VIIRS panel running through 2023. See `04_paper/paper.qmd` for the
+full text and `04_paper/supplementary.qmd` for the supplementary tables --
+both, and the `05_presentation/` slide deck, ship inside this package (see
 "Paper and presentation" below).
 
 ### Scope
@@ -140,16 +140,14 @@ reflects current results.
 ├── 03_results/
 │   ├── figures/                    # Figure 1 and Figure 2
 │   └── tables/html/                # Table 1, 2, 4, and the extension table (gt)
-├── 04_paper/
-│   └── 40_Render_Paper.R           # renders paper/{paper,supplementary}.qmd
-├── 05_presentation/
-│   └── 41_Render_Presentation.R    # renders presentation/index.qmd
-├── paper/                          # the paper and supplementary materials
+├── 04_paper/                       # the paper and supplementary materials
+│   ├── 40_Render_Paper.R           # renders paper.qmd, supplementary.qmd
 │   ├── paper.qmd, supplementary.qmd
 │   ├── paper.pdf, paper.html, supplementary.pdf, supplementary.html
 │   ├── references.bib, elsarticle.cls, elsarticle-harv.bst, before-body.tex
 │   ├── img/, R/, _extensions/
-├── presentation/                   # the Reveal.js slide deck
+├── 05_presentation/                # the Reveal.js slide deck
+│   ├── 41_Render_Presentation.R    # renders index.qmd
 │   ├── index.qmd, index.html, Coban_RegionalFavoritism.pdf
 │   ├── theme.scss, references.bib, apa.csl
 │   ├── img/, _assets/, _extensions/
@@ -160,12 +158,12 @@ reflects current results.
 
 ### Paper and presentation
 
-`paper/` and `presentation/` ship as real, physical copies inside this
-package -- not symlinks, not rendered from an outside "main
+`04_paper/` and `05_presentation/` ship as real, physical copies inside
+this package -- not symlinks, not rendered from an outside "main
 repository" -- since this package is itself the repository root on
 GitHub. Both PDF and HTML are already built and included, so opening
-`paper/paper.pdf` or `presentation/index.html` needs no rendering step
-at all; `make paper` / `make presentation` (Stages 40-41) only matter
+`04_paper/paper.pdf` or `05_presentation/index.html` needs no rendering
+step at all; `make paper` / `make presentation` (Stages 40-41) only matter
 if you edit the `.qmd` source and want to rebuild. The four result
 tables `paper.qmd` reads (Table I/II/IV, the extension table) and the
 supplementary tables `supplementary.qmd` reads point at this package's
@@ -238,7 +236,7 @@ no manual step.
 
 | Variable                           | Default                                     | Used by                          |
 | ---------------------------------- | ------------------------------------------- | -------------------------------- |
-| `REGIONAL_FAVORITISM_ROOT`       | `here::here("..")`                        | `03a_analysis_core/31`, `32` |
+| `REGIONAL_FAVORITISM_ROOT`       | `here::here()`                        | `03a_analysis_core/31`, `32` |
 | `REGIONAL_FAVORITISM_LM_DIR`     | autodetected via`tinytex::tinytex_root()` | `03a_analysis_core/31`, `32` |
 | `REGIONAL_FAVORITISM_CHROME_BIN` | autodetected                                | `03a_analysis_core/31`, `32` |
 

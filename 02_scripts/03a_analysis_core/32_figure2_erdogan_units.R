@@ -14,18 +14,16 @@
 #
 # Description:   Figure 2: the four units of observation behind Table IV (5km birthplace circle, SN1 region, SN1 minus birth SN2, and the four grid resolutions), drawn on Recep Tayyip Erdogan's birthplace.
 #
-# Inputs:        data/raw/gadm_3.6/, data/processed/grid_cells_<res>km.gpkg (repo root)
-# Outputs:       paper/img/erdogan_gis_units_paper.pdf (repo root); copied to 03_results/figures/
+# Inputs:        01_datasets/raw/gadm_3.6/, 01_datasets/processed/grid_cells_<res>km.gpkg (package root)
+# Outputs:       04_paper/img/erdogan_gis_units_paper.pdf (package root); copied to 03_results/figures/
 # ==============================================================================
 
 source(here::here("02_scripts", "02_data_preprocessing", "00_import.R"))
 source(here::here("02_scripts", "04_tools", "utils.R"))
 
-# `root` resolves to the main repository root (this package's parent
-# directory), since the DMSP rasters and analysis panel this figure reads
-# are too large to duplicate inside the package -- see README.md.
+# `root` resolves to this package's own root directory.
 # REGIONAL_FAVORITISM_ROOT overrides this for a different layout.
-root <- Sys.getenv("REGIONAL_FAVORITISM_ROOT", unset = here::here(".."))
+root <- Sys.getenv("REGIONAL_FAVORITISM_ROOT", unset = here::here())
 
 sf::sf_use_s2(FALSE)
 
@@ -89,7 +87,7 @@ birth_pt <- sf::st_sfc(sf::st_point(c(28.968, 41.032)), crs = 4326)
 birth_3857 <- sf::st_transform(birth_pt, 3857)
 
 # --- geometry ---------------------------------------------------------------
-adm1 <- sf::st_read(file.path(root, "data/raw/gadm_3.6/gadm36_level1_only.gpkg"), quiet = TRUE)
+adm1 <- sf::st_read(file.path(root, "01_datasets/raw/gadm_3.6/gadm36_level1_only.gpkg"), quiet = TRUE)
 tur1 <- adm1[adm1$GID_0 == "TUR", ]
 ist <- tur1[tur1$GID_1 == "TUR.40_1", ]
 
@@ -98,7 +96,7 @@ ist <- tur1[tur1$GID_1 == "TUR.40_1", ]
 # the same cut is applied to every SN2 that was ever any leader's birthplace,
 # which for Istanbul is two districts; showing both here would clutter a panel
 # whose job is to explain what st_difference does, on one worked example.
-beyoglu <- sf::st_read(file.path(root, "data/raw/gadm_3.6/gadm36_levels.gpkg"),
+beyoglu <- sf::st_read(file.path(root, "01_datasets/raw/gadm_3.6/gadm36_levels.gpkg"),
                        query = "SELECT * FROM level2 WHERE GID_2 = 'TUR.40.13_1'",
                        quiet = TRUE)
 removed <- sf::st_geometry(beyoglu)
@@ -137,7 +135,7 @@ birth_ea <- as.numeric(sf::st_coordinates(sf::st_transform(birth_pt, GRID_CRS))[
 
 full_cell <- function(res_km) {
   cell_m <- res_km * 1000
-  g <- sf::st_read(file.path(root, sprintf("data/processed/grid_cells_%dkm.gpkg", res_km)),
+  g <- sf::st_read(file.path(root, sprintf("01_datasets/processed/grid_cells_%dkm.gpkg", res_km)),
                    quiet = TRUE)
   g_ea <- sf::st_transform(g, GRID_CRS)
   bb <- t(vapply(sf::st_geometry(g_ea), function(x) as.numeric(sf::st_bbox(x)), numeric(4)))
@@ -169,7 +167,7 @@ names(grid_cells) <- c("50", "100", "200", "400")
 # Land for context: GADM 3.6 level0, read only near Istanbul.
 ctx_wkt <- sf::st_as_text(sf::st_as_sfc(sf::st_bbox(c(
   xmin = 24, ymin = 37, xmax = 34, ymax = 45), crs = 4326)))
-l0 <- sf::st_read(file.path(root, "data/raw/gadm_3.6/gadm36_levels.gpkg"),
+l0 <- sf::st_read(file.path(root, "01_datasets/raw/gadm_3.6/gadm36_levels.gpkg"),
                   layer = "level0", quiet = TRUE, wkt_filter = ctx_wkt)
 
 # Clip the smooth display circle to the coastline, exactly as the pipeline
@@ -357,7 +355,7 @@ combined <- (pA | pB) / (pC | pD) &
 
 # --- export: svglite -> embedded LM Roman -> headless Chrome (true vector) ---
 svg_path <- file.path(tempdir(), "erdogan_gis_units.svg")
-pdf_path <- file.path(root, "paper/img/erdogan_gis_units_paper.pdf")
+pdf_path <- file.path(root, "04_paper/img/erdogan_gis_units_paper.pdf")
 
 svglite::svglite(svg_path, width = FIG_W, height = FIG_H, bg = paper_bg)
 print(combined)

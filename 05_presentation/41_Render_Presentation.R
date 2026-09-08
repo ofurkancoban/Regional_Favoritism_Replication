@@ -13,21 +13,21 @@
 # Category:      Document Rendering
 #
 # Description:   Renders the Quarto Reveal.js presentation to HTML.
-#                index.qmd lives inside this package (replication_package/
-#                presentation/), this package's own self-contained copy.
-#                The presentation is entirely static (hardcoded numbers and
-#                pre-rendered images, no live R chunks), so this step needs
-#                no upstream pipeline stage to have run first.
+#                index.qmd lives alongside this script in 05_presentation/,
+#                this package's own self-contained copy. The presentation is
+#                entirely static (hardcoded numbers and pre-rendered images,
+#                no live R chunks), so this step needs no upstream pipeline
+#                stage to have run first.
 #
-# Inputs:        ../presentation/index.qmd
-# Outputs:       ../presentation/index.html
+# Inputs:        index.qmd (this directory)
+# Outputs:       index.html (this directory)
 # ==============================================================================
 
 if (!requireNamespace("quarto", quietly = TRUE)) install.packages("quarto")
 
-presentation_dir <- here::here("..", "presentation")
+presentation_dir <- here::here("05_presentation")
 if (!dir.exists(presentation_dir)) {
-  stop("Could not find ../presentation relative to this package. Set the ",
+  stop("Could not find 05_presentation relative to this package. Set the ",
        "working directory to replication_package/ before running this script.")
 }
 
@@ -39,4 +39,4 @@ quarto::quarto_render(input = "index.qmd")
 
 setwd(old_wd)
 
-message("✓ Presentation rendering complete. Check the '../presentation/' directory.")
+message("✓ Presentation rendering complete. Check the '05_presentation/' directory.")

@@ -14,18 +14,16 @@
 #
 # Description:   Figure 1: G-Econ 4.0 gridded regional GDP alongside this project's own regional GDP re-aggregation, for Turkey and a global inset, with a Table II Column (8) trend panel.
 #
-# Inputs:        data/raw/gadm_4.1/, data/raw/dmsp_raster_eog_manual/, data/processed/analysis_panel.csv (repo root)
-# Outputs:       paper/img/goh_combined_paper.pdf (repo root); copied to 03_results/figures/
+# Inputs:        01_datasets/raw/gadm_4.1/, 01_datasets/raw/dmsp_raster_eog_manual/, 01_datasets/processed/analysis_panel.csv (package root)
+# Outputs:       04_paper/img/goh_combined_paper.pdf (package root); copied to 03_results/figures/
 # ==============================================================================
 
 source(here::here("02_scripts", "02_data_preprocessing", "00_import.R"))
 source(here::here("02_scripts", "04_tools", "utils.R"))
 
-# `root` resolves to the main repository root (this package's parent
-# directory), since the DMSP rasters and analysis panel this figure reads
-# are too large to duplicate inside the package -- see README.md.
+# `root` resolves to this package's own root directory.
 # REGIONAL_FAVORITISM_ROOT overrides this for a different layout.
-root <- Sys.getenv("REGIONAL_FAVORITISM_ROOT", unset = here::here(".."))
+root <- Sys.getenv("REGIONAL_FAVORITISM_ROOT", unset = here::here())
 
 
 # --- Print geometry -----------------------------------------------------------
@@ -79,7 +77,7 @@ systemfonts::register_font(
 FONT <- "LM Roman"
 PT <- 1 / 2.845  # ggplot geom_text `size` is in mm; multiply points by this
 
-civ_adm2 <- sf::st_read(file.path(root, "data/raw/gadm_4.1/global/geoboundaries/CIV_ADM2.geojson"), quiet = TRUE)
+civ_adm2 <- sf::st_read(file.path(root, "01_datasets/raw/gadm_4.1/global/geoboundaries/CIV_ADM2.geojson"), quiet = TRUE)
 goh <- civ_adm2 |> dplyr::filter(GID_2 == "CIV.5.1_1")
 stopifnot(goh$NAME_2 == "Gôh")
 goh_3857 <- sf::st_transform(goh, 3857)
@@ -96,7 +94,7 @@ raster_template <- terra::rast(
 )
 
 year_raster <- function(year, files) {
-  paths <- file.path(root, "data/raw/dmsp_raster_eog_manual", year, files)
+  paths <- file.path(root, "01_datasets/raw/dmsp_raster_eog_manual", year, files)
   stopifnot(all(file.exists(paths)))
   rs <- terra::rast(paths)
   if (terra::nlyr(rs) > 1) rs <- terra::app(rs, mean, na.rm = TRUE)
@@ -244,7 +242,7 @@ legend_plot <- ggplot2::ggplot(legend_bins) +
   )
 
 # --- Trend chart --------------------------------------------------------------
-panel <- readr::read_csv(file.path(root, "data/processed/analysis_panel.csv"), show_col_types = FALSE)
+panel <- readr::read_csv(file.path(root, "01_datasets/processed/analysis_panel.csv"), show_col_types = FALSE)
 civ <- panel |> dplyr::filter(iso3 == "CIV", adm_level == "ADM2")
 goh_ts <- civ |> dplyr::filter(region_id == "CIV.5.1_1") |> dplyr::transmute(year, series = "Goh", ln_ntl)
 stopifnot(nrow(goh_ts) == 22, min(goh_ts$year) == 1992, max(goh_ts$year) == 2013)
@@ -299,8 +297,8 @@ combined <- patchwork::wrap_elements(full = maps_row) / trend +
   patchwork::plot_layout(heights = c(MAPS_ROW_H, TREND_H)) &
   ggplot2::theme(plot.background = ggplot2::element_rect(fill = paper_bg, colour = NA))
 
-svg_path <- file.path(root, "paper/img/goh_combined_paper.svg")
-pdf_path <- file.path(root, "paper/img/goh_combined_paper.pdf")
+svg_path <- file.path(root, "04_paper/img/goh_combined_paper.svg")
+pdf_path <- file.path(root, "04_paper/img/goh_combined_paper.pdf")
 svglite::svglite(svg_path, width = FIG_W, height = FIG_H, bg = paper_bg)
 print(combined)
 grDevices::dev.off()

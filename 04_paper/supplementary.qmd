@@ -28,7 +28,7 @@ keywords:
 journal:
   name: Applied Econometrics Using GIS Techniques, seminar paper
 bibliography: references.bib
-csl: ../presentation/apa.csl
+csl: ../05_presentation/apa.csl
 link-citations: true
 execute:
   echo: false
@@ -250,8 +250,8 @@ if (knitr::is_html_output()) {
         list(href = "paper.pdf", icon = "bi-file-pdf", label = "Paper (PDF)"),
         list(href = "supplementary.html", icon = "bi-filetype-html", label = "Supplementary (HTML)"),
         list(href = "supplementary.pdf", icon = "bi-file-pdf", label = "Supplementary (PDF)"),
-        list(href = "../presentation/index.html", icon = "bi-easel2", label = "Presentation (slides)"),
-        list(href = "../presentation/Coban_RegionalFavoritism.pdf", icon = "bi-file-pdf", label = "Presentation (PDF)"),
+        list(href = "../05_presentation/index.html", icon = "bi-easel2", label = "Presentation (slides)"),
+        list(href = "../05_presentation/Coban_RegionalFavoritism.pdf", icon = "bi-file-pdf", label = "Presentation (PDF)"),
         list(href = "https://github.com/ofurkancoban/Regional_Favoritism_Replication", icon = "bi-box-seam", label = "Replication Package")
     )
     links <- Filter(function(l) l$href != "supplementary.html", links)

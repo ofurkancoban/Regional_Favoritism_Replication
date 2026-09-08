@@ -14,22 +14,21 @@
 #
 # Description:   Renders the Quarto research paper and its Supplementary
 #                Materials to PDF and HTML. paper.qmd and supplementary.qmd
-#                live inside this package (04_paper/../paper/, i.e.
-#                replication_package/paper/), which is the package's own
-#                self-contained copy -- this package is the repository root
-#                on GitHub, so there is no outside "main repository" to
-#                render in place against anymore.
+#                live alongside this script in 04_paper/, which is the
+#                package's own self-contained copy -- this package is the
+#                repository root on GitHub, so there is no outside "main
+#                repository" to render in place against anymore.
 #
-# Inputs:        ../paper/paper.qmd, ../paper/supplementary.qmd
-# Outputs:       ../paper/paper.pdf, ../paper/paper.html,
-#                ../paper/supplementary.pdf, ../paper/supplementary.html
+# Inputs:        paper.qmd, supplementary.qmd (this directory)
+# Outputs:       paper.pdf, paper.html, supplementary.pdf, supplementary.html
+#                (this directory)
 # ==============================================================================
 
 if (!requireNamespace("quarto", quietly = TRUE)) install.packages("quarto")
 
-paper_dir <- here::here("..", "paper")
+paper_dir <- here::here("04_paper")
 if (!dir.exists(paper_dir)) {
-  stop("Could not find ../paper relative to this package. Set the working ",
+  stop("Could not find 04_paper relative to this package. Set the working ",
        "directory to replication_package/ before running this script.")
 }
 
@@ -46,4 +45,4 @@ quarto::quarto_render(input = "supplementary.qmd", output_format = "html")
 
 setwd(old_wd)
 
-message("✓ Paper rendering complete. Check the '../paper/' directory.")
+message("✓ Paper rendering complete. Check the '04_paper/' directory.")
