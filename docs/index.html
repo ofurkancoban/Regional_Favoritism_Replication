@@ -34,9 +34,20 @@ h1{
   font-family:"Fraunces",Georgia,serif; font-style:italic; font-weight:500;
   color:var(--gold); font-size:1.2rem; margin:0 0 1.6rem;
 }
-.byline{ color:var(--ink-soft); font-size:0.95rem; margin:0; }
+.byline{ color:var(--ink-soft); font-size:0.95rem; margin:0 0 1.6rem; }
 .byline a{ color:var(--navy); text-decoration:none; border-bottom:1px solid var(--gold-soft); }
 .byline a:hover{ color:var(--gold); border-bottom-color:var(--gold); }
+
+.btn-download{
+  display:inline-flex; align-items:center; gap:0.55rem;
+  font-family:"IBM Plex Mono",monospace; font-size:0.82rem; font-weight:500;
+  letter-spacing:0.02em; text-decoration:none; color:#fff;
+  background:var(--navy); border-radius:7px; padding:0.6rem 1.1rem;
+  transition:background 0.15s ease;
+}
+.btn-download:hover{ background:var(--navy-soft); }
+.btn-download .arrow{ font-size:0.95rem; }
+
 .lede{ color:var(--ink-soft); font-size:1.02rem; margin:0 0 2.6rem; }
 .lede em{ font-style:italic; color:var(--ink); }
 
@@ -95,6 +106,9 @@ footer{
     <h1>Regional Favoritism</h1>
     <p class="subtitle">A Replication and Extension of Hodler &amp; Raschky (2014)</p>
     <p class="byline">Ömer Furkan Çoban &middot; Carl von Ossietzky University of Oldenburg</p>
+    <a class="btn-download" href="paper.pdf">
+      <span>&#11015;&#65039;</span> Download PDF
+    </a>
   </header>
 
   <p class="lede">
@@ -134,15 +148,15 @@ footer{
 
   <div class="card-row">
     <a class="card" href="paper.pdf">
-      <span class="meta"><span class="name">Paper</span><span class="desc">Elsevier PDF</span></span>
+      <span class="meta"><span class="name">Paper</span><span class="desc">Printable version</span></span>
       <span class="fmt">PDF</span>
     </a>
     <a class="card" href="supplementary.pdf">
-      <span class="meta"><span class="name">Supplementary</span><span class="desc">Elsevier PDF</span></span>
+      <span class="meta"><span class="name">Supplementary</span><span class="desc">Printable version</span></span>
       <span class="fmt">PDF</span>
     </a>
     <a class="card" href="presentation.pdf">
-      <span class="meta"><span class="name">Slides</span><span class="desc">Print PDF</span></span>
+      <span class="meta"><span class="name">Slides</span><span class="desc">Printable version</span></span>
       <span class="fmt">PDF</span>
     </a>
   </div>
@@ -150,11 +164,8 @@ footer{
   <section class="about">
     <h2>Replication package</h2>
     <p>
-      Every table and the two figures in the paper are reproducible from raw
-      data through this website's own PDF/HTML, following a 41-stage
-      numbered pipeline (<code>make preprocess</code> &middot;
-      <code>make core</code> &middot; <code>make extension</code> &middot;
-      <code>make supplementary</code> &middot; <code>make render</code>).
+      The full data pipeline, code, and raw inputs behind every table and
+      figure are open on GitHub.
     </p>
     <p>
       <a href="https://github.com/ofurkancoban/Regional_Favoritism_Replication">View the full replication package on GitHub &rarr;</a>
