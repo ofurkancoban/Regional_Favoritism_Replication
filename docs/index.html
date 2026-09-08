@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Regional Favoritism — A Replication and Extension of Hodler &amp; Raschky (2014)</title>
+<title>Regional Favoritism: A Replication and Extension of Hodler &amp; Raschky (2014)</title>
 <meta name="description" content="Website for the replication and extension of Hodler and Raschky's (2014) QJE paper on regional favoritism and nighttime lights.">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
@@ -77,8 +77,16 @@ nav.cards{ display:flex; flex-direction:column; gap:0.85rem; margin-bottom:2.75r
 }
 
 .card-row{ display:flex; gap:0.85rem; }
-.card-row .card{ flex:1 1 0; flex-direction:column; align-items:flex-start; gap:0.6rem; }
-.card-row .card .fmt{ align-self:flex-start; }
+.card-row .card{ flex:1 1 0; justify-content:space-between; }
+.card-row .card .name{ display:flex; align-items:center; gap:0.5rem; }
+.card-row .card .fmt{ font-size:0.62rem; padding:0.12rem 0.4rem; }
+.dl-btn{
+  flex:0 0 auto; width:2rem; height:2rem; border-radius:50%;
+  background:var(--paper-panel); color:var(--navy);
+  display:flex; align-items:center; justify-content:center;
+  font-size:0.9rem; transition:background 0.15s ease, color 0.15s ease;
+}
+.card-row .card:hover .dl-btn{ background:var(--navy); color:#fff; }
 
 section.about{ border-top:1px solid var(--rule); padding-top:2rem; }
 section.about h2{
@@ -113,8 +121,8 @@ footer{
 
   <p class="lede">
     Hodler and Raschky (2014, <em>QJE</em>) find that a region grows brighter
-    at night while it is the birth region of the sitting political leader
-    &mdash; evidence of regional favoritism. This site hosts the paper, its
+    at night while it is the birth region of the sitting political leader:
+    evidence of regional favoritism. This site hosts the paper, its
     supplementary materials, and the accompanying presentation, all built on
     an independently constructed replication pipeline extended through 2023.
   </p>
@@ -147,17 +155,26 @@ footer{
   </nav>
 
   <div class="card-row">
-    <a class="card" href="paper.pdf">
-      <span class="meta"><span class="name">Paper</span><span class="desc">Printable version</span></span>
-      <span class="fmt">PDF</span>
+    <a class="card" href="paper.pdf" download>
+      <span class="meta">
+        <span class="name">Paper <span class="fmt">PDF</span></span>
+        <span class="desc">Printable version</span>
+      </span>
+      <span class="dl-btn">&#11015;&#65039;</span>
     </a>
-    <a class="card" href="supplementary.pdf">
-      <span class="meta"><span class="name">Supplementary</span><span class="desc">Printable version</span></span>
-      <span class="fmt">PDF</span>
+    <a class="card" href="supplementary.pdf" download>
+      <span class="meta">
+        <span class="name">Supplementary <span class="fmt">PDF</span></span>
+        <span class="desc">Printable version</span>
+      </span>
+      <span class="dl-btn">&#11015;&#65039;</span>
     </a>
-    <a class="card" href="presentation.pdf">
-      <span class="meta"><span class="name">Slides</span><span class="desc">Printable version</span></span>
-      <span class="fmt">PDF</span>
+    <a class="card" href="presentation.pdf" download>
+      <span class="meta">
+        <span class="name">Slides <span class="fmt">PDF</span></span>
+        <span class="desc">Printable version</span>
+      </span>
+      <span class="dl-btn">&#11015;&#65039;</span>
     </a>
   </div>
 
