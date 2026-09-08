@@ -72,6 +72,7 @@ format:
         \renewcommand{\floatpagefraction}{0.85}
         \setcounter{topnumber}{3}
         \setcounter{totalnumber}{4}
+        \usepackage{multicol}
     journal:
       formatting: preprint
       model: 3p
@@ -2215,10 +2216,23 @@ manuscript text. After using this tool, the author reviewed and edited
 the content as needed and takes full responsibility for the content of
 this publication.
 
+```{=latex}
+\clearpage
+```
+
 # References {.unnumbered}
+
+```{=latex}
+\begin{multicols}{2}
+\small
+```
 
 ::: {#refs}
 :::
+
+```{=latex}
+\end{multicols}
+```
 
 <!--
 APPENDIX (does not count toward the 15-page limit): variable

@@ -39,6 +39,9 @@ format:
     keep-tex: true
     template-partials:
       - before-body.tex
+    include-in-header:
+      text: |
+        \usepackage{multicol}
     journal:
       formatting: preprint
       model: 3p
@@ -1358,7 +1361,20 @@ manuscript text. After using this tool, the author reviewed and edited
 the content as needed and takes full responsibility for the content of
 this publication.
 
+```{=latex}
+\clearpage
+```
+
 # References {.unnumbered}
+
+```{=latex}
+\begin{multicols}{2}
+\small
+```
 
 ::: {#refs}
 :::
+
+```{=latex}
+\end{multicols}
+```
