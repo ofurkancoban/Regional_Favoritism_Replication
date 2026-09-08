@@ -23,7 +23,7 @@
 
 RSCRIPT = Rscript
 
-.PHONY: help all init preprocess core extension supplementary analysis render paper presentation clean
+.PHONY: help all init preprocess core extension supplementary analysis render paper presentation site clean
 
 help:
 	@echo "Available commands:"
@@ -38,6 +38,8 @@ help:
 	@echo "  make paper         : Render the research paper + supplementary materials (PDF)"
 	@echo "  make presentation  : Render the Reveal.js presentation (HTML)"
 	@echo "  make render        : make paper + make presentation"
+	@echo "  make site          : Copy paper/supplementary/presentation outputs into docs/"
+	@echo "                       for GitHub Pages (run after make render)"
 	@echo "  make all           : Run preprocess + core + supplementary + render (Stage 01 excluded, see README)"
 	@echo "  make clean         : Remove temporary build artifacts and logs"
 
@@ -75,6 +77,21 @@ paper:
 presentation:
 	@echo "Rendering Presentation..."
 	$(RSCRIPT) 05_presentation/41_Render_Presentation.R
+
+# docs/ is the GitHub Pages source (Settings > Pages > main branch, /docs
+# folder). Copies rather than symlinks, since Pages serves committed file
+# content directly -- these are plain copies of already self-contained
+# (embed-resources: true) HTML/PDF outputs, so nothing else needs to ship
+# alongside them.
+site:
+	@echo "Copying paper/supplementary/presentation outputs into docs/..."
+	cp 04_paper/paper.html docs/paper.html
+	cp 04_paper/paper.pdf docs/paper.pdf
+	cp 04_paper/supplementary.html docs/supplementary.html
+	cp 04_paper/supplementary.pdf docs/supplementary.pdf
+	cp 05_presentation/index.html docs/presentation.html
+	cp 05_presentation/Coban_RegionalFavoritism.pdf docs/presentation.pdf
+	@echo "✓ docs/ updated. Commit and push to publish."
 
 clean:
 	@echo "Cleaning up temporary files..."

@@ -16,7 +16,17 @@ DMSP-OLS composites extracted locally), then extends it to a harmonized
 DMSP/VIIRS panel running through 2023. See `04_paper/paper.qmd` for the
 full text and `04_paper/supplementary.qmd` for the supplementary tables --
 both, and the `05_presentation/` slide deck, ship inside this package (see
-"Paper and presentation" below).
+"Paper and presentation" below), and are also published as a website (see
+"Website" below).
+
+### Website
+
+The paper, supplementary materials, and presentation are also published
+via GitHub Pages, built from the `docs/` folder on this repository's
+`main` branch (Settings > Pages). `docs/` holds plain copies of the
+already self-contained (`embed-resources: true`) HTML/PDF outputs from
+`04_paper/` and `05_presentation/` -- `make site` refreshes them after
+`make render`; commit and push `docs/` to publish an update.
 
 ### Scope
 
