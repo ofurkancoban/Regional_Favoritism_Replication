@@ -24,7 +24,9 @@
 #                structure, loads necessary R packages, and sequentially
 #                executes every stage. Supports granular execution via
 #                command-line arguments (--stage=preprocess|core|
-#                supplementary|render).
+#                extension|supplementary|render). --stage=extension runs
+#                just Stage 30 (the 1992-2023 extension), already
+#                included in --stage=core, for re-running it alone.
 #
 # Inputs:        Command-line arguments (e.g., --stage=preprocess)
 # Outputs:       Initialized project environment and sequential execution of
@@ -227,6 +229,20 @@ if (run_stage %in% c("all", "core", "analysis")) {
     run_stage_script(scripts_paths[[stage]])
     message(glue::glue("  ✓ Stage {stage} Completed.\n"))
   }
+}
+
+# --- STAGE 30 (standalone): Extension only ---
+# `--stage=core` already runs Stage 30 as its last step (see above), so
+# this block is guarded to run_stage == "extension" only, not folded into
+# "all"/"core" -- otherwise a plain `make all` would re-run Stage 30 twice.
+# Exists so re-running just the 1992-2023 extension (e.g. after touching
+# the harmonized DMSP/VIIRS panel) doesn't require the other eight Table
+# 1/2/4 scripts in `core` to run again first.
+if (run_stage == "extension") {
+  message("--- [30] EXTENSION: TABLE 2 OVER 1992-2023 ---")
+  message("→ [30/41] Running Extension: Table 2 over 1992-2023...")
+  run_stage_script(s30)
+  message("  ✓ Stage 30 Completed.\n")
 }
 
 # --- STAGE 33-39: Supplementary Analysis (supplementary.qmd tables) ---

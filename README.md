@@ -88,6 +88,7 @@ pipeline orchestration.
 make init          # install exact package versions from renv.lock
 make preprocess     # stages 01-21
 make core           # stages 22-30: main paper's tables, extension
+make extension      # stage 30 only: the 1992-2023 extension, already in make core
 make supplementary  # stages 33-39: supplementary.qmd's Table III, V, VI, VII
 make render         # stages 40-41: paper + supplementary + presentation
 ```
@@ -95,8 +96,9 @@ make render         # stages 40-41: paper + supplementary + presentation
 GADM 3.6, G-Econ, GPWv3, GPWv4, and GHS-POP require a manual,
 registration-gated download before `make preprocess` (see below). GADM
 4.1, DMSP, and VIIRS download automatically as part of `make preprocess`.
-`make core` and `make supplementary` need nothing manual: PLAD, Archigos,
-QoG, and the WVS/EVS Trend Files ship with this repository.
+`make core`, `make extension`, and `make supplementary` need nothing
+manual: PLAD, Archigos, QoG, and the WVS/EVS Trend Files ship with this
+repository.
 
 ### Method 2: R orchestrator
 
@@ -105,8 +107,9 @@ QoG, and the WVS/EVS Trend Files ship with this repository.
 source("02_scripts/01_setup/setup_environment.R")
 ```
 
-Pass `--stage=preprocess`, `--stage=core`, `--stage=supplementary`, or
-`--stage=render` via `commandArgs()` to run a subset.
+Pass `--stage=preprocess`, `--stage=core`, `--stage=extension`,
+`--stage=supplementary`, or `--stage=render` via `commandArgs()` to run
+a subset.
 
 ### Method 3: Granular targets
 
@@ -115,6 +118,7 @@ Pass `--stage=preprocess`, `--stage=core`, `--stage=supplementary`, or
 | `make init`                                    | —     | Install package versions pinned in`renv.lock`                                                   |
 | `make preprocess`                              | 01-21b | Geometry, nighttime-lights extraction, covariates, panel assembly                                 |
 | `make core`                                    | 22-30  | Main paper's regression tables, extension                                                         |
+| `make extension`                               | 30     | The 1992-2023 extension table alone, already included in`make core`                             |
 | `make supplementary`                           | 33-39  | supplementary.qmd's Table III, V, VI, VII                                                         |
 | `make paper`                                   | 40     | Render the paper and supplementary materials (PDF)                                                |
 | `make presentation`                            | 41     | Render the Reveal.js presentation (HTML)                                                          |

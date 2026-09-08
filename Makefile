@@ -23,7 +23,7 @@
 
 RSCRIPT = Rscript
 
-.PHONY: help all init preprocess core supplementary analysis render paper presentation clean
+.PHONY: help all init preprocess core extension supplementary analysis render paper presentation clean
 
 help:
 	@echo "Available commands:"
@@ -32,6 +32,8 @@ help:
 	@echo "                       management' for why this isn't renv::restore())"
 	@echo "  make preprocess    : Run stages 01-21 (download, crosswalks, geometry, extraction, panel)"
 	@echo "  make core          : Run stages 22-30 (main paper's tables, extension)"
+	@echo "  make extension     : Run Stage 30 only (the 1992-2023 extension table),"
+	@echo "                       already included in 'make core'"
 	@echo "  make supplementary : Run stages 33-39 (supplementary.qmd's Table III, V, VI, VII)"
 	@echo "  make paper         : Render the research paper + supplementary materials (PDF)"
 	@echo "  make presentation  : Render the Reveal.js presentation (HTML)"
@@ -51,6 +53,10 @@ preprocess:
 core:
 	@echo "Running Core Analysis Stages (22-30): main paper tables..."
 	$(RSCRIPT) 02_scripts/01_setup/setup_environment.R --stage=core
+
+extension:
+	@echo "Running Extension (Stage 30): 1992-2023 harmonized panel..."
+	$(RSCRIPT) 02_scripts/01_setup/setup_environment.R --stage=extension
 
 supplementary:
 	@echo "Running Supplementary Analysis Stages (33-39): Table III, V, VI, VII..."
