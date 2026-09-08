@@ -80,13 +80,15 @@ presentation:
 
 # docs/ is the GitHub Pages source (Settings > Pages > main branch, /docs
 # folder). Copies rather than symlinks, since Pages serves committed file
-# content directly -- these are plain copies of already self-contained
-# (embed-resources: true) HTML/PDF outputs, so nothing else needs to ship
-# alongside them. paper.qmd/supplementary.qmd's "Other Links" hrefs are
-# already written for this flat docs/ layout (see the qmd chunks), so
-# opening 04_paper/paper.html directly before this target runs will leave
-# those particular links dangling until the PDFs below land under their
-# docs/ names.
+# content directly. paper.html/supplementary.html are self-contained
+# (embed-resources: true), so nothing else needs to ship alongside them --
+# but their "Other Links" hrefs are written for this flat docs/ layout
+# (see the qmd chunks), so opening 04_paper/paper.html directly before
+# this target runs will leave those particular links dangling until the
+# PDFs below land under their docs/ names. presentation/index.html is NOT
+# self-contained -- its cover-animation frames and the university logo
+# are deliberately kept as external files (see index.qmd's comment) to
+# avoid bloating the HTML, so img/ has to be copied alongside it too.
 site:
 	@echo "Copying paper/supplementary/presentation outputs into docs/..."
 	cp 04_paper/paper.html docs/paper.html
@@ -95,6 +97,8 @@ site:
 	cp 04_paper/supplementary.pdf docs/Coban_RegionalFavoritism_Supplementary.pdf
 	cp 05_presentation/index.html docs/presentation.html
 	cp 05_presentation/Coban_RegionalFavoritism.pdf docs/Coban_RegionalFavoritism_Presentation.pdf
+	rm -rf docs/img
+	cp -r 05_presentation/img docs/img
 	@echo "✓ docs/ updated. Commit and push to publish."
 
 clean:

@@ -1,0 +1,92 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='1260.00pt' height='360.00pt' viewBox='0 0 1260.00 360.00'>
+<g class='svglite'>
+<defs>
+  <style type='text/css'><![CDATA[
+    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {
+      fill: none;
+      stroke: #000000;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-miterlimit: 10.00;
+    }
+    .svglite text {
+      white-space: pre;
+    }
+    .svglite g.glyphgroup path {
+      fill: inherit;
+      stroke: none;
+    }
+  ]]></style>
+</defs>
+<rect width='100%' height='100%' style='stroke: none; fill: #FBF9F4;'/>
+<defs>
+  <clipPath id='cpMC4wMHwxMjYwLjAwfDAuMDB8MzYwLjAw'>
+    <rect x='0.00' y='0.00' width='1260.00' height='360.00' />
+  </clipPath>
+</defs>
+<g clip-path='url(#cpMC4wMHwxMjYwLjAwfDAuMDB8MzYwLjAw)'>
+<rect x='0.00000000000013' y='0.00' width='1260.00' height='360.00' style='stroke-width: 1.07; stroke: none; fill: #FBF9F4;' />
+</g>
+<defs>
+  <clipPath id='cpMzMuOTV8MTIzMC4xMXwzNy44MXwzMzQuOTE='>
+    <rect x='33.95' y='37.81' width='1196.16' height='297.10' />
+  </clipPath>
+</defs>
+<g clip-path='url(#cpMzMuOTV8MTIzMC4xMXwzNy44MXwzMzQuOTE=)'>
+<rect x='33.95' y='37.81' width='1196.16' height='297.10' style='stroke-width: 1.07; stroke: none; fill: #FBF9F4;' />
+<polyline points='33.95,234.76 1230.11,234.76 ' style='stroke-width: 0.85; stroke: #E3DAC2; stroke-linecap: butt;' />
+<polyline points='33.95,130.11 1230.11,130.11 ' style='stroke-width: 0.85; stroke: #E3DAC2; stroke-linecap: butt;' />
+<rect x='88.32' y='37.81' width='884.93' height='297.10' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #A97E2F; fill-opacity: 0.14;' />
+<polyline points='125.82,307.36 200.82,308.73 275.81,319.62 350.80,279.59 425.80,292.78 500.79,319.09 575.79,307.84 650.78,320.76 725.78,288.44 800.77,286.31 875.76,265.77 950.76,287.21 1025.75,262.47 1100.75,260.32 1175.74,260.97 ' style='stroke-width: 1.92; stroke: #A29A89; stroke-dasharray: 5.12,5.12; stroke-linecap: butt;' />
+<polyline points='125.82,187.36 200.82,185.97 275.81,205.04 350.80,178.06 425.80,185.15 500.79,200.83 575.79,201.57 650.78,185.59 725.78,135.19 800.77,116.00 875.76,113.93 950.76,158.15 1025.75,190.68 1100.75,183.65 1175.74,182.30 ' style='stroke-width: 2.77; stroke: #1D2F52; stroke-linecap: butt;' />
+<circle cx='125.82' cy='187.36' r='2.06' style='stroke-width: 0.71; stroke: #1D2F52; fill: #1D2F52;' />
+<circle cx='200.82' cy='185.97' r='2.06' style='stroke-width: 0.71; stroke: #1D2F52; fill: #1D2F52;' />
+<circle cx='275.81' cy='205.04' r='2.06' style='stroke-width: 0.71; stroke: #1D2F52; fill: #1D2F52;' />
+<circle cx='350.80' cy='178.06' r='2.06' style='stroke-width: 0.71; stroke: #1D2F52; fill: #1D2F52;' />
+<circle cx='425.80' cy='185.15' r='2.06' style='stroke-width: 0.71; stroke: #1D2F52; fill: #1D2F52;' />
+<circle cx='500.79' cy='200.83' r='2.06' style='stroke-width: 0.71; stroke: #1D2F52; fill: #1D2F52;' />
+<circle cx='575.79' cy='201.57' r='2.06' style='stroke-width: 0.71; stroke: #1D2F52; fill: #1D2F52;' />
+<circle cx='650.78' cy='185.59' r='2.06' style='stroke-width: 0.71; stroke: #1D2F52; fill: #1D2F52;' />
+<circle cx='725.78' cy='135.19' r='2.06' style='stroke-width: 0.71; stroke: #1D2F52; fill: #1D2F52;' />
+<circle cx='800.77' cy='116.00' r='2.06' style='stroke-width: 0.71; stroke: #1D2F52; fill: #1D2F52;' />
+<circle cx='875.76' cy='113.93' r='2.06' style='stroke-width: 0.71; stroke: #1D2F52; fill: #1D2F52;' />
+<circle cx='950.76' cy='158.15' r='2.06' style='stroke-width: 0.71; stroke: #1D2F52; fill: #1D2F52;' />
+<circle cx='1025.75' cy='190.68' r='2.06' style='stroke-width: 0.71; stroke: #1D2F52; fill: #1D2F52;' />
+<circle cx='1100.75' cy='183.65' r='2.06' style='stroke-width: 0.71; stroke: #1D2F52; fill: #1D2F52;' />
+<circle cx='1175.74' cy='182.30' r='2.06' style='stroke-width: 0.71; stroke: #1D2F52; fill: #1D2F52;' />
+<text x='125.82' y='195.15' text-anchor='middle' style='font-size: 7.40px;fill: #6B6459; font-family: "Arial";' textLength='16.44px' lengthAdjust='spacingAndGlyphs'>1992</text>
+<text x='200.82' y='183.46' text-anchor='middle' style='font-size: 7.40px;fill: #6B6459; font-family: "Arial";' textLength='16.44px' lengthAdjust='spacingAndGlyphs'>1993</text>
+<text x='275.81' y='212.83' text-anchor='middle' style='font-size: 7.40px;fill: #6B6459; font-family: "Arial";' textLength='16.44px' lengthAdjust='spacingAndGlyphs'>1994</text>
+<text x='350.80' y='175.56' text-anchor='middle' style='font-size: 7.40px;fill: #6B6459; font-family: "Arial";' textLength='16.44px' lengthAdjust='spacingAndGlyphs'>1995</text>
+<text x='425.80' y='182.64' text-anchor='middle' style='font-size: 7.40px;fill: #6B6459; font-family: "Arial";' textLength='16.44px' lengthAdjust='spacingAndGlyphs'>1996</text>
+<text x='500.79' y='208.63' text-anchor='middle' style='font-size: 7.40px;fill: #6B6459; font-family: "Arial";' textLength='16.44px' lengthAdjust='spacingAndGlyphs'>1997</text>
+<text x='575.79' y='199.07' text-anchor='middle' style='font-size: 7.40px;fill: #6B6459; font-family: "Arial";' textLength='16.44px' lengthAdjust='spacingAndGlyphs'>1998</text>
+<text x='650.78' y='183.09' text-anchor='middle' style='font-size: 7.40px;fill: #6B6459; font-family: "Arial";' textLength='16.44px' lengthAdjust='spacingAndGlyphs'>1999</text>
+<text x='725.78' y='132.69' text-anchor='middle' style='font-size: 7.40px;fill: #6B6459; font-family: "Arial";' textLength='16.44px' lengthAdjust='spacingAndGlyphs'>2000</text>
+<text x='800.77' y='123.80' text-anchor='middle' style='font-size: 7.40px;fill: #6B6459; font-family: "Arial";' textLength='16.44px' lengthAdjust='spacingAndGlyphs'>2001</text>
+<text x='875.76' y='111.42' text-anchor='middle' style='font-size: 7.40px;fill: #6B6459; font-family: "Arial";' textLength='16.44px' lengthAdjust='spacingAndGlyphs'>2002</text>
+<text x='950.76' y='155.65' text-anchor='middle' style='font-size: 7.40px;fill: #6B6459; font-family: "Arial";' textLength='16.44px' lengthAdjust='spacingAndGlyphs'>2003</text>
+<text x='1025.75' y='198.48' text-anchor='middle' style='font-size: 7.40px;fill: #6B6459; font-family: "Arial";' textLength='16.44px' lengthAdjust='spacingAndGlyphs'>2004</text>
+<text x='1100.75' y='191.45' text-anchor='middle' style='font-size: 7.40px;fill: #6B6459; font-family: "Arial";' textLength='16.44px' lengthAdjust='spacingAndGlyphs'>2005</text>
+<text x='1175.74' y='179.79' text-anchor='middle' style='font-size: 7.40px;fill: #6B6459; font-family: "Arial";' textLength='16.44px' lengthAdjust='spacingAndGlyphs'>2006</text>
+<text x='125.82' y='84.97' style='font-size: 11.38px; font-weight: bold;fill: #A97E2F; font-family: "Arial";' textLength='206.31px' lengthAdjust='spacingAndGlyphs'>Saddam Hussein (deposed April 2003)</text>
+<text x='1153.24' y='161.62' text-anchor='end' style='font-size: 11.95px; font-weight: bold;fill: #1D2F52; font-family: "Arial";' textLength='28.95px' lengthAdjust='spacingAndGlyphs'>Tikrit</text>
+<text x='1153.24' y='288.98' text-anchor='end' style='font-size: 10.24px;fill: #A29A89; font-family: "Arial";' textLength='100.66px' lengthAdjust='spacingAndGlyphs'>country average (Iraq)</text>
+</g>
+<g clip-path='url(#cpMC4wMHwxMjYwLjAwfDAuMDB8MzYwLjAw)'>
+<text x='29.02' y='238.70' text-anchor='end' style='font-size: 11.00px;fill: #6B6459; font-family: "Arial";' textLength='6.12px' lengthAdjust='spacingAndGlyphs'>1</text>
+<text x='29.02' y='134.05' text-anchor='end' style='font-size: 11.00px;fill: #6B6459; font-family: "Arial";' textLength='6.12px' lengthAdjust='spacingAndGlyphs'>2</text>
+<text x='125.82' y='347.72' text-anchor='middle' style='font-size: 11.00px;fill: #6B6459; font-family: "Arial";' textLength='24.50px' lengthAdjust='spacingAndGlyphs'>1992</text>
+<text x='275.81' y='347.72' text-anchor='middle' style='font-size: 11.00px;fill: #6B6459; font-family: "Arial";' textLength='24.50px' lengthAdjust='spacingAndGlyphs'>1994</text>
+<text x='425.80' y='347.72' text-anchor='middle' style='font-size: 11.00px;fill: #6B6459; font-family: "Arial";' textLength='24.50px' lengthAdjust='spacingAndGlyphs'>1996</text>
+<text x='575.79' y='347.72' text-anchor='middle' style='font-size: 11.00px;fill: #6B6459; font-family: "Arial";' textLength='24.50px' lengthAdjust='spacingAndGlyphs'>1998</text>
+<text x='725.78' y='347.72' text-anchor='middle' style='font-size: 11.00px;fill: #6B6459; font-family: "Arial";' textLength='24.50px' lengthAdjust='spacingAndGlyphs'>2000</text>
+<text x='875.76' y='347.72' text-anchor='middle' style='font-size: 11.00px;fill: #6B6459; font-family: "Arial";' textLength='24.50px' lengthAdjust='spacingAndGlyphs'>2002</text>
+<text x='1025.75' y='347.72' text-anchor='middle' style='font-size: 11.00px;fill: #6B6459; font-family: "Arial";' textLength='24.50px' lengthAdjust='spacingAndGlyphs'>2004</text>
+<text x='1175.74' y='347.72' text-anchor='middle' style='font-size: 11.00px;fill: #6B6459; font-family: "Arial";' textLength='24.50px' lengthAdjust='spacingAndGlyphs'>2006</text>
+<text transform='translate(17.84,186.36) rotate(-90)' text-anchor='middle' style='font-size: 11.00px;fill: #6B6459; font-family: "Arial";' textLength='89.28px' lengthAdjust='spacingAndGlyphs'>ln(nighttime lights)</text>
+<text x='33.95' y='24.69' style='font-size: 15.00px; font-weight: bold;fill: #1D2F52; font-family: "Arial";' textLength='370.88px' lengthAdjust='spacingAndGlyphs'>Tikrit, Salah ad-Din — Saddam Hussein's hometown</text>
+</g>
+</g>
+</svg>
