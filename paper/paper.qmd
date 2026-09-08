@@ -356,7 +356,7 @@ if (knitr::is_html_output()) {
         list(href = "supplementary.pdf", icon = "bi-file-pdf", label = "Supplementary (PDF)"),
         list(href = "../presentation/index.html", icon = "bi-easel2", label = "Presentation (slides)"),
         list(href = "../presentation/Coban_RegionalFavoritism.pdf", icon = "bi-file-pdf", label = "Presentation (PDF)"),
-        list(href = "https://github.com/ofurkancoban/Regional_Favoritism_Replication/tree/main/replication_package", icon = "bi-box-seam", label = "Replication Package")
+        list(href = "https://github.com/ofurkancoban/Regional_Favoritism_Replication", icon = "bi-box-seam", label = "Replication Package")
     )
     links <- Filter(function(l) l$href != "paper.html", links)
     items <- vapply(links, function(l) {
