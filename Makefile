@@ -82,7 +82,11 @@ presentation:
 # folder). Copies rather than symlinks, since Pages serves committed file
 # content directly -- these are plain copies of already self-contained
 # (embed-resources: true) HTML/PDF outputs, so nothing else needs to ship
-# alongside them.
+# alongside them. paper.qmd/supplementary.qmd's "Other Links" hrefs are
+# already written for this flat docs/ layout (see the qmd chunks), so
+# opening 04_paper/paper.html directly before this target runs will leave
+# those particular links dangling until the PDFs below land under their
+# docs/ names.
 site:
 	@echo "Copying paper/supplementary/presentation outputs into docs/..."
 	cp 04_paper/paper.html docs/paper.html
