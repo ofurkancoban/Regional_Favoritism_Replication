@@ -86,11 +86,11 @@ presentation:
 site:
 	@echo "Copying paper/supplementary/presentation outputs into docs/..."
 	cp 04_paper/paper.html docs/paper.html
-	cp 04_paper/paper.pdf docs/paper.pdf
+	cp 04_paper/paper.pdf docs/Coban_RegionalFavoritismReplication_Paper.pdf
 	cp 04_paper/supplementary.html docs/supplementary.html
-	cp 04_paper/supplementary.pdf docs/supplementary.pdf
+	cp 04_paper/supplementary.pdf docs/Coban_RegionalFavoritism_Supplementary.pdf
 	cp 05_presentation/index.html docs/presentation.html
-	cp 05_presentation/Coban_RegionalFavoritism.pdf docs/presentation.pdf
+	cp 05_presentation/Coban_RegionalFavoritism.pdf docs/Coban_RegionalFavoritism_Presentation.pdf
 	@echo "✓ docs/ updated. Commit and push to publish."
 
 clean:
