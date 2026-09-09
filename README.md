@@ -2,6 +2,10 @@
 
 ## A Replication and Extension of Hodler & Raschky (2014)
 
+* **Author:** Ömer Furkan Çoban*
+* **Course:** Applied Econometrics Using GIS Techniques, Uni Oldenburg (SoSe 2026)
+* **Date:** 09.09.2026
+
 This package reproduces every table reported in the paper and its
 supplementary materials, from raw data through the final PDF and
 presentation, following a 41-stage numbered pipeline. Figures 1 and 2
@@ -163,7 +167,7 @@ flowchart LR
         C4["Extension table 1992–2023"]
     end
 
-    FIGS["🖼️ Figures 1 &amp; 2<br/><i>pre-built, shipped</i><br/>Stages 31–32, manual only"]
+    FIGS["🖼️ Figures 1 & 2<br/><i>pre-built, shipped</i><br/>Stages 31–32, manual only"]
 
     subgraph SUPP["📁 SUPPLEMENTARY — Stages 33–39"]
         direction TB
@@ -292,14 +296,14 @@ requested `--stage` before running anything, and reports any missing
 file with its download link, registration requirement, and destination
 path, rather than failing later with an opaque error.
 
-| Dataset                                | Link                                                                                                                | Registration                                                                       | Used by                                            | Destination                                                 |
-| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | -------------------------------------------------- | ----------------------------------------------------------- |
-| GADM 3.6 (levels 0-2)                  | [https://geodata.ucdavis.edu/gadm/gadm3.6/](https://geodata.ucdavis.edu/gadm/gadm3.6/)                               | Free                                                                               | Hole-punched geometry, Table IV Cols 2-3, Figure 2 | `01_datasets/raw/gadm_3.6/gadm36_levels.gpkg`             |
-| G-Econ 4.0 (Nordhaus et al.)           | [https://gecon.yale.edu](https://gecon.yale.edu)                                                                     | Free                                                                               | Gridded regional GDP, Table II Column 8            | `01_datasets/raw/gecon/`                                  |
-| GPWv3 population count, 1990/1995      | [https://sedac.ciesin.columbia.edu/data/collection/gpw-v3](https://sedac.ciesin.columbia.edu/data/collection/gpw-v3) | Free, NASA Earthdata login                                                         | Population covariates                              | `01_datasets/raw/GPWv3_pcount/`                           |
-| GPWv4 population count, 2000/2005/2010 | [https://sedac.ciesin.columbia.edu/data/collection/gpw-v4](https://sedac.ciesin.columbia.edu/data/collection/gpw-v4) | Free, NASA Earthdata login                                                         | Population covariates                              | `01_datasets/raw/gpw/population/pop/`                     |
-| GHS-POP (Global Human Settlement)      | Google Earth Engine catalog                                                                                         | Free, Google account +[Earth Engine signup](https://earthengine.google.com/signup/) | Population interpolation                           | Accessed live via GEE; run`earthengine authenticate` once |
-| Li et al. (2020) harmonized DMSP/VIIRS NTL | [figshare, article 9828827](https://figshare.com/articles/dataset/Harmonization_of_DMSP_and_VIIRS_nighttime_light_data_from_1992-2018_at_the_global_scale/9828827) | Free | Harmonized 1992-2024 NTL extension panel (Stage 16) | `01_datasets/raw/harmonized_dmsp_viirs_li2020/`, one GeoTIFF per year (see naming below) |
+| Dataset                                    | Link                                                                                                                                                              | Registration                                                                       | Used by                                             | Destination                                                                                |
+| ------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | --------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| GADM 3.6 (levels 0-2)                      | [https://geodata.ucdavis.edu/gadm/gadm3.6/](https://geodata.ucdavis.edu/gadm/gadm3.6/)                                                                             | Free                                                                               | Hole-punched geometry, Table IV Cols 2-3, Figure 2  | `01_datasets/raw/gadm_3.6/gadm36_levels.gpkg`                                            |
+| G-Econ 4.0 (Nordhaus et al.)               | [https://gecon.yale.edu](https://gecon.yale.edu)                                                                                                                   | Free                                                                               | Gridded regional GDP, Table II Column 8             | `01_datasets/raw/gecon/`                                                                 |
+| GPWv3 population count, 1990/1995          | [https://sedac.ciesin.columbia.edu/data/collection/gpw-v3](https://sedac.ciesin.columbia.edu/data/collection/gpw-v3)                                               | Free, NASA Earthdata login                                                         | Population covariates                               | `01_datasets/raw/GPWv3_pcount/`                                                          |
+| GPWv4 population count, 2000/2005/2010     | [https://sedac.ciesin.columbia.edu/data/collection/gpw-v4](https://sedac.ciesin.columbia.edu/data/collection/gpw-v4)                                               | Free, NASA Earthdata login                                                         | Population covariates                               | `01_datasets/raw/gpw/population/pop/`                                                    |
+| GHS-POP (Global Human Settlement)          | Google Earth Engine catalog                                                                                                                                       | Free, Google account +[Earth Engine signup](https://earthengine.google.com/signup/) | Population interpolation                            | Accessed live via GEE; run`earthengine authenticate` once                                |
+| Li et al. (2020) harmonized DMSP/VIIRS NTL | [figshare, article 9828827](https://figshare.com/articles/dataset/Harmonization_of_DMSP_and_VIIRS_nighttime_light_data_from_1992-2018_at_the_global_scale/9828827) | Free                                                                               | Harmonized 1992-2024 NTL extension panel (Stage 16) | `01_datasets/raw/harmonized_dmsp_viirs_li2020/`, one GeoTIFF per year (see naming below) |
 
 GADM 4.1 downloads automatically (Stage 01/02) and needs no manual step.
 
@@ -372,7 +376,3 @@ library rather than an isolated renv environment, so scripts run against
 whatever R installation is already active.
 
 ---
-
-**Author:** Ömer Furkan Çoban
-**Course:** Applied Econometrics Using GIS Techniques, Uni Oldenburg (SoSe 2026)
-**Lecturer:** Prof. Dr. Erkan Gören

@@ -11,8 +11,10 @@ author:
         department: Applied Economics and Data Science
         city: Oldenburg
         country: Germany
-date: "2026-09-15"
+date: "2026-09-09"
 date-format: "DD MMMM YYYY"
+language:
+  title-block-published: "Submitted"
 abstract: |
   Hodler and Raschky (2014) find that a region grows brighter at night
   while it is the birth region of the sitting political leader, evidence
@@ -139,7 +141,7 @@ format:
         blockquote{ border-left:3px solid var(--gold); background:var(--paper-panel); padding:0.6rem 1rem; color:var(--ink-soft); }
         hr{ border-color:var(--rule); }
         /* No color/font override on the container itself: it was
-           cascading into the heading labels (making Published/Course/
+           cascading into the heading labels (making Submitted/Course/
            Semester/Lecturer a lighter grey than Author/Affiliation,
            which get their color from a more specific quarto rule this
            container-level one doesn't reach) and into the values.
@@ -269,7 +271,7 @@ format:
             var groups = document.querySelectorAll(".quarto-title-meta");
             var target = null;
             groups.forEach(function (g) {
-              if (g.textContent.indexOf("Published") !== -1) target = g;
+              if (g.textContent.indexOf("Submitted") !== -1) target = g;
             });
             if (target) {
               while (src.firstChild) target.appendChild(src.firstChild);
@@ -334,7 +336,7 @@ if (knitr::is_html_output()) {
 # way every result table in this document already does. This renders
 # hidden, in body order, and a script (include-after-body, below) moves
 # its three field-groups into the title block's own second
-# .quarto-title-meta div (the one already holding "Published") so they
+# .quarto-title-meta div (the one already holding "Submitted") so they
 # sit in that same row rather than in a separate block of their own --
 # quarto builds that title block straight from YAML with no hook to add
 # fields to it directly, so this is a DOM move rather than a template

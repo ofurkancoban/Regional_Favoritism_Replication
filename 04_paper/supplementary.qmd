@@ -11,8 +11,10 @@ author:
         department: Applied Economics and Data Science
         city: Oldenburg
         country: Germany
-date: "2026-09-15"
+date: "2026-09-09"
 date-format: "DD MMMM YYYY"
+language:
+  title-block-published: "Submitted"
 abstract: |
   This document reports the replication tables that accompany the main
   paper. The main paper covers Table II (main results), Table IV
@@ -189,7 +191,7 @@ format:
             var groups = document.querySelectorAll(".quarto-title-meta");
             var target = null;
             groups.forEach(function (g) {
-              if (g.textContent.indexOf("Published") !== -1) target = g;
+              if (g.textContent.indexOf("Submitted") !== -1) target = g;
             });
             if (target) {
               while (src.firstChild) target.appendChild(src.firstChild);
