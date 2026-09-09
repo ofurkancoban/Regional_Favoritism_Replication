@@ -6,6 +6,8 @@
 * **Course:** Applied Econometrics Using GIS Techniques, Uni Oldenburg (SoSe 2026)
 * **Date:** 09.09.2026
 
+[![Unique visitors](https://ofc.goatcounter.com/counter/TOTAL.png)](https://ofurkancoban.github.io/Regional_Favoritism_Replication/)
+
 This package reproduces every table reported in the paper and its
 supplementary materials, from raw data through the final PDF and
 presentation, following a 41-stage numbered pipeline. Figures 1 and 2
