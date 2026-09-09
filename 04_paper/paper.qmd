@@ -85,7 +85,7 @@ format:
         % points back at this paper instead of describing itself.
         \apptocmd{\printFirstPageNotes}{%
           \let\thefootnote\relax
-          \footnotetext{\textit{Replication package:\space}\href{https://github.com/ofurkancoban/ofurkancoban-Regional_Favoritism_Replication}{github.com/ofurkancoban/ofurkancoban-Regional\_Favoritism\_Replication}, the full pipeline, code, and data behind every table and figure, including the supplementary material (Tables I, III, V, VI, and VII).}%
+          \footnotetext{\textit{Replication package:\space}\href{https://github.com/ofurkancoban/ofurkancoban-Regional_Favoritism_Replication}{github.com/ofurkancoban/ofurkancoban-Regional\_Favoritism\_Replication}, the full pipeline, code, and data behind every table and figure, including the supplementary material (Tables III, V, VI, and VII).}%
         }{}{}
     journal:
       formatting: preprint
