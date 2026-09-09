@@ -74,19 +74,6 @@ format:
         \setcounter{totalnumber}{4}
         \usepackage{multicol}
         \usepackage{hyperref}
-        % Appends two unmarked cover-page footnotes below the E-Mail
-        % Address one (elsarticle prints that via the same
-        % \footnotetext mechanism inside \printFirstPageNotes -- see
-        % before-body.tex's patch of it), pointing to the replication
-        % package and the supplementary materials. Kept here rather
-        % than in before-body.tex since that file is shared with
-        % supplementary.qmd, which should not get these lines.
-        \apptocmd{\printFirstPageNotes}{%
-          \let\thefootnote\relax
-          \footnotetext{\textit{Replication package:\space}\href{https://github.com/ofurkancoban/ofurkancoban-Regional_Favoritism_Replication}{github.com/ofurkancoban/ofurkancoban-Regional\_Favoritism\_Replication}, the full pipeline, code, and data behind every table and figure.}%
-          \let\thefootnote\relax
-          \footnotetext{\textit{Supplementary material:\space}\href{https://ofurkancoban.github.io/ofurkancoban-Regional_Favoritism_Replication/supplementary.html}{ofurkancoban.github.io/ofurkancoban-Regional\_Favoritism\_Replication/supplementary.html}, Tables I, III, V, VI, and VII referenced but not reported in the main text.}%
-        }{}{}
     journal:
       formatting: preprint
       model: 3p

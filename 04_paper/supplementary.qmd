@@ -42,6 +42,7 @@ format:
     include-in-header:
       text: |
         \usepackage{multicol}
+        \usepackage{hyperref}
     journal:
       formatting: preprint
       model: 3p
