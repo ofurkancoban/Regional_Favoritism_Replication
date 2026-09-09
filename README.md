@@ -339,14 +339,6 @@ path if the folder isn't populated yet.
   - macOS: `brew install gdal geos proj`
   - Linux: `sudo apt-get install libgdal-dev libgeos-dev libproj-dev`
 
-### Environment variables (all optional)
-
-| Variable                           | Default                                     | Used by                          |
-| ---------------------------------- | ------------------------------------------- | -------------------------------- |
-| `REGIONAL_FAVORITISM_ROOT`       | `here::here()`                            | `03a_analysis_core/31`, `32` |
-| `REGIONAL_FAVORITISM_LM_DIR`     | autodetected via`tinytex::tinytex_root()` | `03a_analysis_core/31`, `32` |
-| `REGIONAL_FAVORITISM_CHROME_BIN` | autodetected                                | `03a_analysis_core/31`, `32` |
-
 ---
 
 ## Key Dependencies
