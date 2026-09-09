@@ -73,6 +73,18 @@ format:
         \setcounter{topnumber}{3}
         \setcounter{totalnumber}{4}
         \usepackage{multicol}
+        \usepackage{hyperref}
+        % Appends a second unmarked cover-page footnote below the
+        % E-Mail Address one (elsarticle prints that via the same
+        % \footnotetext mechanism inside \printFirstPageNotes -- see
+        % before-body.tex's patch of it), pointing to the replication
+        % package. Kept here rather than in before-body.tex since that
+        % file is shared with supplementary.qmd, which should not get
+        % this line.
+        \apptocmd{\printFirstPageNotes}{%
+          \let\thefootnote\relax
+          \footnotetext{\textit{Replication package:\space}\href{https://github.com/ofurkancoban/Regional_Favoritism_Replication}{github.com/ofurkancoban/Regional\_Favoritism\_Replication} --- full pipeline, code, and data behind every table and figure.}%
+        }{}{}
     journal:
       formatting: preprint
       model: 3p
