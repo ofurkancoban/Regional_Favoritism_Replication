@@ -16,17 +16,6 @@
 \patchcmd{\abstract}{\medskip}{\vskip2pt}{}{}
 \makeatother
 
-% Appends an unmarked cover-page footnote below the E-Mail Address one
-% (printed via the same \footnotetext mechanism inside
-% \printFirstPageNotes, patched above), pointing to the replication
-% package; the supplementary material is folded into this same line
-% rather than given its own link. Shared here so both paper.qmd and
-% supplementary.qmd carry it.
-\apptocmd{\printFirstPageNotes}{%
-  \let\thefootnote\relax
-  \footnotetext{\textit{Replication package:\space}\href{https://github.com/ofurkancoban/ofurkancoban-Regional_Favoritism_Replication}{github.com/ofurkancoban/ofurkancoban-Regional\_Favoritism\_Replication}, the full pipeline, code, and data behind every table and figure, including the supplementary material (Tables I, III, V, VI, and VII referenced but not reported in the main text).}%
-}{}{}
-
 \begin{frontmatter}
 
 % ── University logo ───────────────────────────────────────────────────

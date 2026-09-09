@@ -40,9 +40,17 @@ format:
     template-partials:
       - before-body.tex
     include-in-header:
+      # See paper.qmd's matching block for why this footnote is kept
+      # per-document rather than shared in before-body.tex: this
+      # document points readers back at the main paper instead of
+      # describing itself as "the supplementary material".
       text: |
         \usepackage{multicol}
         \usepackage{hyperref}
+        \apptocmd{\printFirstPageNotes}{%
+          \let\thefootnote\relax
+          \footnotetext{\textit{Replication package:\space}\href{https://github.com/ofurkancoban/ofurkancoban-Regional_Favoritism_Replication}{github.com/ofurkancoban/ofurkancoban-Regional\_Favoritism\_Replication}, the full pipeline, code, and data behind every table and figure, including the main paper (Table II, Table IV, and the 1992-2023 panel extension).}%
+        }{}{}
     journal:
       formatting: preprint
       model: 3p
