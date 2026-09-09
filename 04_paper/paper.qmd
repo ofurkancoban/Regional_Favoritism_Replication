@@ -83,7 +83,7 @@ format:
         % this line.
         \apptocmd{\printFirstPageNotes}{%
           \let\thefootnote\relax
-          \footnotetext{\textit{Replication package:\space}\href{https://github.com/ofurkancoban/Regional_Favoritism_Replication}{github.com/ofurkancoban/Regional\_Favoritism\_Replication} --- full pipeline, code, and data behind every table and figure.}%
+          \footnotetext{\textit{Replication package:\space}\href{https://github.com/ofurkancoban/ofurkancoban-Regional_Favoritism_Replication}{github.com/ofurkancoban/ofurkancoban-Regional\_Favoritism\_Replication} --- full pipeline, code, and data behind every table and figure.}%
         }{}{}
     journal:
       formatting: preprint
@@ -373,7 +373,7 @@ if (knitr::is_html_output()) {
         list(href = "Coban_RegionalFavoritism_Supplementary.pdf", icon = "bi-file-pdf", label = "Supplementary (PDF)"),
         list(href = "presentation.html", icon = "bi-easel2", label = "Presentation (slides)"),
         list(href = "Coban_RegionalFavoritism_Presentation.pdf", icon = "bi-file-pdf", label = "Presentation (PDF)"),
-        list(href = "https://github.com/ofurkancoban/Regional_Favoritism_Replication", icon = "bi-box-seam", label = "Replication Package")
+        list(href = "https://github.com/ofurkancoban/ofurkancoban-Regional_Favoritism_Replication", icon = "bi-box-seam", label = "Replication Package")
     )
     links <- Filter(function(l) l$href != "paper.html", links)
     items <- vapply(links, function(l) {
@@ -2211,7 +2211,7 @@ from GPWv4 [@ciesin-gpwv4] and this project's own GHS-POP pipeline
 [@schiavina2023]. The complete pipeline that builds the panel and
 produces every table and figure in this paper is openly available in
 the replication repository
-(<https://github.com/ofurkancoban/Regional_Favoritism_Replication>).
+(<https://github.com/ofurkancoban/ofurkancoban-Regional_Favoritism_Replication>).
 For space, five further replicated tables discussed in the text,
 Table I's full descriptive statistics, Table III's dynamics
 specification, Table V's determinants, Table VI's continent split, and

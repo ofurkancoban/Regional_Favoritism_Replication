@@ -67,7 +67,7 @@ or processing any raw data:
 
 ```bash
 git lfs install                                  # once per machine
-git clone https://github.com/ofurkancoban/Regional_Favoritism_Replication.git
+git clone https://github.com/ofurkancoban/ofurkancoban-Regional_Favoritism_Replication.git
 cd replication_package
 make init                                              # install R packages
 Rscript 02_scripts/01_setup/setup_environment.R --stage=core
