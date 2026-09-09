@@ -43,6 +43,11 @@ renv/staging/
 01_datasets/raw/dmsp_raster_eog_manual
 01_datasets/raw/viirs_raster_eog_manual
 
+# Li et al. (2020) harmonized DMSP/VIIRS NTL rasters (manual figshare
+# download, ~33 years x global GeoTIFF -- see README.md, "Raw data that
+# cannot be downloaded automatically").
+01_datasets/raw/harmonized_dmsp_viirs_li2020/
+
 # Not present on disk when this package was built, so not sized/copied
 # above -- but 01_download_gadm.R (Stage 01) downloads this GADM 4.1
 # "all levels" archive fresh on a real run, and it is large (~1-2GB).

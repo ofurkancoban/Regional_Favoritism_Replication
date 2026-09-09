@@ -21,8 +21,8 @@
 source(here::here("02_scripts", "02_data_preprocessing", "00_import.R"))
 source(here::here("02_scripts", "04_tools", "utils.R"))
 
-source("00_utils/local_ntl_extraction.R")
-source("00_utils/viirs_raster_catalog.R")
+source(here::here("02_scripts", "04_tools", "local_ntl_extraction.R"))
+source(here::here("02_scripts", "04_tools", "viirs_raster_catalog.R"))
 
 gb_dir <- here::here("01_datasets/raw/gadm_4.1/global/geoboundaries")
 no_adm2_file <- here::here("01_datasets/raw/gadm_4.1/global/no_adm2_countries.txt")

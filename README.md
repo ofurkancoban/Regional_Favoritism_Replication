@@ -279,10 +279,11 @@ tracked.
 
 ### Excluded: third-party raw geometry and rasters
 
-`gadm_3.6/`, `dmsp_raster_eog_manual/`, and `viirs_raster_eog_manual/`
-are excluded from version control (multi-GB to hundreds of GB, and some
-sources restrict redistribution). DMSP and VIIRS download automatically
-via Stages 03-04; GADM 3.6 requires a manual download (see below).
+`gadm_3.6/`, `dmsp_raster_eog_manual/`, `viirs_raster_eog_manual/`, and
+`harmonized_dmsp_viirs_li2020/` are excluded from version control
+(multi-GB to hundreds of GB, and some sources restrict redistribution).
+DMSP and VIIRS download automatically via Stages 03-04; GADM 3.6 and the
+harmonized DMSP/VIIRS rasters require a manual download (see below).
 
 ### Raw data that cannot be downloaded automatically
 
@@ -298,9 +299,31 @@ path, rather than failing later with an opaque error.
 | GPWv3 population count, 1990/1995      | [https://sedac.ciesin.columbia.edu/data/collection/gpw-v3](https://sedac.ciesin.columbia.edu/data/collection/gpw-v3) | Free, NASA Earthdata login                                                         | Population covariates                              | `01_datasets/raw/GPWv3_pcount/`                           |
 | GPWv4 population count, 2000/2005/2010 | [https://sedac.ciesin.columbia.edu/data/collection/gpw-v4](https://sedac.ciesin.columbia.edu/data/collection/gpw-v4) | Free, NASA Earthdata login                                                         | Population covariates                              | `01_datasets/raw/gpw/population/pop/`                     |
 | GHS-POP (Global Human Settlement)      | Google Earth Engine catalog                                                                                         | Free, Google account +[Earth Engine signup](https://earthengine.google.com/signup/) | Population interpolation                           | Accessed live via GEE; run`earthengine authenticate` once |
+| Li et al. (2020) harmonized DMSP/VIIRS NTL | [figshare, article 9828827](https://figshare.com/articles/dataset/Harmonization_of_DMSP_and_VIIRS_nighttime_light_data_from_1992-2018_at_the_global_scale/9828827) | Free | Harmonized 1992-2024 NTL extension panel (Stage 16) | `01_datasets/raw/harmonized_dmsp_viirs_li2020/`, one GeoTIFF per year (see naming below) |
 
 GADM 4.1, DMSP, and VIIRS download automatically (Stages 01-04) and need
 no manual step.
+
+**Li et al. (2020) file naming.** The figshare item ships one GeoTIFF per
+year, already named `Harmonized_DN_NTL_<year>_<suffix>.tif`
+(`<suffix>` is `calDMSP` for 1992-2013, `simVIIRS` for 2014 onward) --
+download the years 1992-2024 and place them, unrenamed, directly under
+`01_datasets/raw/harmonized_dmsp_viirs_li2020/`, e.g.:
+
+```
+01_datasets/raw/harmonized_dmsp_viirs_li2020/
+├── Harmonized_DN_NTL_1992_calDMSP.tif
+├── Harmonized_DN_NTL_1993_calDMSP.tif
+├── ...
+├── Harmonized_DN_NTL_2013_calDMSP.tif
+├── Harmonized_DN_NTL_2014_simVIIRS.tif
+├── ...
+└── Harmonized_DN_NTL_2024_simVIIRS.tif
+```
+
+Stage 16 (`02_data_preprocessing/16_harmonized_dmsp_viirs_adm2.R`) checks
+for the first expected file before running and reports the exact missing
+path if the folder isn't populated yet.
 
 ---
 
