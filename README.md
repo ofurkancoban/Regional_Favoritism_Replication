@@ -6,7 +6,7 @@
 * **Course:** Applied Econometrics Using GIS Techniques, Uni Oldenburg (SoSe 2026)
 * **Date:** 09.09.2026
 
-[![Unique visitors](https://ofc.goatcounter.com/counter/TOTAL.png)](https://ofurkancoban.github.io/Regional_Favoritism_Replication/)
+[![Unique visitors](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fofc.goatcounter.com%2Fcounter%2FTOTAL.json&query=%24.count_unique&label=unique%20visitors&labelColor=1d2f52&color=a97e2f&style=flat-square)](https://ofurkancoban.github.io/Regional_Favoritism_Replication/)
 
 This package reproduces every table reported in the paper and its
 supplementary materials, from raw data through the final PDF and
