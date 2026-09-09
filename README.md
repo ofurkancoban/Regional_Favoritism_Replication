@@ -301,8 +301,24 @@ path, rather than failing later with an opaque error.
 | GHS-POP (Global Human Settlement)      | Google Earth Engine catalog                                                                                         | Free, Google account +[Earth Engine signup](https://earthengine.google.com/signup/) | Population interpolation                           | Accessed live via GEE; run`earthengine authenticate` once |
 | Li et al. (2020) harmonized DMSP/VIIRS NTL | [figshare, article 9828827](https://figshare.com/articles/dataset/Harmonization_of_DMSP_and_VIIRS_nighttime_light_data_from_1992-2018_at_the_global_scale/9828827) | Free | Harmonized 1992-2024 NTL extension panel (Stage 16) | `01_datasets/raw/harmonized_dmsp_viirs_li2020/`, one GeoTIFF per year (see naming below) |
 
-GADM 4.1, DMSP, and VIIRS download automatically (Stages 01-04) and need
-no manual step.
+GADM 4.1 downloads automatically (Stage 01/02) and needs no manual step.
+
+**DMSP and VIIRS (Stages 03-04) need a free EOG account first.** Both
+rasters are hosted behind login on
+[eogdata.mines.edu](https://eogdata.mines.edu) (NOAA/NCEI's Earth
+Observation Group). Register for a free account there, then create a
+`.env` file in the package root (never committed -- already in
+`.gitignore`) with:
+
+```
+EOG_USERNAME=your_eogdata_account_email@example.com
+EOG_PASSWORD=your_eogdata_account_password
+```
+
+`03_download_dmsp_raw.R` / `04_download_viirs_raw.R` read these two
+variables to authenticate against EOG's Keycloak login before
+downloading; without them, both stages stop immediately with
+"EOG credentials not found in environment or HAR file."
 
 **Li et al. (2020) file naming.** The figshare item ships one GeoTIFF per
 year, already named `Harmonized_DN_NTL_<year>_<suffix>.tif`
