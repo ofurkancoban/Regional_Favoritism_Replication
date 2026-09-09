@@ -180,7 +180,20 @@ footer{
 
   <footer>
     Built with Quarto. Source: <a href="https://github.com/ofurkancoban/Regional_Favoritism_Replication" style="color:inherit;">github.com/ofurkancoban/Regional_Favoritism_Replication</a>
+    <span id="visitor-count"></span>
   </footer>
 </div>
+<script>
+  fetch("https://ofc.goatcounter.com/counter/TOTAL.json")
+    .then(function (r) { return r.json(); })
+    .then(function (d) {
+      var el = document.getElementById("visitor-count");
+      if (el && d && d.count_unique) {
+        el.textContent = " · " + d.count_unique + " unique visitors";
+      }
+    })
+    .catch(function () {});
+</script>
+<script data-goatcounter="https://ofc.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
