@@ -1361,10 +1361,6 @@ manuscript text. After using this tool, the author reviewed and edited
 the content as needed and takes full responsibility for the content of
 this publication.
 
-```{=latex}
-\clearpage
-```
-
 # References {.unnumbered}
 
 ```{=latex}
